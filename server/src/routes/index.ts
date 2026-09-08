@@ -1,0 +1,38 @@
+import { Router } from "express";
+import healthRoutes from "../modules/health/health.routes";
+import authRoutes from "../modules/auth/auth.routes";
+import clubRoutes from "../modules/clubs/club.routes";
+import trainingRoutes from "../modules/trainings/training.routes";
+import trainingPublicRoutes from "../modules/trainings/trainingPublic.routes";
+import eventRoutes from "../modules/events/event.routes";
+import eventPublicRoutes from "../modules/events/eventPublic.routes";
+import formRoutes from "../modules/forms/form.routes";
+import formPublicRoutes from "../modules/forms/formPublic.routes";
+import responseRoutes from "../modules/forms/response.routes";
+import attendanceRoutes from "../modules/attendance/attendance.routes";
+import attendanceGlobalRoutes from "../modules/attendance/attendanceGlobal.routes";
+import financeRoutes from "../modules/finance/finance.routes";
+import financeGlobalRoutes from "../modules/finance/financeGlobal.routes";
+import membershipRoutes from "../modules/membership/membership.routes";
+import membershipGlobalRoutes from "../modules/membership/membershipGlobal.routes";
+
+const router = Router();
+
+router.use("/health", healthRoutes);
+router.use("/auth", authRoutes);
+router.use("/clubs", clubRoutes);
+router.use("/clubs/:clubId/trainings", trainingRoutes);
+router.use("/clubs/:clubId/events", eventRoutes);
+router.use("/clubs/:clubId/forms", formRoutes);
+router.use("/clubs/:clubId/trainings/:trainingId/attendance", attendanceRoutes);
+router.use("/clubs/:clubId/finance", financeRoutes);
+router.use("/clubs/:clubId/memberships", membershipRoutes);
+router.use("/trainings", trainingPublicRoutes);
+router.use("/events", eventPublicRoutes);
+router.use("/forms", formPublicRoutes);
+router.use("/forms", responseRoutes);
+router.use("/attendance", attendanceGlobalRoutes);
+router.use("/finance", financeGlobalRoutes);
+router.use("/memberships", membershipGlobalRoutes);
+
+export default router;

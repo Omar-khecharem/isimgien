@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+uploads/*
+!uploads/.gitkeep
+*.log
+server.log
+test_error.txt
+test_output.txt
+coverage/
+.DS_Store
+Thumbs.db
