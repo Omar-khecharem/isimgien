@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../features/auth";
 import { useLogo } from "../../features/logo";
 import { Avatar } from "../../components/ui";
 import styles from "./AdminSettings.module.css";
+
+const PROFILE_PHOTO_KEY = "clubhub_profile_photo";
 
 type Tab = "profile" | "general" | "notifications" | "security";
 
@@ -69,6 +71,15 @@ export function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(PROFILE_PHOTO_KEY);
+    } catch {
+      return null;
+    }
+  });
 
   const [profile, setProfile] = useState({
     firstName: user?.firstName || "",
@@ -83,6 +94,22 @@ export function AdminSettings() {
     maintenance: false,
     registration: true,
   });
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Le fichier ne doit pas dépasser 2 Mo");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target?.result as string;
+      setProfilePhoto(result);
+      localStorage.setItem(PROFILE_PHOTO_KEY, result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -167,11 +194,38 @@ export function AdminSettings() {
               </div>
 
               <div className={styles.avatarRow}>
-                <Avatar name={user ? `${user.firstName} ${user.lastName}` : ""} size="lg" />
+                <div className={styles.avatarWrap}>
+                  <Avatar
+                    src={profilePhoto}
+                    name={user ? `${user.firstName} ${user.lastName}` : ""}
+                    size="lg"
+                  />
+                  <button
+                    className={styles.avatarOverlay}
+                    onClick={() => photoInputRef.current?.click()}
+                    aria-label="Changer la photo"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M13.5 3.5l3 3M2.5 17.5l1-4L14.4 4.1a2.1 2.1 0 013 3L6.5 18.5l-4 1z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </div>
                 <div className={styles.avatarInfo}>
-                  <button className={styles.uploadBtn}>Changer la photo</button>
+                  <button
+                    className={styles.uploadBtn}
+                    onClick={() => photoInputRef.current?.click()}
+                  >
+                    Changer la photo
+                  </button>
                   <p className={styles.uploadHint}>JPG, PNG ou GIF. Max 2 Mo.</p>
                 </div>
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/gif"
+                  onChange={handlePhotoUpload}
+                  className={styles.hiddenInput}
+                />
               </div>
 
               <div className={styles.formGrid}>

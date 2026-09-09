@@ -151,15 +151,39 @@
 .avatarRow {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 24px 28px;
+  gap: 24px;
+  padding: 28px;
   border-bottom: 1px solid #F7F8F9;
+}
+
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.avatarWrap:hover .avatarOverlay {
+  opacity: 1;
 }
 
 .avatarInfo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .uploadBtn {
@@ -167,8 +191,8 @@
   font-size: 13px;
   font-weight: 600;
   color: #0A5F3A;
-  background: #ecfdf3;
-  border: 1px solid #C7E8D6;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -176,12 +200,17 @@
 }
 
 .uploadBtn:hover {
-  background: #d1fae5;
+  background: #D1FAE5;
+  border-color: #6EE7B7;
 }
 
 .uploadHint {
   font-size: 12px;
-  color: #A1A1AA;
+  color: #9CA3AF;
+}
+
+.hiddenInput {
+  display: none;
 }
 
 /* ─── Logo Upload ────────────────────────────────────────────────────── */
