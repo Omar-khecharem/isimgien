@@ -1,0 +1,91 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Select
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.label {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  line-height: var(--leading-tight);
+}
+
+/* ─── Wrapper ────────────────────────────────────────────────────────── */
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Select ─────────────────────────────────────────────────────────── */
+
+.select {
+  width: 100%;
+  height: 36px;
+  padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-normal) var(--ease-default),
+    box-shadow var(--duration-normal) var(--ease-default);
+}
+
+.select:hover:not(:focus):not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+.select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-ring);
+}
+
+.select:disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+/* ─── Chevron ────────────────────────────────────────────────────────── */
+
+.chevron {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+
+/* ─── Error ──────────────────────────────────────────────────────────── */
+
+.wrapper--error .select {
+  border-color: var(--color-error-500);
+}
+
+.wrapper--error .select:focus {
+  border-color: var(--color-error-500);
+  box-shadow: 0 0 0 3px rgba(240, 68, 56, 0.15);
+}
+
+.error {
+  font-size: var(--text-sm);
+  color: var(--color-error-600);
+  line-height: var(--leading-tight);
+}

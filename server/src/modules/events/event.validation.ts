@@ -123,6 +123,12 @@ export const getEventRegistrationsSchema = {
   }),
 };
 
+// ─── Public: Get event by ID ────────────────────────────────────────────────
+
+export const getPublicEventSchema = {
+  params: z.object({ id: mongoId }),
+};
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type CreateEventInput = z.infer<typeof createEventSchema.body>;

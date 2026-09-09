@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import * as membershipRepo from "./membership.repository";
 import { ApiError } from "../../shared/utils/ApiError";
 import { MembershipStatus } from "../../shared/enums";
+import { ClubMembership } from "../../models/clubMembership.model";
 import type {
   CreateMembershipInput,
   ListMembershipsQuery,
@@ -82,9 +83,7 @@ export async function getMembership(clubId: string, membershipId: string) {
   if (!membership) {
     throw ApiError.notFound("Membership not found");
   }
-  const membershipClubId =
-    (membership.club as any)._id?.toString() ??
-    (membership.club as any).toString();
+  const membershipClubId = (membership.club as any).toString();
   if (membershipClubId !== clubId) {
     throw ApiError.forbidden("Membership does not belong to this club");
   }
@@ -135,9 +134,7 @@ export async function updateMembershipStatus(
   if (!existing) {
     throw ApiError.notFound("Membership not found");
   }
-  const existingClubId =
-    (existing.club as any)._id?.toString() ??
-    (existing.club as any).toString();
+  const existingClubId = (existing.club as any).toString();
   if (existingClubId !== clubId) {
     throw ApiError.forbidden("Membership does not belong to this club");
   }
@@ -164,9 +161,7 @@ export async function recordPayment(
   if (!existing) {
     throw ApiError.notFound("Membership not found");
   }
-  const existingClubId =
-    (existing.club as any)._id?.toString() ??
-    (existing.club as any).toString();
+  const existingClubId = (existing.club as any).toString();
   if (existingClubId !== clubId) {
     throw ApiError.forbidden("Membership does not belong to this club");
   }
@@ -243,18 +238,15 @@ export async function getGlobalMemberships(
 
   const sortObj = buildSort(sort);
 
-  const {
-    ClubMembership: ClubMembershipModel,
-  } = await import("../../models/clubMembership.model");
   const [memberships, total] = await Promise.all([
-    ClubMembershipModel.find(filter)
+    ClubMembership.find(filter)
       .populate("user", "firstName lastName email")
       .populate("club", "name slug")
       .sort(sortObj)
       .skip(skip)
       .limit(limit)
       .lean(),
-    ClubMembershipModel.countDocuments(filter),
+    ClubMembership.countDocuments(filter),
   ]);
 
   return {

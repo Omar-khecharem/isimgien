@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Stack
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.stack {
+  display: flex;
+}
+
+.stack--vertical {
+  flex-direction: column;
+}
+
+.stack--horizontal {
+  flex-direction: row;
+}
+
+.stack--wrap {
+  flex-wrap: wrap;
+}
+
+/* ─── Alignment ──────────────────────────────────────────────────────── */
+
+.align--start { align-items: flex-start; }
+.align--center { align-items: center; }
+.align--end { align-items: flex-end; }
+.align--stretch { align-items: stretch; }
+
+/* ─── Justify ────────────────────────────────────────────────────────── */
+
+.justify--start { justify-content: flex-start; }
+.justify--center { justify-content: center; }
+.justify--end { justify-content: flex-end; }
+.justify--between { justify-content: space-between; }
+.justify--around { justify-content: space-around; }
+
+/* ─── Gap ────────────────────────────────────────────────────────────── */
+
+.gap--none { gap: 0; }
+.gap--xs { gap: var(--space-1); }
+.gap--sm { gap: var(--space-2); }
+.gap--md { gap: var(--space-4); }
+.gap--lg { gap: var(--space-6); }
+.gap--xl { gap: var(--space-8); }

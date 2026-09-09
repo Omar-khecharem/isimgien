@@ -113,6 +113,7 @@ const trainingSchema = new Schema<ITraining>(
 trainingSchema.index({ club: 1, date: 1 });
 trainingSchema.index({ status: 1, date: 1 });
 trainingSchema.index({ club: 1, status: 1 });
+trainingSchema.index({ club: 1, slug: 1 }, { unique: true });
 
 export const Training: Model<ITraining> =
   mongoose.model<ITraining>("Training", trainingSchema);

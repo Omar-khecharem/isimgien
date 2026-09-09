@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Loading / Spinner
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ─── Sizes ──────────────────────────────────────────────────────────── */
+
+.spinner--xs { width: 12px; height: 12px; }
+.spinner--sm { width: 16px; height: 16px; }
+.spinner--md { width: 24px; height: 24px; }
+.spinner--lg { width: 32px; height: 32px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Page Loader
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pageLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: var(--space-3);
+}
+
+.pageLoaderText {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

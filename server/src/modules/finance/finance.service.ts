@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import * as financeRepo from "./finance.repository";
 import { ApiError } from "../../shared/utils/ApiError";
 import { TransactionType } from "../../shared/enums";
+import { Transaction } from "../../models/transaction.model";
 import type {
   CreateTransactionInput,
   ListTransactionsQuery,
@@ -204,7 +205,6 @@ export async function getGlobalSummary(query: GetGlobalSummaryQuery) {
     if (dateTo) (matchStage.date as Record<string, Date>).$lte = dateTo;
   }
 
-  const { Transaction } = await import("../../models/transaction.model");
   const result = await Transaction.aggregate([
     ...(Object.keys(matchStage).length > 0
       ? [{ $match: matchStage }]

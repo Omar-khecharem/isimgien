@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../../middleware/validate.middleware";
 import * as eventController from "./event.controller";
-import { listPublicEventsSchema } from "./event.validation";
+import { listPublicEventsSchema, getPublicEventSchema } from "./event.validation";
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.get(
 
 router.get(
   "/:id",
+  validate(getPublicEventSchema),
   eventController.getPublicEvent
 );
 

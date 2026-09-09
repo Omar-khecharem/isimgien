@@ -1,0 +1,44 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EmptyState
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-tertiary);
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius-full);
+}
+
+.title {
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.description {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  max-width: 360px;
+  margin-bottom: var(--space-5);
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

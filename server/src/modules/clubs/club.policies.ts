@@ -1,90 +1,19 @@
-import { Request, Response, NextFunction } from "express";
-import { ApiError } from "../../shared/utils/ApiError";
-import { Role } from "../../shared/enums/roles";
+import {
+  requireSuperAdmin as _requireSuperAdmin,
+  requireClubLeaderOrSuperAdmin as _requireClubLeaderOrSuperAdmin,
+  requireAuthenticated,
+  getClubIdFromParams,
+} from "../../middleware/policies.middleware";
 import { Club } from "../../models/club.model";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// Re-export shared policies
+export const requireSuperAdmin = _requireSuperAdmin;
+export const requireClubLeaderOrSuperAdmin = _requireClubLeaderOrSuperAdmin;
+export { requireAuthenticated as requireStudentOrAbove };
 
-function getClubIdFromRequest(req: Request): string | undefined {
-  return (req.params.id as string) || (req.body.club as string);
-}
-
-// ─── Policies ────────────────────────────────────────────────────────────────
-
-/**
- * requireSuperAdmin
- * Only Super Admin may proceed.
- */
-export function requireSuperAdmin(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-  if (req.user.role !== Role.SUPER_ADMIN) {
-    return next(ApiError.forbidden("Super Admin access required"));
-  }
-  next();
-}
+// ─── Club-specific: requires access to club via :id param ───────────────────
 
 /**
- * requireClubLeaderOrSuperAdmin
- * Super Admin bypasses ownership. Club Leader must own the club.
- * Students are denied.
+ * For club routes using :id param (not :clubId).
+ * Delegates to requireClubLeaderOrSuperAdmin which reads from params.
  */
-export function requireClubLeaderOrSuperAdmin(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-
-  if (req.user.role === Role.SUPER_ADMIN) {
-    return next();
-  }
-
-  if (req.user.role !== Role.CLUB_LEADER) {
-    return next(ApiError.forbidden("Club Leader access required"));
-  }
-
-  const clubId = getClubIdFromRequest(req);
-  if (!clubId) {
-    return next(ApiError.badRequest("Club identifier is required"));
-  }
-
-  Club.findById(clubId)
-    .select("leader")
-    .lean()
-    .then((club) => {
-      if (!club) {
-        return next(ApiError.notFound("Club not found"));
-      }
-      if (!club.leader) {
-        return next(ApiError.forbidden("This club has no assigned leader"));
-      }
-      if (club.leader.toString() !== req.user!.id) {
-        return next(ApiError.forbidden("You are not the leader of this club"));
-      }
-      next();
-    })
-    .catch(next);
-}
-
-/**
- * requireStudentOrAbove
- * Any authenticated user may proceed.
- */
-export function requireStudentOrAbove(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-  next();
-}

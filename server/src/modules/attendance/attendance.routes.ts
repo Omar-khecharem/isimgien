@@ -29,8 +29,8 @@ router.post(
 
 // ─── Club Leader: Close attendance session ───────────────────────────────────
 
-router.delete(
-  "/",
+router.patch(
+  "/close",
   authenticate,
   attendancePolicies.requireTrainingOwnershipOrSuperAdmin,
   validate(closeSessionSchema),

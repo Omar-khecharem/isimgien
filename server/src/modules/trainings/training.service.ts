@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import * as trainingRepo from "./training.repository";
 import { ApiError } from "../../shared/utils/ApiError";
 import { TrainingStatus, RegistrationStatus, RegistrationTargetType } from "../../shared/enums";
+import { Form } from "../../models/form.model";
 import type {
   CreateTrainingInput,
   UpdateTrainingInput,
@@ -78,7 +79,6 @@ export async function createTraining(
   }
 
   if (input.linkedFormId) {
-    const { Form } = await import("../../models/form.model");
     const form = await Form.findById(input.linkedFormId);
     if (!form) {
       throw ApiError.notFound("Registration form not found");
@@ -139,7 +139,6 @@ export async function updateTraining(
   }
 
   if (input.linkedFormId) {
-    const { Form } = await import("../../models/form.model");
     const form = await Form.findById(input.linkedFormId);
     if (!form) {
       throw ApiError.notFound("Registration form not found");
@@ -322,12 +321,14 @@ export async function registerForTraining(
   const existing = await trainingRepo.findRegistration(userId, trainingId);
   if (existing) {
     if (existing.status === RegistrationStatus.CANCELLED) {
-      // Allow re-registration
-      const updated = await trainingRepo.updateRegistration(
-        existing._id.toString(),
-        { status: RegistrationStatus.PENDING }
-      );
-      await trainingRepo.incrementRegisteredCount(trainingId);
+      await trainingRepo.withTransaction(async (session) => {
+        await trainingRepo.updateRegistration(
+          existing._id.toString(),
+          { status: RegistrationStatus.PENDING }
+        );
+        await trainingRepo.incrementRegisteredCount(trainingId);
+      });
+      const updated = await trainingRepo.findRegistration(userId, trainingId);
       return updated!.toJSON();
     }
     throw ApiError.conflict("You are already registered for this training");

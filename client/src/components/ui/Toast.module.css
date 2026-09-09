@@ -1,0 +1,148 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Toast
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.container {
+  position: fixed;
+  bottom: var(--space-5);
+  right: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: var(--z-toast);
+  pointer-events: none;
+  max-width: 420px;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: slideIn var(--duration-slow) var(--ease-out);
+  min-width: 300px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  line-height: var(--leading-tight);
+}
+
+.message {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-snug);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.closeButton:hover {
+  color: var(--color-text);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Variant styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.toast--success {
+  border-color: var(--color-success-200);
+  background-color: var(--color-success-50);
+}
+
+.toast--success .icon {
+  color: var(--color-success-600);
+}
+
+.toast--success .title {
+  color: var(--color-success-700);
+}
+
+.toast--error {
+  border-color: var(--color-error-200);
+  background-color: var(--color-error-50);
+}
+
+.toast--error .icon {
+  color: var(--color-error-600);
+}
+
+.toast--error .title {
+  color: var(--color-error-700);
+}
+
+.toast--warning {
+  border-color: var(--color-warning-200);
+  background-color: var(--color-warning-50);
+}
+
+.toast--warning .icon {
+  color: var(--color-warning-600);
+}
+
+.toast--warning .title {
+  color: var(--color-warning-700);
+}
+
+.toast--info {
+  border-color: var(--color-info-200);
+  background-color: var(--color-info-50);
+}
+
+.toast--info .icon {
+  color: var(--color-info-600);
+}
+
+.toast--info .title {
+  color: var(--color-info-700);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Animation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-4));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -263,17 +263,6 @@ export async function updateClubByLeader(
   return updated!.toJSON();
 }
 
-export async function getClubByLeader(clubId: string, leaderId: string) {
-  const club = await clubRepo.findClubById(clubId);
-  if (!club) {
-    throw ApiError.notFound("Club not found");
-  }
-  if (!club.leader || club.leader.toString() !== leaderId) {
-    throw ApiError.forbidden("You are not the leader of this club");
-  }
-  return club.toJSON();
-}
-
 export async function inviteMember(clubId: string, input: InviteMemberInput) {
   const club = await clubRepo.findClubById(clubId);
   if (!club) {

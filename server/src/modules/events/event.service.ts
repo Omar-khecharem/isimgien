@@ -285,11 +285,14 @@ export async function registerForEvent(userId: string, eventId: string) {
   const existing = await eventRepo.findRegistration(userId, eventId);
   if (existing) {
     if (existing.status === RegistrationStatus.CANCELLED) {
-      const updated = await eventRepo.updateRegistration(
-        existing._id.toString(),
-        { status: RegistrationStatus.PENDING }
-      );
-      await eventRepo.incrementRegisteredCount(eventId);
+      await eventRepo.withTransaction(async () => {
+        await eventRepo.updateRegistration(
+          existing._id.toString(),
+          { status: RegistrationStatus.PENDING }
+        );
+        await eventRepo.incrementRegisteredCount(eventId);
+      });
+      const updated = await eventRepo.findRegistration(userId, eventId);
       return updated!.toJSON();
     }
     throw ApiError.conflict("You are already registered for this event");

@@ -121,6 +121,36 @@ export async function createBulkAttendance(
   return Attendance.insertMany(records as any[]);
 }
 
+export async function bulkUpdateAttendanceStatus(
+  trainingId: string,
+  filterStatus: string,
+  newStatus: string,
+  extraUpdate?: Record<string, unknown>
+) {
+  return Attendance.updateMany(
+    { training: trainingId, status: filterStatus },
+    { $set: { status: newStatus, ...extraUpdate } }
+  );
+}
+
+export async function bulkCheckInByUserIds(
+  trainingId: string,
+  userIds: string[],
+  checkInData: { time: Date; recordedBy: mongoose.Types.ObjectId; method: string }
+) {
+  return Attendance.updateMany(
+    { training: trainingId, user: { $in: userIds }, status: "not_attended" },
+    {
+      $set: {
+        status: "checked_in",
+        "checkIn.time": checkInData.time,
+        "checkIn.recordedBy": checkInData.recordedBy,
+        "checkIn.method": checkInData.method,
+      },
+    }
+  );
+}
+
 // ─── Registration Queries ────────────────────────────────────────────────────
 
 export async function findApprovedRegistrations(

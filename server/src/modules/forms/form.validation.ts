@@ -162,6 +162,10 @@ export const getPublicFormSchema = {
   params: z.object({ id: mongoId }),
 };
 
+export const getMyResponsesSchema = {
+  query: paginationQuery,
+};
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type CreateFormInput = z.infer<typeof createFormSchema.body>;

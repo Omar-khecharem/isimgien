@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../../middleware/validate.middleware";
 import * as trainingController from "./training.controller";
-import { listPublicTrainingsSchema } from "./training.validation";
+import { listPublicTrainingsSchema, getPublicTrainingSchema } from "./training.validation";
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.get(
 
 router.get(
   "/:id",
+  validate(getPublicTrainingSchema),
   trainingController.getPublicTraining
 );
 

@@ -125,6 +125,12 @@ export const getTrainingRegistrationsSchema = {
   }),
 };
 
+// ─── Public: Get training by ID ─────────────────────────────────────────────
+
+export const getPublicTrainingSchema = {
+  params: z.object({ id: mongoId }),
+};
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type CreateTrainingInput = z.infer<typeof createTrainingSchema.body>;

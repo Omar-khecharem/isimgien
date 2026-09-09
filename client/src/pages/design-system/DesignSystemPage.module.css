@@ -1,0 +1,204 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DesignSystemPage
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.content {
+  padding-top: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Color Swatches
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.swatchGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-3);
+}
+
+.swatch {
+  text-align: center;
+}
+
+.swatchColor {
+  width: 100%;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  border: var(--border-width) solid var(--color-border);
+}
+
+.swatchLabel {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+}
+
+.semanticGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.semanticCard {
+  text-align: center;
+}
+
+.semanticPreview {
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 2px solid;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Typography
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.typeScale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.typeRow {
+  display: grid;
+  grid-template-columns: 100px 80px 1fr;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
+}
+
+.typeName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+}
+
+.typeSize {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.typeSample {
+  color: var(--color-text);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Spacing
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.spacingScale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.spacingRow {
+  display: grid;
+  grid-template-columns: 100px 80px 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+.spacingName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+}
+
+.spacingValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.spacingBar {
+  height: 12px;
+  background-color: var(--color-primary-200);
+  border-radius: var(--radius-xs);
+}
+
+.radiusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-4);
+}
+
+.radiusItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.radiusBox {
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-primary-subtle);
+  border: 2px solid var(--color-primary-300);
+}
+
+.radiusName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+}
+
+.radiusValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+.shadowGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-6);
+}
+
+.shadowItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.shadowBox {
+  width: 100px;
+  height: 80px;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+}
+
+.shadowName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Layout Demo
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.layoutBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background-color: var(--color-primary-subtle);
+  border: var(--border-width) solid var(--color-primary-200);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-primary);
+}

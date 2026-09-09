@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import * as attendanceRepo from "./attendance.repository";
 import { ApiError } from "../../shared/utils/ApiError";
 import { AttendanceStatus, TrainingStatus } from "../../shared/enums";
+import { Attendance } from "../../models/attendance.model";
 import type {
   CheckInInput,
   CheckOutInput,
@@ -135,28 +136,24 @@ export async function closeSession(clubId: string, trainingId: string) {
     throw ApiError.badRequest("No attendance session found for this training");
   }
 
-  // Mark all NOT_ATTENDED as ABSENT
-  let absentCount = 0;
-  for (const record of records) {
-    if (record.status === AttendanceStatus.NOT_ATTENDED) {
-      await attendanceRepo.updateAttendance(record._id.toString(), {
-        status: AttendanceStatus.ABSENT,
-      } as any);
-      absentCount++;
-    }
+  // Bulk mark all NOT_ATTENDED as ABSENT
+  const absentResult = await attendanceRepo.bulkUpdateAttendanceStatus(
+    trainingId,
+    AttendanceStatus.NOT_ATTENDED,
+    AttendanceStatus.ABSENT
+  );
 
-    // Mark CHECKED_IN but not CHECKED_OUT as INCOMPLETE
-    if (record.status === AttendanceStatus.CHECKED_IN) {
-      await attendanceRepo.updateAttendance(record._id.toString(), {
-        status: AttendanceStatus.INCOMPLETE,
-      } as any);
-    }
-  }
+  // Bulk mark CHECKED_IN (without checkout) as INCOMPLETE
+  const incompleteResult = await attendanceRepo.bulkUpdateAttendanceStatus(
+    trainingId,
+    AttendanceStatus.CHECKED_IN,
+    AttendanceStatus.INCOMPLETE
+  );
 
   return {
     trainingId,
     totalProcessed: records.length,
-    absentMarked: absentCount,
+    absentMarked: absentResult.modifiedCount,
     message: "Attendance session closed",
   };
 }
@@ -322,11 +319,20 @@ export async function bulkCheckIn(
   const results = { checkedIn: 0, skipped: 0, errors: [] as string[] };
   const now = new Date();
 
+  // Fetch all relevant attendance records in one query
+  const records = await Attendance.find({
+    training: trainingId,
+    user: { $in: input.userIds },
+  }).lean();
+
+  const recordMap = new Map(
+    records.map((r: any) => [r.user.toString(), r])
+  );
+
+  const validUserIds: string[] = [];
+
   for (const userId of input.userIds) {
-    const record = await attendanceRepo.findAttendanceByTrainingAndUser(
-      trainingId,
-      userId
-    );
+    const record = recordMap.get(userId);
     if (!record) {
       results.errors.push(`No attendance record for user ${userId}`);
       continue;
@@ -337,15 +343,21 @@ export async function bulkCheckIn(
       continue;
     }
 
-    await attendanceRepo.updateAttendance(record._id.toString(), {
-      status: AttendanceStatus.CHECKED_IN,
-      checkIn: {
+    validUserIds.push(userId);
+  }
+
+  // Bulk update all valid users in one query
+  if (validUserIds.length > 0) {
+    await attendanceRepo.bulkCheckInByUserIds(
+      trainingId,
+      validUserIds,
+      {
         time: now,
         recordedBy: new mongoose.Types.ObjectId(recordedBy),
         method: "manual",
-      },
-    } as any);
-    results.checkedIn++;
+      }
+    );
+    results.checkedIn = validUserIds.length;
   }
 
   return results;

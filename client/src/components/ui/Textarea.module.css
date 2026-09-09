@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Textarea
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.textareaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.label {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  line-height: var(--leading-tight);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition:
+    border-color var(--duration-normal) var(--ease-default),
+    box-shadow var(--duration-normal) var(--ease-default);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.textarea:hover:not(:focus):not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+.textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-ring);
+}
+
+.textarea:disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+/* ─── Error ──────────────────────────────────────────────────────────── */
+
+.textarea--error {
+  border-color: var(--color-error-500);
+}
+
+.textarea--error:focus {
+  border-color: var(--color-error-500);
+  box-shadow: 0 0 0 3px rgba(240, 68, 56, 0.15);
+}
+
+.error {
+  font-size: var(--text-sm);
+  color: var(--color-error-600);
+  line-height: var(--leading-tight);
+}
+
+.hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--leading-tight);
+}

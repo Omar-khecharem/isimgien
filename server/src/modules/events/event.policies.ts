@@ -1,137 +1,19 @@
-import { Request, Response, NextFunction } from "express";
-import { ApiError } from "../../shared/utils/ApiError";
-import { Role } from "../../shared/enums/roles";
-import { Club } from "../../models/club.model";
+import {
+  requireSuperAdmin as _requireSuperAdmin,
+  requireClubLeaderOrSuperAdmin as _requireClubLeaderOrSuperAdmin,
+  requireAuthenticated,
+  requireResourceOwnershipOrSuperAdmin,
+} from "../../middleware/policies.middleware";
 import { Event } from "../../models/event.model";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function getClubIdFromRequest(req: Request): string | undefined {
-  return (req.params.clubId as string) || (req.body.club as string);
-}
-
-// ─── Policies ────────────────────────────────────────────────────────────────
+// Re-export shared policies
+export const requireSuperAdmin = _requireSuperAdmin;
+export const requireClubLeaderOrSuperAdmin = _requireClubLeaderOrSuperAdmin;
+export { requireAuthenticated as requireStudentOrAbove };
 
 /**
- * requireSuperAdmin
+ * Verifies the event belongs to the club AND the user is the leader.
+ * Uses :clubId and :id params (event routes).
  */
-export function requireSuperAdmin(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-  if (req.user.role !== Role.SUPER_ADMIN) {
-    return next(ApiError.forbidden("Super Admin access required"));
-  }
-  next();
-}
-
-/**
- * requireClubLeaderOrSuperAdmin
- */
-export function requireClubLeaderOrSuperAdmin(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-
-  if (req.user.role === Role.SUPER_ADMIN) {
-    return next();
-  }
-
-  if (req.user.role !== Role.CLUB_LEADER) {
-    return next(ApiError.forbidden("Club Leader access required"));
-  }
-
-  const clubId = getClubIdFromRequest(req);
-  if (!clubId) {
-    return next(ApiError.badRequest("Club identifier is required"));
-  }
-
-  Club.findById(clubId)
-    .select("leader")
-    .lean()
-    .then((club) => {
-      if (!club) {
-        return next(ApiError.notFound("Club not found"));
-      }
-      if (!club.leader) {
-        return next(ApiError.forbidden("This club has no assigned leader"));
-      }
-      if (club.leader.toString() !== req.user!.id) {
-        return next(ApiError.forbidden("You are not the leader of this club"));
-      }
-      next();
-    })
-    .catch(next);
-}
-
-/**
- * requireEventOwnershipOrSuperAdmin
- * Verifies the event belongs to the club AND the user has rights.
- */
-export async function requireEventOwnershipOrSuperAdmin(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  try {
-    if (!req.user) {
-      return next(ApiError.unauthorized());
-    }
-
-    if (req.user.role === Role.SUPER_ADMIN) {
-      return next();
-    }
-
-    if (req.user.role !== Role.CLUB_LEADER) {
-      return next(ApiError.forbidden("Club Leader access required"));
-    }
-
-    const clubId = getClubIdFromRequest(req);
-    const eventId = req.params.id;
-
-    if (!clubId || !eventId) {
-      return next(ApiError.badRequest("Club and event identifiers are required"));
-    }
-
-    const event = await Event.findById(eventId).select("club").lean();
-    if (!event) {
-      return next(ApiError.notFound("Event not found"));
-    }
-    if (event.club.toString() !== clubId) {
-      return next(ApiError.forbidden("Event does not belong to this club"));
-    }
-
-    const club = await Club.findById(clubId).select("leader").lean();
-    if (!club || !club.leader) {
-      return next(ApiError.forbidden("Club leader verification failed"));
-    }
-    if (club.leader.toString() !== req.user!.id) {
-      return next(ApiError.forbidden("You are not the leader of this club"));
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
-}
-
-/**
- * requireStudentOrAbove
- */
-export function requireStudentOrAbove(
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) {
-  if (!req.user) {
-    return next(ApiError.unauthorized());
-  }
-  next();
-}
+export const requireEventOwnershipOrSuperAdmin =
+  requireResourceOwnershipOrSuperAdmin(Event, "id", "Event");

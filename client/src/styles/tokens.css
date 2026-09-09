@@ -1,0 +1,354 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ISIMG ClubHub — Design Tokens
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Color: Primary (Forest Green) ─────────────────────────────────── */
+  --color-primary-50:  #ecfdf3;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+  --color-primary-950: #022c22;
+
+  /* Semantic aliases */
+  --color-primary:       var(--color-primary-700);
+  --color-primary-hover: var(--color-primary-800);
+  --color-primary-active:var(--color-primary-900);
+  --color-primary-subtle:var(--color-primary-50);
+  --color-primary-ring:  rgba(5, 150, 105, 0.2);
+
+  /* ─── Color: Neutrals ───────────────────────────────────────────────── */
+  --color-gray-25:  #fcfcfd;
+  --color-gray-50:  #f9fafb;
+  --color-gray-100: #f2f4f7;
+  --color-gray-200: #eaecf0;
+  --color-gray-300: #d0d5dd;
+  --color-gray-400: #98a2b3;
+  --color-gray-500: #667085;
+  --color-gray-600: #475467;
+  --color-gray-700: #344054;
+  --color-gray-800: #1d2939;
+  --color-gray-900: #101828;
+  --color-gray-950: #0c111d;
+
+  /* ─── Color: Semantic ───────────────────────────────────────────────── */
+  --color-success-50:  #ecfdf3;
+  --color-success-100: #d1fae5;
+  --color-success-500: #12b76a;
+  --color-success-600: #039855;
+  --color-success-700: #027a48;
+
+  --color-warning-50:  #fffaeb;
+  --color-warning-100: #fef0cd;
+  --color-warning-500: #f79009;
+  --color-warning-600: #dc6803;
+  --color-warning-700: #b54708;
+
+  --color-error-50:  #fef3f2;
+  --color-error-100: #fee4e2;
+  --color-error-500: #f04438;
+  --color-error-600: #d92d20;
+  --color-error-700: #b42318;
+
+  --color-info-50:  #eff4ff;
+  --color-info-100: #d1e9ff;
+  --color-info-500: #2e90fa;
+  --color-info-600: #1570ef;
+  --color-info-700: #175cd3;
+
+  /* Semantic aliases (backward-compatible) */
+  --color-success:       var(--color-success-600);
+  --color-success-light: var(--color-success-50);
+  --color-warning:       var(--color-warning-600);
+  --color-warning-light: var(--color-warning-50);
+  --color-danger:        var(--color-error-600);
+  --color-danger-hover:  var(--color-error-700);
+  --color-danger-light:  var(--color-error-50);
+  --color-info:          var(--color-info-600);
+  --color-info-light:    var(--color-info-50);
+
+  /* ─── Color: Background ─────────────────────────────────────────────── */
+  --color-bg:             #ffffff;
+  --color-bg-secondary:   var(--color-gray-25);
+  --color-bg-tertiary:    var(--color-gray-50);
+  --color-bg-sunken:      var(--color-gray-50);
+  --color-bg-elevated:    #ffffff;
+  --color-bg-overlay:     rgba(16, 24, 40, 0.55);
+
+  /* ─── Color: Text ───────────────────────────────────────────────────── */
+  --color-text:             var(--color-gray-900);
+  --color-text-secondary:   var(--color-gray-600);
+  --color-text-tertiary:    var(--color-gray-400);
+  --color-text-placeholder: var(--color-gray-400);
+  --color-text-inverse:     #ffffff;
+  --color-text-brand:       var(--color-primary-700);
+
+  /* ─── Color: Border ─────────────────────────────────────────────────── */
+  --color-border:        var(--color-gray-200);
+  --color-border-subtle: var(--color-gray-100);
+  --color-border-strong: var(--color-gray-300);
+  --color-border-focus:  var(--color-primary);
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Typography
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
+
+  /* Font sizes */
+  --text-xs:   0.75rem;   /* 12px */
+  --text-sm:   0.8125rem; /* 13px */
+  --text-base: 0.875rem;  /* 14px */
+  --text-md:   1rem;      /* 16px */
+  --text-lg:   1.125rem;  /* 18px */
+  --text-xl:   1.25rem;   /* 20px */
+  --text-2xl:  1.5rem;    /* 24px */
+  --text-3xl:  1.875rem;  /* 30px */
+  --text-4xl:  2.25rem;   /* 36px */
+
+  /* Font weights */
+  --font-regular:  400;
+  --font-medium:   500;
+  --font-semibold: 600;
+  --font-bold:     700;
+
+  /* Line heights */
+  --leading-none:    1;
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.01em;
+  --tracking-wider:  0.05em;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Spacing (4px base)
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --space-0:  0;
+  --space-px: 1px;
+  --space-0-5: 2px;
+  --space-1:  4px;
+  --space-1-5: 6px;
+  --space-2:  8px;
+  --space-2-5: 10px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-9:  36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Border Radius
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --radius-xs:    4px;
+  --radius-sm:    6px;
+  --radius-md:    8px;
+  --radius-lg:    10px;
+  --radius-xl:    12px;
+  --radius-2xl:   16px;
+  --radius-3xl:   20px;
+  --radius-full:  9999px;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Borders
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --border-width: 1px;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Shadows
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --shadow-xs:  0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-sm:  0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md:  0 4px 8px -2px rgba(16, 24, 40, 0.06), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+  --shadow-lg:  0 12px 16px -4px rgba(16, 24, 40, 0.06), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-xl:  0 20px 24px -4px rgba(16, 24, 40, 0.08), 0 8px 8px -4px rgba(16, 24, 40, 0.03);
+
+  /* Focus ring */
+  --shadow-focus: 0 0 0 4px var(--color-primary-ring);
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Transitions
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:    100ms;
+  --duration-normal:  180ms;
+  --duration-slow:    280ms;
+  --duration-slower:  400ms;
+
+  --transition-colors: color var(--duration-normal) var(--ease-default),
+                        background-color var(--duration-normal) var(--ease-default),
+                        border-color var(--duration-normal) var(--ease-default);
+  --transition-shadow: box-shadow var(--duration-normal) var(--ease-default);
+  --transition-transform: transform var(--duration-normal) var(--ease-default);
+  --transition-all: all var(--duration-normal) var(--ease-default);
+
+  /* Backward compat */
+  --transition-fast:   var(--duration-fast) var(--ease-default);
+  --transition-normal: var(--duration-normal) var(--ease-default);
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Breakpoints (reference only — use in @media)
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  /* --bp-sm:  640px;  */
+  /* --bp-md:  768px;  */
+  /* --bp-lg:  1024px; */
+  /* --bp-xl:  1280px; */
+  /* --bp-2xl: 1536px; */
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Z-Index Scale
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  --z-base:     0;
+  --z-dropdown: 1000;
+  --z-sticky:   1020;
+  --z-fixed:    1030;
+  --z-overlay:  1040;
+  --z-modal:    1050;
+  --z-toast:    1060;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Global Reset & Base
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  tab-size: 4;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg-secondary);
+}
+
+/* ─── Focus visible ──────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+}
+
+h1 { font-size: var(--text-4xl); letter-spacing: var(--tracking-tight); }
+h2 { font-size: var(--text-3xl); letter-spacing: var(--tracking-tight); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-md); }
+
+p {
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* ─── Links ──────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* ─── Forms ──────────────────────────────────────────────────────────── */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ─── Media ──────────────────────────────────────────────────────────── */
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}

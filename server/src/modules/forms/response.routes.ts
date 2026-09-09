@@ -6,6 +6,7 @@ import * as formPolicies from "./form.policies";
 import {
   submitResponseSchema,
   getResponseSchema,
+  getMyResponsesSchema,
 } from "./form.validation";
 
 const router = Router();
@@ -26,6 +27,7 @@ router.get(
   "/my-responses",
   authenticate,
   formPolicies.requireStudentOrAbove,
+  validate(getMyResponsesSchema),
   responseController.getMyResponses
 );
 

@@ -80,29 +80,12 @@ export const updateClubByLeader = asyncHandler(
   }
 );
 
-export const getClubByLeader = asyncHandler(
-  async (req: Request, res: Response) => {
-    const club = await clubService.getClubByLeader(
-      req.params.id,
-      req.user!.id
-    );
-    ApiResponse.success(res, club);
-  }
-);
-
 // ─── Student: Browse & Join ──────────────────────────────────────────────────
 
 export const listActiveClubs = asyncHandler(
   async (req: Request, res: Response) => {
     const result = await clubService.listActiveClubs(req.query as any);
     ApiResponse.paginated(res, result.clubs, result.meta);
-  }
-);
-
-export const getPublicClub = asyncHandler(
-  async (req: Request, res: Response) => {
-    const club = await clubService.getClubById(req.params.id);
-    ApiResponse.success(res, club);
   }
 );
 
