@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "../../features/auth";
 import { Avatar } from "../../components/ui";
 import styles from "./AdminSettings.module.css";
@@ -79,6 +79,21 @@ export function AdminSettings() {
     maintenance: false,
     registration: true,
   });
+
+  const [logo, setLogo] = useState<string | null>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Le fichier ne doit pas dépasser 2 Mo");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => setLogo(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const [notifs, setNotifs] = useState({
     email: true,
@@ -198,6 +213,51 @@ export function AdminSettings() {
               <div className={styles.sectionHeader}>
                 <h2 className={styles.sectionTitle}>Général</h2>
                 <p className={styles.sectionDesc}>Configuration globale de la plateforme</p>
+              </div>
+
+              {/* Logo Upload */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Logo de la plateforme</label>
+                <p className={styles.uploadHint}>Apparaît dans la sidebar. PNG, JPG ou SVG. Max 2 Mo.</p>
+                <div className={styles.logoUploadRow}>
+                  <div
+                    className={styles.logoPreview}
+                    onClick={() => logoInputRef.current?.click()}
+                  >
+                    {logo ? (
+                      <img src={logo} alt="Logo" className={styles.logoImg} />
+                    ) : (
+                      <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="8" fill="#ECFDF5" />
+                        <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="#0A5F3A" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M11.5 21v-5h5v5" stroke="#0A5F3A" strokeWidth="1.5" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className={styles.logoUploadActions}>
+                    <button
+                      className={styles.uploadBtn}
+                      onClick={() => logoInputRef.current?.click()}
+                    >
+                      {logo ? "Changer le logo" : "Uploader un logo"}
+                    </button>
+                    {logo && (
+                      <button
+                        className={styles.removeBtn}
+                        onClick={() => setLogo(null)}
+                      >
+                        Supprimer
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    ref={logoInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml"
+                    onChange={handleLogoUpload}
+                    className={styles.hiddenInput}
+                  />
+                </div>
               </div>
 
               <div className={styles.formGrid}>

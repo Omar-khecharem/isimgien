@@ -229,10 +229,6 @@ export function DashboardLayout() {
               <path d="M11.5 21v-5h5v5" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
           </div>
-          <div className={styles.logoText}>
-            <span className={styles.logoBrand}>ClubHub</span>
-            <span className={styles.logoSub}>ISIMGIEN</span>
-          </div>
           <button className={styles.sidebarClose} onClick={closeMobile} aria-label="Fermer">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path d="M4.5 4.5l9 9M13.5 4.5l-9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
