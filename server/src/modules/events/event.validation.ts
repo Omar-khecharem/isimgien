@@ -108,6 +108,17 @@ export const listPublicEventsSchema = {
   }),
 };
 
+// ─── Global: Super Admin list all events ──────────────────────────────────
+
+export const listGlobalEventsSchema = {
+  query: paginationQuery.extend({
+    clubId: mongoId.optional(),
+    status: z.nativeEnum(EventStatus).optional(),
+    dateFrom: z.coerce.date().optional(),
+    dateTo: z.coerce.date().optional(),
+  }),
+};
+
 // ─── Delete event ────────────────────────────────────────────────────────────
 
 export const deleteEventSchema = {
@@ -138,3 +149,4 @@ export type TransitionEventStatusInput = z.infer<
 >;
 export type ListClubEventsQuery = z.infer<typeof listClubEventsSchema.query>;
 export type ListPublicEventsQuery = z.infer<typeof listPublicEventsSchema.query>;
+export type ListGlobalEventsQuery = z.infer<typeof listGlobalEventsSchema.query>;

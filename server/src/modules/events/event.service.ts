@@ -8,6 +8,7 @@ import type {
   TransitionEventStatusInput,
   ListClubEventsQuery,
   ListPublicEventsQuery,
+  ListGlobalEventsQuery,
 } from "./event.validation";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -241,6 +242,46 @@ export async function listPublicEvents(query: ListPublicEventsQuery) {
     filter.date = {};
     if (dateFrom) (filter.date as Record<string, Date>).$gte = dateFrom;
     if (dateTo) (filter.date as Record<string, Date>).$lte = dateTo;
+  }
+
+  const sortObj = buildSort(sort || "-date");
+  const { events, total } = await eventRepo.findEventsPaginated(
+    filter,
+    sortObj,
+    skip,
+    limit
+  );
+
+  return {
+    events,
+    meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  };
+}
+
+// ─── Global: Super Admin ────────────────────────────────────────────────────
+
+export async function listGlobalEvents(query: ListGlobalEventsQuery) {
+  const { page, limit, search, sort, clubId, status, dateFrom, dateTo } = query;
+  const skip = (page - 1) * limit;
+
+  const filter: Record<string, unknown> = {};
+  if (clubId) {
+    filter.club = clubId;
+  }
+  if (status) {
+    filter.status = status;
+  }
+  if (dateFrom || dateTo) {
+    filter.date = {};
+    if (dateFrom) (filter.date as Record<string, Date>).$gte = dateFrom;
+    if (dateTo) (filter.date as Record<string, Date>).$lte = dateTo;
+  }
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+      { location: { $regex: search, $options: "i" } },
+    ];
   }
 
   const sortObj = buildSort(sort || "-date");

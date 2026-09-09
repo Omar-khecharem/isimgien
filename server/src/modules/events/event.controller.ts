@@ -81,6 +81,15 @@ export const listPublicEvents = asyncHandler(
   }
 );
 
+// ─── Super Admin: Global events listing ─────────────────────────────────────
+
+export const listGlobalEvents = asyncHandler(
+  async (req: Request, res: Response) => {
+    const result = await eventService.listGlobalEvents(req.query as any);
+    ApiResponse.paginated(res, result.events, result.meta);
+  }
+);
+
 export const getPublicEvent = asyncHandler(
   async (req: Request, res: Response) => {
     const event = await eventService.getPublicEventById(req.params.id);

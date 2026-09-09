@@ -20,6 +20,7 @@ import { AttendanceSessionPage } from "../features/attendance";
 import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
 import { AdminSettings } from "../pages/settings/AdminSettings";
 import { AdminUsers } from "../pages/admin/AdminUsers";
+import { AdminEvents } from "../pages/admin/AdminEvents";
 
 export const router = createBrowserRouter([
   {
@@ -146,7 +147,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "events",
-            element: <PlaceholderPage title="Événements" />,
+            element: <AdminEvents />,
           },
           {
             path: "attendance",

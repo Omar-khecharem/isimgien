@@ -13,7 +13,7 @@ export enum EventStatus {
 
 export interface Event {
   _id: string;
-  club: string;
+  club: string | { _id: string; name: string; slug: string; logo?: string };
   title: string;
   slug: string;
   description: string;
@@ -65,5 +65,10 @@ export const eventsService = {
   // Public
   async listPublic(params?: PaginationParams) {
     return apiClient.get<PaginatedResponse<Event>>("/events", params as any);
+  },
+
+  // Super Admin: list all events across all clubs
+  async listAll(params?: PaginationParams & { status?: EventStatus; clubId?: string }) {
+    return apiClient.get<PaginatedResponse<Event>>("/admin/events", params as any);
   },
 };
