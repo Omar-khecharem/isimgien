@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth";
+import { useLogo } from "../features/logo";
 import { Avatar } from "../components/ui";
 import { ROUTES } from "../routes/paths";
 import { Role } from "../types";
@@ -165,6 +166,7 @@ const BOTTOM_ITEMS: NavItem[] = [
 
 export function DashboardLayout() {
   const { user, logout, hasRole } = useAuth();
+  const { logo } = useLogo();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
@@ -223,11 +225,15 @@ export function DashboardLayout() {
         {/* Logo — always visible */}
         <div className={styles.sidebarLogo}>
           <div className={styles.logoMark}>
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <rect width="28" height="28" rx="8" fill="#0A5F3A" />
-              <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
-              <path d="M11.5 21v-5h5v5" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
-            </svg>
+            {logo ? (
+              <img src={logo} alt="Logo" className={styles.logoImg} />
+            ) : (
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="8" fill="#0A5F3A" />
+                <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+                <path d="M11.5 21v-5h5v5" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+            )}
           </div>
           <button className={styles.sidebarClose} onClick={closeMobile} aria-label="Fermer">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">

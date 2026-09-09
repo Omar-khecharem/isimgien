@@ -59,6 +59,13 @@
   flex-shrink: 0;
 }
 
+.logoImg {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
 .sidebarClose {
   display: none;
   align-items: center;

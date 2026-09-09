@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useAuth } from "../../features/auth";
+import { useLogo } from "../../features/logo";
 import { Avatar } from "../../components/ui";
 import styles from "./AdminSettings.module.css";
 
@@ -63,9 +64,11 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 
 export function AdminSettings() {
   const { user } = useAuth();
+  const { logo, setLogo, saveLogo, saving: logoSaving, saved: logoSaved } = useLogo();
   const [activeTab, setActiveTab] = useState<Tab>("profile");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const logoInputRef = useRef<HTMLInputElement>(null);
 
   const [profile, setProfile] = useState({
     firstName: user?.firstName || "",
@@ -80,9 +83,6 @@ export function AdminSettings() {
     maintenance: false,
     registration: true,
   });
-
-  const [logo, setLogo] = useState<string | null>(null);
-  const logoInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -111,7 +111,10 @@ export function AdminSettings() {
     setSaving(true);
     setSaved(false);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      if (activeTab === "general") {
+        await saveLogo();
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } finally {
