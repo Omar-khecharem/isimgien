@@ -7,6 +7,8 @@ import { ROUTES } from "../routes/paths";
 import { Role } from "../types";
 import styles from "./DashboardLayout.module.css";
 
+const PROFILE_PHOTO_KEY = "clubhub_profile_photo";
+
 interface NavItem {
   to: string;
   label: string;
@@ -171,6 +173,30 @@ export function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(PROFILE_PHOTO_KEY);
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    const handleStorage = () => {
+      try {
+        setProfilePhoto(localStorage.getItem(PROFILE_PHOTO_KEY));
+      } catch {
+        setProfilePhoto(null);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    const interval = setInterval(handleStorage, 1000);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      clearInterval(interval);
+    };
+  }, []);
+
   const toggleMobile = useCallback(() => setMobileOpen((p) => !p), []);
   const toggleCollapse = useCallback(() => setCollapsed((p) => !p), []);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
@@ -264,6 +290,7 @@ export function DashboardLayout() {
         {/* User */}
         <div className={styles.sidebarUser}>
           <Avatar
+            src={profilePhoto}
             name={user ? `${user.firstName} ${user.lastName}` : ""}
             size="sm"
           />
@@ -336,7 +363,11 @@ export function DashboardLayout() {
             <div className={styles.topbarDivider} />
 
             <div className={styles.topbarProfile}>
-              <Avatar name={user ? `${user.firstName} ${user.lastName}` : ""} size="xs" />
+              <Avatar
+                src={profilePhoto}
+                name={user ? `${user.firstName} ${user.lastName}` : ""}
+                size="xs"
+              />
               <div className={styles.topbarProfileInfo}>
                 <span className={styles.topbarProfileName}>{user?.firstName} {user?.lastName}</span>
                 <span className={styles.topbarProfileEmail}>{user?.email}</span>
