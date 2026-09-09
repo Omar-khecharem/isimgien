@@ -45,11 +45,12 @@
 .sidebarLogo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--space-5) var(--space-5);
+  justify-content: center;
+  padding: 20px 24px;
   border-bottom: 1px solid #F2F4F7;
-  min-height: 64px;
+  min-height: 80px;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .logoMark {
@@ -57,12 +58,13 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .logoImg {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 160px;
+  height: 50px;
+  border-radius: 12px;
   object-fit: contain;
 }
 
@@ -96,7 +98,13 @@
 
 .sidebar--collapsed .sidebarLogo {
   justify-content: center;
-  padding: var(--space-5) var(--space-3);
+  padding: 16px 8px;
+  min-height: 64px;
+}
+
+.sidebar--collapsed .logoImg {
+  width: 40px;
+  height: 40px;
 }
 
 .sidebar--collapsed .navGroupLabel {
@@ -680,6 +688,16 @@
 
   .sidebarClose {
     display: flex;
+  }
+
+  .sidebarLogo {
+    padding: 16px 20px;
+    min-height: 72px;
+  }
+
+  .logoImg {
+    width: 140px;
+    height: 44px;
   }
 
   .overlay {
