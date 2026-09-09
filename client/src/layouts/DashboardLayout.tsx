@@ -287,10 +287,16 @@ export function DashboardLayout() {
       <div className={styles.content}>
         <header className={styles.topbar}>
           <div className={styles.topbarLeft}>
-            <button className={styles.burger} onClick={toggleMobile} aria-label="Menu">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
+            <button
+              className={`${styles.burger} ${mobileOpen ? styles["burger--open"] : ""}`}
+              onClick={toggleMobile}
+              aria-label="Menu"
+            >
+              <span className={styles.burgerLines}>
+                <span className={styles.burgerLine} />
+                <span className={styles.burgerLine} />
+                <span className={styles.burgerLine} />
+              </span>
             </button>
             <button className={styles.collapseToggle} onClick={toggleCollapse} aria-label={collapsed ? "Développer le menu" : "Réduire le menu"} title={collapsed ? "Développer" : "Réduire"}>
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ transform: collapsed ? "rotate(180deg)" : "none", transition: "transform 0.2s ease" }}>

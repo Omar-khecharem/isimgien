@@ -440,31 +440,62 @@
   gap: var(--space-1);
 }
 
+/* ─── Burger (Mobile) ─────────────────────────────────────────────────── */
+
 .burger {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid #F2F4F7;
-  background: #fff;
-  color: #374151;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.burger:hover {
-  background: #F7F8F9;
-  border-color: #E4E7EC;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+.burgerLines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 16px;
+  gap: 5px;
+  position: relative;
 }
 
-.burger:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+.burgerLine {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #0A5F3A;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.burger:hover .burgerLine {
+  background: #047857;
+}
+
+/* Animated X when open */
+.burger--open .burgerLine:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger--open .burgerLine:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.burger--open .burgerLine:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.burger:hover .burger--open .burgerLine {
+  background: #DC2626;
 }
 
 .collapseToggle {
