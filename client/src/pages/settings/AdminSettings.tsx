@@ -89,7 +89,7 @@ export function AdminSettings() {
   });
 
   const [general, setGeneral] = useState({
-    platformName: "ISIMGIEN ClubHub",
+    platformName: "ISIMGIEN",
     platformDesc: "Plateforme de gestion des clubs universitaires",
     maintenance: false,
     registration: true,

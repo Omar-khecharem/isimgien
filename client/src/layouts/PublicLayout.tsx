@@ -11,7 +11,7 @@ export function PublicLayout() {
     <div className={styles.layout}>
       <header className={styles.header}>
         <Link to={ROUTES.HOME} className={styles.logo}>
-          <span className={styles.logoMark}>ISIMG</span>
+          <span className={styles.logoMark}>ISIMGIEN</span>
           <span className={styles.logoText}>ClubHub</span>
         </Link>
         <nav className={styles.nav}>

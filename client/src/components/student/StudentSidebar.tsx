@@ -104,8 +104,7 @@ export function StudentSidebar() {
       {/* Logo */}
       <div className={styles.logoSection}>
         <div className={styles.logo}>
-          <span className={styles.logoMark}>ISIMG</span>
-          <span className={styles.logoText}>ClubHub</span>
+          <span className={styles.logoMark}>ISIMGIEN</span>
         </div>
       </div>
 
@@ -174,7 +173,7 @@ export function StudentSidebar() {
 
       {/* Bottom Card */}
       <div className={styles.bottomCard}>
-        <p className={styles.bottomCardTitle}>Accès rapide ISIMG</p>
+        <p className={styles.bottomCardTitle}>Accès rapide ISIMGIEN</p>
         <p className={styles.bottomCardText}>
           Consultez vos cotisations et vos attestations de présence.
         </p>

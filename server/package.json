@@ -1,7 +1,7 @@
 {
-  "name": "isimg-clubhub-server",
+  "name": "isimgien-server",
   "version": "1.0.0",
-  "description": "ISIMG ClubHub backend API server",
+  "description": "ISIMGIEN backend API server",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",

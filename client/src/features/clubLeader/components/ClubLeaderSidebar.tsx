@@ -72,8 +72,7 @@ export function ClubLeaderSidebar({ isOpen, onClose }: ClubLeaderSidebarProps) {
         {/* Logo + close */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-[15px] font-bold text-brand">ISIMG</span>
-            <span className="text-[15px] font-semibold text-gray-900">ClubHub</span>
+            <span className="text-[15px] font-bold text-brand">ISIMGIEN</span>
           </div>
           <button
             onClick={onClose}
@@ -161,7 +160,7 @@ export function ClubLeaderSidebar({ isOpen, onClose }: ClubLeaderSidebarProps) {
         <div className="mx-3 mb-3 hidden sm:block">
           <div className="bg-brand rounded-2xl p-4">
             <p className="text-xs font-semibold text-white mb-1">
-              Accès rapide ISIMG
+              Accès rapide ISIMGIEN
             </p>
             <p className="text-[11px] text-brand-200 mb-3 leading-relaxed">
               Consultez vos cotisations et vos attestations de présence.

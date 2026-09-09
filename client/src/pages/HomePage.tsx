@@ -8,9 +8,9 @@ export function HomePage() {
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
-        <div className={styles.badge}>Club Management Platform</div>
+        <div className={styles.badge}>Plateforme de gestion des clubs</div>
         <h1 className={styles.title}>
-          ISIMG <span className={styles.titleAccent}>ClubHub</span>
+          ISIMGIEN
         </h1>
         <p className={styles.subtitle}>
           Manage your club activities, trainings, events, and memberships — all in one place.

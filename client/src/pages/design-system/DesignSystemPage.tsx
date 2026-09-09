@@ -106,7 +106,7 @@ export function DesignSystemPage() {
     <Container size="xl">
       <PageHeader
         title="Design System"
-        subtitle="Visual foundation and component showcase for ISIMG ClubHub"
+        subtitle="Fondation visuelle et vitrine de composants — ISIMGIEN"
       />
 
       <Tabs tabs={tabs} activeKey={activeTab} onChange={setActiveTab} />

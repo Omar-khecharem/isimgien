@@ -6,7 +6,7 @@ export function AuthLayout() {
     <div className={styles.layout}>
       <div className={styles.card}>
         <div className={styles.logo}>
-          <div className={styles.logoMark}>ISIMG</div>
+          <div className={styles.logoMark}>ISIMGIEN</div>
           <div className={styles.logoText}>ClubHub</div>
         </div>
         <Outlet />
