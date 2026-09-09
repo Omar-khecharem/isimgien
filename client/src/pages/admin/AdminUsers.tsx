@@ -168,61 +168,6 @@ export function AdminUsers() {
         </div>
       </div>
 
-      {/* Admin Section */}
-      {admins.length > 0 && (
-        <div className={styles.adminSection}>
-          <div className={styles.adminHeader}>
-            <div className={styles.adminHeaderLeft}>
-              <div className={styles.adminIcon}>
-                <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
-                  <path d="M11 2L5 5v4.5c0 4.5 2.6 8.5 6 9.5 3.4-1 6-5 6-9.5V5L11 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div>
-                <h2 className={styles.adminTitle}>Super Admin</h2>
-                <p className={styles.adminSubtitle}>Compte administrateur principal</p>
-              </div>
-            </div>
-          </div>
-          <div className={styles.adminCards}>
-            {admins.map((admin: User) => {
-              const fullName = `${admin.firstName} ${admin.lastName}`;
-              const avatarColor = getAvatarColor(fullName);
-              return (
-                <div key={admin._id} className={styles.adminCard}>
-                  <div className={styles.adminCardLeft}>
-                    <div
-                      className={styles.adminAvatar}
-                      style={{ background: `${avatarColor}12`, color: avatarColor, borderColor: `${avatarColor}30` }}
-                    >
-                      {admin.avatar ? (
-                        <img src={admin.avatar} alt="" className={styles.adminAvatarImg} />
-                      ) : (
-                        <span>{getInitials(admin.firstName, admin.lastName)}</span>
-                      )}
-                    </div>
-                    <div className={styles.adminInfo}>
-                      <div className={styles.adminNameRow}>
-                        <span className={styles.adminName}>{fullName}</span>
-                        <span className={styles.adminBadge}>Super Admin</span>
-                      </div>
-                      <span className={styles.adminEmail}>{admin.email}</span>
-                      <span className={styles.adminDate}>Inscrit le {formatDate(admin.createdAt)}</span>
-                    </div>
-                  </div>
-                  <div className={styles.adminCardRight}>
-                    <div className={styles.adminStatus}>
-                      <span className={`${styles.adminStatusDot} ${admin.isActive ? styles["adminStatusDot--active"] : ""}`} />
-                      <span className={styles.adminStatusText}>{admin.isActive ? "En ligne" : "Hors ligne"}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       {/* Filters */}
       <div className={styles.filters}>
         <div className={styles.searchWrap}>
