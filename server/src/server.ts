@@ -8,13 +8,13 @@ import { seedDemoAccounts } from "./seeds/demoAccounts.seed";
 async function fixIndexes() {
   try {
     const collection = mongoose.connection.collection("users");
-    const indexes = await collection.indexes();
-    const studentIdIndex = indexes.find((i: any) => i.key?.studentId === 1);
-    if (studentIdIndex && !studentIdIndex.sparse) {
-      console.log("[DB] Dropping non-sparse studentId index to recreate with sparse...");
-      await collection.dropIndex("studentId_1");
-      console.log("[DB] Index dropped. It will be recreated on next operation.");
-    }
+    await collection.updateMany(
+      { studentId: null },
+      { $unset: { studentId: "" } }
+    );
+    await collection.dropIndex("studentId_1").catch(() => {});
+    await collection.createIndex({ studentId: 1 }, { unique: true, sparse: true });
+    console.log("[DB] studentId index is sparse+unique.");
   } catch {
     // Index may not exist yet, that's fine
   }

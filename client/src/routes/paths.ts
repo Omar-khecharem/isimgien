@@ -19,12 +19,21 @@ export const ROUTES = {
   // Super Admin
   ADMIN_CLUBS: "/admin/clubs",
   ADMIN_USERS: "/admin/users",
+  ADMIN_EVENTS: "/admin/events",
   ADMIN_GLOBAL_ATTENDANCE: "/admin/attendance",
   ADMIN_GLOBAL_FINANCE: "/admin/finance",
   ADMIN_GLOBAL_MEMBERSHIPS: "/admin/memberships",
+  ADMIN_FORMS: "/admin/forms",
+  ADMIN_SETTINGS: "/admin/settings",
+  ADMIN_NOTIFICATIONS: "/admin/notifications",
+  ADMIN_HELP: "/admin/help",
 
   // Student
   MY_REGISTRATIONS: "/my/registrations",
   MY_ATTENDANCE: "/my/attendance",
   MY_MEMBERSHIPS: "/my/memberships",
+
+  // General
+  NOTIFICATIONS: "/notifications",
+  HELP: "/help",
 } as const;

@@ -1,27 +1,35 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   ISIMG ClubHub — Design Tokens
+   ISIMG ClubHub — Design Tokens (Donezo Style)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Color: Primary (Forest Green) ─────────────────────────────────── */
+  /* ─── Color: Primary (Deep Emerald — Donezo Accent) ─────────────────── */
   --color-primary-50:  #ecfdf3;
   --color-primary-100: #d1fae5;
-  --color-primary-200: #a7f3d0;
+  --color-primary-200: #C7E8D6;
   --color-primary-300: #6ee7b7;
-  --color-primary-400: #34d399;
+  --color-primary-400: #3D9970;
   --color-primary-500: #10b981;
   --color-primary-600: #059669;
-  --color-primary-700: #047857;
-  --color-primary-800: #065f46;
+  --color-primary-700: #0A5F3A;
+  --color-primary-800: #0A5F3A;
   --color-primary-900: #064e3b;
   --color-primary-950: #022c22;
 
   /* Semantic aliases */
-  --color-primary:       var(--color-primary-700);
-  --color-primary-hover: var(--color-primary-800);
-  --color-primary-active:var(--color-primary-900);
-  --color-primary-subtle:var(--color-primary-50);
-  --color-primary-ring:  rgba(5, 150, 105, 0.2);
+  --color-primary:        #0A5F3A;
+  --color-primary-hover:  #084d2f;
+  --color-primary-active: #064e3b;
+  --color-primary-subtle: #ecfdf3;
+  --color-primary-ring:   rgba(10, 95, 58, 0.18);
+
+  /* ─── Color: Donezo Surface ─────────────────────────────────────────── */
+  --color-surface:      #F7F8F9;
+  --color-card:         #FFFFFF;
+  --color-card-border:  #F2F4F7;
+  --color-dark-card:    #1A1A1A;
+  --color-mint:         #C7E8D6;
+  --color-mint-text:    #0A5F3A;
 
   /* ─── Color: Neutrals ───────────────────────────────────────────────── */
   --color-gray-25:  #fcfcfd;
@@ -75,25 +83,25 @@
 
   /* ─── Color: Background ─────────────────────────────────────────────── */
   --color-bg:             #ffffff;
-  --color-bg-secondary:   var(--color-gray-25);
-  --color-bg-tertiary:    var(--color-gray-50);
-  --color-bg-sunken:      var(--color-gray-50);
+  --color-bg-secondary:   #F7F8F9;
+  --color-bg-tertiary:    #F7F8F9;
+  --color-bg-sunken:      #F7F8F9;
   --color-bg-elevated:    #ffffff;
-  --color-bg-overlay:     rgba(16, 24, 40, 0.55);
+  --color-bg-overlay:     rgba(0, 0, 0, 0.4);
 
   /* ─── Color: Text ───────────────────────────────────────────────────── */
-  --color-text:             var(--color-gray-900);
-  --color-text-secondary:   var(--color-gray-600);
-  --color-text-tertiary:    var(--color-gray-400);
-  --color-text-placeholder: var(--color-gray-400);
+  --color-text:             #000000;
+  --color-text-secondary:   #71717A;
+  --color-text-tertiary:    #A1A1AA;
+  --color-text-placeholder: #A1A1AA;
   --color-text-inverse:     #ffffff;
-  --color-text-brand:       var(--color-primary-700);
+  --color-text-brand:       #0A5F3A;
 
   /* ─── Color: Border ─────────────────────────────────────────────────── */
-  --color-border:        var(--color-gray-200);
-  --color-border-subtle: var(--color-gray-100);
-  --color-border-strong: var(--color-gray-300);
-  --color-border-focus:  var(--color-primary);
+  --color-border:        #F2F4F7;
+  --color-border-subtle: #F7F8F9;
+  --color-border-strong: #E4E7EC;
+  --color-border-focus:  #0A5F3A;
 
   /* ═══════════════════════════════════════════════════════════════════════
      Typography
@@ -180,11 +188,11 @@
      Shadows
      ═══════════════════════════════════════════════════════════════════════ */
 
-  --shadow-xs:  0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow-sm:  0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
-  --shadow-md:  0 4px 8px -2px rgba(16, 24, 40, 0.06), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
-  --shadow-lg:  0 12px 16px -4px rgba(16, 24, 40, 0.06), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
-  --shadow-xl:  0 20px 24px -4px rgba(16, 24, 40, 0.08), 0 8px 8px -4px rgba(16, 24, 40, 0.03);
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md:  0 4px 12px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg:  0 12px 20px -4px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-xl:  0 20px 28px -4px rgba(0, 0, 0, 0.08), 0 8px 8px -4px rgba(0, 0, 0, 0.03);
 
   /* Focus ring */
   --shadow-focus: 0 0 0 4px var(--color-primary-ring);
@@ -262,7 +270,8 @@ body {
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   color: var(--color-text);
-  background-color: var(--color-bg-secondary);
+  background-color: #F7F8F9;
+  margin: 0;
 }
 
 /* ─── Focus visible ──────────────────────────────────────────────────── */

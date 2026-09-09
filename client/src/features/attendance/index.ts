@@ -1,3 +1,10 @@
 export { attendanceService } from "./attendanceService";
 export type { AttendanceRecord } from "./attendanceService";
 export { AttendanceStatus } from "./attendanceService";
+export { useAttendanceSession } from "./useAttendanceSession";
+export { AttendanceSessionPage } from "./components/AttendanceSessionPage";
+export { AttendanceStatusBadge } from "./components/AttendanceStatusBadge";
+export { AttendanceSummary } from "./components/AttendanceSummary";
+export { ParticipantAttendanceTable } from "./components/ParticipantAttendanceTable";
+export { AttendanceActions } from "./components/AttendanceActions";
+export { SessionTimer } from "./components/SessionTimer";

@@ -7,6 +7,7 @@ import { StudentLayout } from "../components/student";
 import { RequireAuth, RequireRole, GuestOnly } from "./guards";
 import { ROUTES } from "./paths";
 import { Role } from "../types";
+import { useAuth } from "../features/auth";
 
 // Pages
 import { HomePage } from "../pages/HomePage";
@@ -14,6 +15,11 @@ import { LoginPage } from "../pages/auth/LoginPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { DesignSystemPage } from "../pages/design-system/DesignSystemPage";
 import { StudentDashboard } from "../components/student";
+import { ClubLeaderDashboard } from "../features/clubLeader";
+import { AttendanceSessionPage } from "../features/attendance";
+import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
+import { AdminSettings } from "../pages/settings/AdminSettings";
+import { AdminUsers } from "../pages/admin/AdminUsers";
 
 export const router = createBrowserRouter([
   {
@@ -102,7 +108,20 @@ export const router = createBrowserRouter([
           </RequireAuth>
         ),
         children: [
-          { index: true, element: <DashboardPage /> },
+          { index: true, element: <RoleDashboard /> },
+        ],
+      },
+
+      // ─── Attendance Session (club leader) ───────────────────
+      {
+        path: ROUTES.ATTENDANCE,
+        element: (
+          <RequireAuth>
+            <DashboardLayout />
+          </RequireAuth>
+        ),
+        children: [
+          { index: true, element: <AttendanceSessionPage /> },
         ],
       },
 
@@ -123,7 +142,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "users",
-            element: <PlaceholderPage title="Users" />,
+            element: <AdminUsers />,
+          },
+          {
+            path: "events",
+            element: <PlaceholderPage title="Événements" />,
           },
           {
             path: "attendance",
@@ -136,6 +159,22 @@ export const router = createBrowserRouter([
           {
             path: "memberships",
             element: <PlaceholderPage title="Global Memberships" />,
+          },
+          {
+            path: "forms",
+            element: <PlaceholderPage title="Formulaires & Inscriptions" />,
+          },
+          {
+            path: "settings",
+            element: <AdminSettings />,
+          },
+          {
+            path: "notifications",
+            element: <PlaceholderPage title="Notifications" />,
+          },
+          {
+            path: "help",
+            element: <PlaceholderPage title="Aide & Support" />,
           },
         ],
       },
@@ -183,4 +222,16 @@ function PlaceholderPage({ title }: { title: string }) {
       </p>
     </div>
   );
+}
+
+// Renders the appropriate dashboard based on user role
+function RoleDashboard() {
+  const { user } = useAuth();
+  if (user?.role === Role.SUPER_ADMIN) {
+    return <SuperAdminDashboard />;
+  }
+  if (user?.role === Role.CLUB_LEADER) {
+    return <ClubLeaderDashboard />;
+  }
+  return <DashboardPage />;
 }
