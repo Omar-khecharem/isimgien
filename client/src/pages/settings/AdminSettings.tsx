@@ -64,6 +64,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 export function AdminSettings() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>("profile");
+  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const [profile, setProfile] = useState({
@@ -106,9 +107,16 @@ export function AdminSettings() {
     twoFactor: false,
   });
 
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -202,7 +210,27 @@ export function AdminSettings() {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.saveBtn} onClick={handleSave}>Enregistrer</button>
+                <button
+                  className={styles.saveBtn}
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <span className={styles.saveBtnInner}>
+                      <span className={styles.spinner} />
+                      Enregistrement...
+                    </span>
+                  ) : saved ? (
+                    <span className={styles.saveBtnInner}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Enregistré
+                    </span>
+                  ) : (
+                    "Enregistrer"
+                  )}
+                </button>
               </div>
             </div>
           )}
@@ -298,7 +326,27 @@ export function AdminSettings() {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.saveBtn} onClick={handleSave}>Enregistrer</button>
+                <button
+                  className={styles.saveBtn}
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <span className={styles.saveBtnInner}>
+                      <span className={styles.spinner} />
+                      Enregistrement...
+                    </span>
+                  ) : saved ? (
+                    <span className={styles.saveBtnInner}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Enregistré
+                    </span>
+                  ) : (
+                    "Enregistrer"
+                  )}
+                </button>
               </div>
             </div>
           )}
@@ -343,7 +391,27 @@ export function AdminSettings() {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.saveBtn} onClick={handleSave}>Enregistrer</button>
+                <button
+                  className={styles.saveBtn}
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <span className={styles.saveBtnInner}>
+                      <span className={styles.spinner} />
+                      Enregistrement...
+                    </span>
+                  ) : saved ? (
+                    <span className={styles.saveBtnInner}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Enregistré
+                    </span>
+                  ) : (
+                    "Enregistrer"
+                  )}
+                </button>
               </div>
             </div>
           )}
