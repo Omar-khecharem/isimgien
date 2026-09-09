@@ -393,79 +393,78 @@
   color: #9CA3AF;
 }
 
-/* ─── Status Badge ─── */
-.statusBadge {
-  display: inline-flex;
+/* ─── Status Toggle Switch ─── */
+.statusAction {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
 }
 
-.statusDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.toggleTrack {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #D1D5DB;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
-.status--active {
-  background: #ECFDF5;
-  color: #047857;
+.toggle:hover:not(:disabled) .toggleTrack {
+  background: #9CA3AF;
 }
 
-.status--active .statusDot {
+.toggle--active .toggleTrack {
   background: #059669;
-  box-shadow: 0 0 6px rgba(5, 150, 105, 0.4);
-  animation: pulse 2s infinite;
+  box-shadow: 0 0 12px rgba(5, 150, 105, 0.3);
 }
 
-.status--inactive {
-  background: #F3F4F6;
-  color: #6B7280;
+.toggle--active:hover:not(:disabled) .toggleTrack {
+  background: #047857;
+  box-shadow: 0 0 16px rgba(5, 150, 105, 0.4);
 }
 
-.status--inactive .statusDot {
-  background: #D1D5DB;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* ─── Action Button ─── */
-.actionBtn {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  border: 1.5px solid #E5E7EB;
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle--active .toggleThumb {
+  transform: translateX(20px);
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.3);
+}
+
+.toggleLabel {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
   color: #6B7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.15s;
+  transition: color 0.2s;
 }
 
-.actionBtn:hover {
-  border-color: #FCA5A5;
-  background: #FEF2F2;
-  color: #DC2626;
-}
-
-.actionBtn--activate {
-  border-color: #A7F3D0;
-  color: #059669;
-}
-
-.actionBtn--activate:hover {
-  border-color: #6EE7B7;
-  background: #ECFDF5;
+.toggle--active .toggleLabel {
   color: #047857;
 }
 
@@ -657,8 +656,8 @@
     gap: 12px;
   }
 
-  .table th:nth-child(4),
-  .table td:nth-child(4) {
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
     display: none;
   }
 

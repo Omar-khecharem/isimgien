@@ -246,7 +246,6 @@ export function AdminUsers() {
                     <th>Rôle</th>
                     <th>Inscrit le</th>
                     <th>Statut</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -292,28 +291,23 @@ export function AdminUsers() {
                           </div>
                         </td>
                         <td>
-                          <span className={`${styles.statusBadge} ${user.isActive ? styles["status--active"] : styles["status--inactive"]}`}>
-                            <span className={styles.statusDot} />
-                            {user.isActive ? "Actif" : "Inactif"}
-                          </span>
-                        </td>
-                        <td>
-                          <button
-                            className={`${styles.actionBtn} ${!user.isActive ? styles["actionBtn--activate"] : ""}`}
-                            onClick={() => toggleMutation.mutate(user._id)}
-                            disabled={toggleMutation.isPending}
-                            title={user.isActive ? "Désactiver" : "Activer"}
-                          >
-                            {user.isActive ? (
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                              </svg>
-                            ) : (
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 4v8M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                              </svg>
-                            )}
-                          </button>
+                          <div className={styles.statusAction}>
+                            <button
+                              className={`${styles.toggle} ${user.isActive ? styles["toggle--active"] : ""}`}
+                              onClick={() => toggleMutation.mutate(user._id)}
+                              disabled={toggleMutation.isPending}
+                              role="switch"
+                              aria-checked={user.isActive}
+                              title={user.isActive ? "Désactiver le compte" : "Activer le compte"}
+                            >
+                              <span className={styles.toggleTrack}>
+                                <span className={styles.toggleThumb} />
+                              </span>
+                              <span className={styles.toggleLabel}>
+                                {user.isActive ? "Actif" : "Inactif"}
+                              </span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
