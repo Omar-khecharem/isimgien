@@ -123,6 +123,173 @@
   color: #6B7280;
 }
 
+/* ─── Admin Section ─── */
+.adminSection {
+  margin-bottom: 24px;
+}
+
+.adminHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.adminHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adminIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #B45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0F1419;
+}
+
+.adminSubtitle {
+  font-size: 13px;
+  color: #6B7280;
+  margin-top: 1px;
+}
+
+.adminCards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.adminCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+  border: 1.5px solid #FDE68A;
+  border-radius: 14px;
+  transition: all 0.2s;
+}
+
+.adminCard:hover {
+  border-color: #FCD34D;
+  box-shadow: 0 4px 16px rgba(180, 83, 9, 0.08);
+}
+
+.adminCardLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.adminAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  border: 2px solid;
+  background: #fff;
+}
+
+.adminAvatarImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.adminInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.adminNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adminName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.adminBadge {
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400E;
+  background: #FDE68A;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.adminEmail {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.adminDate {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.adminCardRight {
+  display: flex;
+  align-items: center;
+}
+
+.adminStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adminStatusDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #D1D5DB;
+}
+
+.adminStatusDot--active {
+  background: #059669;
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.5);
+  animation: adminPulse 2s infinite;
+}
+
+.adminStatusText {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.adminStatusDot--active + .adminStatusText {
+  color: #047857;
+}
+
+@keyframes adminPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 /* ─── Filters ─── */
 .filters {
   display: flex;
@@ -620,6 +787,24 @@
 
   .statCardValue {
     font-size: 22px;
+  }
+
+  .adminCard {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .adminCardRight {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .adminAvatar {
+    width: 42px;
+    height: 42px;
+    font-size: 13px;
   }
 
   .filters {
