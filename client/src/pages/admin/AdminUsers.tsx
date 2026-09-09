@@ -13,29 +13,8 @@ const ROLE_LABELS: Record<Role, string> = {
 const ROLE_COLORS: Record<Role, string> = {
   [Role.SUPER_ADMIN]: "rose",
   [Role.CLUB_LEADER]: "amber",
-  [Role.STUDENT]: "slate",
+  [Role.STUDENT]: "emerald",
 } as const;
-
-const ROLE_ICONS: Record<Role, React.ReactNode> = {
-  [Role.SUPER_ADMIN]: (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <path d="M8 1L2 4v4c0 4 2.7 7.5 6 8.5 3.3-1 6-4.5 6-8.5V4L8 1z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-      <path d="M6 8l1.5 1.5L10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  [Role.CLUB_LEADER]: (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 14c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-  [Role.STUDENT]: (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 14c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  ),
-};
 
 function getInitials(firstName: string, lastName: string) {
   return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -61,7 +40,7 @@ function timeAgo(dateStr: string) {
   return formatDate(dateStr);
 }
 
-const AVATAR_COLORS = ["#0A5F3A", "#3B82F6", "#8B5CF6", "#D97706", "#DC2626", "#0891B2"];
+const AVATAR_COLORS = ["#059669", "#3B82F6", "#7C3AED", "#D97706", "#DC2626", "#0891B2"];
 
 function getAvatarColor(name: string) {
   let hash = 0;
@@ -107,12 +86,13 @@ export function AdminUsers() {
   const meta = data?.meta;
   const activeCount = users.filter((u: User) => u.isActive).length;
   const inactiveCount = users.length - activeCount;
+  const adminCount = users.filter((u: User) => u.role === Role.SUPER_ADMIN).length;
 
   return (
     <div className={styles.page}>
       {/* Header */}
       <div className={styles.header}>
-        <div>
+        <div className={styles.headerLeft}>
           <h1 className={styles.title}>Membres</h1>
           <p className={styles.subtitle}>Gérez les utilisateurs et leurs rôles</p>
         </div>
@@ -121,56 +101,68 @@ export function AdminUsers() {
       {/* Stat Cards */}
       <div className={styles.statCards}>
         <div className={`${styles.statCard} ${styles["statCard--total"]}`}>
-          <div className={styles.statCardIcon}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="7" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M3 17c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <circle cx="13.5" cy="7" r="2.2" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M13.5 10c2 0 3.5 1.5 3.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className={styles.statCardContent}>
-            <span className={styles.statCardValue}>{meta?.total || 0}</span>
-            <span className={styles.statCardLabel}>Total membres</span>
+          <div className={styles.statCardBg} />
+          <div className={styles.statCardInner}>
+            <div className={styles.statCardIcon}>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="9" cy="7" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M4 20c0-3 2.5-5.5 5-5.5s5 2.5 5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="16" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M16 12c2 0 3.5 1.5 3.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className={styles.statCardContent}>
+              <span className={styles.statCardValue}>{meta?.total || 0}</span>
+              <span className={styles.statCardLabel}>Total membres</span>
+            </div>
           </div>
         </div>
 
         <div className={`${styles.statCard} ${styles["statCard--active"]}`}>
-          <div className={styles.statCardIcon}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div className={styles.statCardContent}>
-            <span className={styles.statCardValue}>{activeCount}</span>
-            <span className={styles.statCardLabel}>Actifs</span>
+          <div className={styles.statCardBg} />
+          <div className={styles.statCardInner}>
+            <div className={styles.statCardIcon}>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="8.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className={styles.statCardContent}>
+              <span className={styles.statCardValue}>{activeCount}</span>
+              <span className={styles.statCardLabel}>Actifs</span>
+            </div>
           </div>
         </div>
 
         <div className={`${styles.statCard} ${styles["statCard--inactive"]}`}>
-          <div className={styles.statCardIcon}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M7 10h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className={styles.statCardContent}>
-            <span className={styles.statCardValue}>{inactiveCount}</span>
-            <span className={styles.statCardLabel}>Inactifs</span>
+          <div className={styles.statCardBg} />
+          <div className={styles.statCardInner}>
+            <div className={styles.statCardIcon}>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="8.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M8 11h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div className={styles.statCardContent}>
+              <span className={styles.statCardValue}>{inactiveCount}</span>
+              <span className={styles.statCardLabel}>Inactifs</span>
+            </div>
           </div>
         </div>
 
         <div className={`${styles.statCard} ${styles["statCard--admin"]}`}>
-          <div className={styles.statCardIcon}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 2L4 5v4c0 4.5 2.7 7.5 6 8.5 3.3-1 6-4 6-8.5V5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-              <path d="M7.5 10l1.5 1.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div className={styles.statCardContent}>
-            <span className={styles.statCardValue}>{users.filter((u: User) => u.role === Role.SUPER_ADMIN).length}</span>
-            <span className={styles.statCardLabel}>Admins</span>
+          <div className={styles.statCardBg} />
+          <div className={styles.statCardInner}>
+            <div className={styles.statCardIcon}>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M11 2L5 5v4.5c0 4.5 2.6 8.5 6 9.5 3.4-1 6-5 6-9.5V5L11 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                <path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className={styles.statCardContent}>
+              <span className={styles.statCardValue}>{adminCount}</span>
+              <span className={styles.statCardLabel}>Admins</span>
+            </div>
           </div>
         </div>
       </div>
@@ -184,7 +176,7 @@ export function AdminUsers() {
           </svg>
           <input
             className={styles.searchInput}
-            placeholder="Rechercher par nom ou email..."
+            placeholder="Rechercher un membre..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
@@ -252,7 +244,7 @@ export function AdminUsers() {
                   <tr>
                     <th>Membre</th>
                     <th>Rôle</th>
-                    <th>Inscrit</th>
+                    <th>Inscrit le</th>
                     <th>Statut</th>
                     <th></th>
                   </tr>
@@ -267,7 +259,7 @@ export function AdminUsers() {
                           <div className={styles.userCell}>
                             <div
                               className={styles.avatar}
-                              style={{ background: `${avatarColor}15`, color: avatarColor }}
+                              style={{ background: `${avatarColor}12`, color: avatarColor, borderColor: `${avatarColor}25` }}
                             >
                               {user.avatar ? (
                                 <img src={user.avatar} alt="" className={styles.avatarImg} />
@@ -293,9 +285,11 @@ export function AdminUsers() {
                             <option value={Role.SUPER_ADMIN}>Admin</option>
                           </select>
                         </td>
-                        <td className={styles.dateCell}>
-                          <span className={styles.dateText}>{formatDate(user.createdAt)}</span>
-                          <span className={styles.dateRelative}>{timeAgo(user.createdAt)}</span>
+                        <td>
+                          <div className={styles.dateCell}>
+                            <span className={styles.dateMain}>{formatDate(user.createdAt)}</span>
+                            <span className={styles.dateRelative}>{timeAgo(user.createdAt)}</span>
+                          </div>
                         </td>
                         <td>
                           <span className={`${styles.statusBadge} ${user.isActive ? styles["status--active"] : styles["status--inactive"]}`}>
