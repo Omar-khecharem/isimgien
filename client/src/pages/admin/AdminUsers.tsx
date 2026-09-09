@@ -16,6 +16,27 @@ const ROLE_COLORS: Record<Role, string> = {
   [Role.STUDENT]: "slate",
 } as const;
 
+const ROLE_ICONS: Record<Role, React.ReactNode> = {
+  [Role.SUPER_ADMIN]: (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1L2 4v4c0 4 2.7 7.5 6 8.5 3.3-1 6-4.5 6-8.5V4L8 1z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M6 8l1.5 1.5L10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  [Role.CLUB_LEADER]: (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M3 14c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+  [Role.STUDENT]: (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M3 14c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+};
+
 function getInitials(firstName: string, lastName: string) {
   return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 }
@@ -38,6 +59,16 @@ function timeAgo(dateStr: string) {
   const days = Math.floor(hours / 24);
   if (days < 30) return `il y a ${days}j`;
   return formatDate(dateStr);
+}
+
+const AVATAR_COLORS = ["#0A5F3A", "#3B82F6", "#8B5CF6", "#D97706", "#DC2626", "#0891B2"];
+
+function getAvatarColor(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 
 export function AdminUsers() {
@@ -74,6 +105,8 @@ export function AdminUsers() {
 
   const users = data?.data || [];
   const meta = data?.meta;
+  const activeCount = users.filter((u: User) => u.isActive).length;
+  const inactiveCount = users.length - activeCount;
 
   return (
     <div className={styles.page}>
@@ -83,15 +116,61 @@ export function AdminUsers() {
           <h1 className={styles.title}>Membres</h1>
           <p className={styles.subtitle}>Gérez les utilisateurs et leurs rôles</p>
         </div>
-        <div className={styles.headerStats}>
-          <div className={styles.stat}>
-            <span className={styles.statValue}>{meta?.total || 0}</span>
-            <span className={styles.statLabel}>Total</span>
+      </div>
+
+      {/* Stat Cards */}
+      <div className={styles.statCards}>
+        <div className={`${styles.statCard} ${styles["statCard--total"]}`}>
+          <div className={styles.statCardIcon}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="7" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M3 17c0-2.8 2-5 4.5-5s4.5 2.2 4.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="13.5" cy="7" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M13.5 10c2 0 3.5 1.5 3.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </div>
-          <div className={styles.statDivider} />
-          <div className={styles.stat}>
-            <span className={styles.statValue}>{users.filter((u: User) => u.isActive).length}</span>
-            <span className={styles.statLabel}>Actifs</span>
+          <div className={styles.statCardContent}>
+            <span className={styles.statCardValue}>{meta?.total || 0}</span>
+            <span className={styles.statCardLabel}>Total membres</span>
+          </div>
+        </div>
+
+        <div className={`${styles.statCard} ${styles["statCard--active"]}`}>
+          <div className={styles.statCardIcon}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <div className={styles.statCardContent}>
+            <span className={styles.statCardValue}>{activeCount}</span>
+            <span className={styles.statCardLabel}>Actifs</span>
+          </div>
+        </div>
+
+        <div className={`${styles.statCard} ${styles["statCard--inactive"]}`}>
+          <div className={styles.statCardIcon}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M7 10h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </div>
+          <div className={styles.statCardContent}>
+            <span className={styles.statCardValue}>{inactiveCount}</span>
+            <span className={styles.statCardLabel}>Inactifs</span>
+          </div>
+        </div>
+
+        <div className={`${styles.statCard} ${styles["statCard--admin"]}`}>
+          <div className={styles.statCardIcon}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2L4 5v4c0 4.5 2.7 7.5 6 8.5 3.3-1 6-4 6-8.5V5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M7.5 10l1.5 1.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <div className={styles.statCardContent}>
+            <span className={styles.statCardValue}>{users.filter((u: User) => u.role === Role.SUPER_ADMIN).length}</span>
+            <span className={styles.statCardLabel}>Admins</span>
           </div>
         </div>
       </div>
@@ -105,7 +184,7 @@ export function AdminUsers() {
           </svg>
           <input
             className={styles.searchInput}
-            placeholder="Rechercher un membre..."
+            placeholder="Rechercher par nom ou email..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
@@ -150,15 +229,20 @@ export function AdminUsers() {
         {isLoading ? (
           <div className={styles.loading}>
             <div className={styles.spinner} />
-            <span>Chargement...</span>
+            <span>Chargement des membres...</span>
           </div>
         ) : users.length === 0 ? (
           <div className={styles.empty}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            <p>Aucun membre trouvé</p>
+            <div className={styles.emptyIcon}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+            <p className={styles.emptyTitle}>Aucun membre trouvé</p>
+            <p className={styles.emptyDesc}>
+              {search ? "Essayez avec d'autres termes de recherche" : "Aucun utilisateur n'a encore été inscrit"}
+            </p>
           </div>
         ) : (
           <>
@@ -169,68 +253,77 @@ export function AdminUsers() {
                     <th>Membre</th>
                     <th>Rôle</th>
                     <th>Inscrit</th>
-                    <th>Dernière connexion</th>
                     <th>Statut</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user: User) => (
-                    <tr key={user._id} className={styles.row}>
-                      <td>
-                        <div className={styles.userCell}>
-                          <div className={styles.avatar}>
-                            {user.avatar ? (
-                              <img src={user.avatar} alt="" className={styles.avatarImg} />
+                  {users.map((user: User) => {
+                    const fullName = `${user.firstName} ${user.lastName}`;
+                    const avatarColor = getAvatarColor(fullName);
+                    return (
+                      <tr key={user._id} className={styles.row}>
+                        <td>
+                          <div className={styles.userCell}>
+                            <div
+                              className={styles.avatar}
+                              style={{ background: `${avatarColor}15`, color: avatarColor }}
+                            >
+                              {user.avatar ? (
+                                <img src={user.avatar} alt="" className={styles.avatarImg} />
+                              ) : (
+                                <span>{getInitials(user.firstName, user.lastName)}</span>
+                              )}
+                            </div>
+                            <div className={styles.userInfo}>
+                              <span className={styles.userName}>{fullName}</span>
+                              <span className={styles.userEmail}>{user.email}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <select
+                            className={`${styles.roleSelect} ${styles[`role--${ROLE_COLORS[user.role]}`]}`}
+                            value={user.role}
+                            onChange={(e) => roleMutation.mutate({ userId: user._id, role: e.target.value as Role })}
+                            disabled={roleMutation.isPending}
+                          >
+                            <option value={Role.STUDENT}>Étudiant</option>
+                            <option value={Role.CLUB_LEADER}>Leader</option>
+                            <option value={Role.SUPER_ADMIN}>Admin</option>
+                          </select>
+                        </td>
+                        <td className={styles.dateCell}>
+                          <span className={styles.dateText}>{formatDate(user.createdAt)}</span>
+                          <span className={styles.dateRelative}>{timeAgo(user.createdAt)}</span>
+                        </td>
+                        <td>
+                          <span className={`${styles.statusBadge} ${user.isActive ? styles["status--active"] : styles["status--inactive"]}`}>
+                            <span className={styles.statusDot} />
+                            {user.isActive ? "Actif" : "Inactif"}
+                          </span>
+                        </td>
+                        <td>
+                          <button
+                            className={`${styles.actionBtn} ${!user.isActive ? styles["actionBtn--activate"] : ""}`}
+                            onClick={() => toggleMutation.mutate(user._id)}
+                            disabled={toggleMutation.isPending}
+                            title={user.isActive ? "Désactiver" : "Activer"}
+                          >
+                            {user.isActive ? (
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                              </svg>
                             ) : (
-                              <span>{getInitials(user.firstName, user.lastName)}</span>
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 4v8M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                              </svg>
                             )}
-                          </div>
-                          <div className={styles.userInfo}>
-                            <span className={styles.userName}>{user.firstName} {user.lastName}</span>
-                            <span className={styles.userEmail}>{user.email}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <select
-                          className={`${styles.roleSelect} ${styles[`role--${ROLE_COLORS[user.role]}`]}`}
-                          value={user.role}
-                          onChange={(e) => roleMutation.mutate({ userId: user._id, role: e.target.value as Role })}
-                          disabled={roleMutation.isPending}
-                        >
-                          <option value={Role.STUDENT}>Étudiant</option>
-                          <option value={Role.CLUB_LEADER}>Leader</option>
-                          <option value={Role.SUPER_ADMIN}>Admin</option>
-                        </select>
-                      </td>
-                      <td className={styles.dateCell}>{formatDate(user.createdAt)}</td>
-                      <td className={styles.dateCell}>{user.lastLogin ? timeAgo(user.lastLogin) : "Jamais"}</td>
-                      <td>
-                        <span className={`${styles.statusBadge} ${user.isActive ? styles["status--active"] : styles["status--inactive"]}`}>
-                          {user.isActive ? "Actif" : "Inactif"}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className={styles.actionBtn}
-                          onClick={() => toggleMutation.mutate(user._id)}
-                          disabled={toggleMutation.isPending}
-                          title={user.isActive ? "Désactiver" : "Activer"}
-                        >
-                          {user.isActive ? (
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                              <path d="M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                            </svg>
-                          ) : (
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                              <path d="M8 4v8M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                            </svg>
-                          )}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -239,7 +332,7 @@ export function AdminUsers() {
             {meta && meta.totalPages > 1 && (
               <div className={styles.pagination}>
                 <span className={styles.paginationInfo}>
-                  {meta.total} membres · Page {meta.page}/{meta.totalPages}
+                  Page {meta.page} sur {meta.totalPages} · {meta.total} membres
                 </span>
                 <div className={styles.paginationBtns}>
                   <button
@@ -251,6 +344,18 @@ export function AdminUsers() {
                       <path d="M9 3L5 7l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
+                  {Array.from({ length: Math.min(meta.totalPages, 5) }, (_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <button
+                        key={pageNum}
+                        className={`${styles.pageNum} ${page === pageNum ? styles["pageNum--active"] : ""}`}
+                        onClick={() => setPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
                   <button
                     className={styles.pageBtn}
                     disabled={page >= meta.totalPages}
