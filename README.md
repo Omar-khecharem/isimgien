@@ -1,9 +1,19 @@
 # ISIMG ClubHub
 
-Backend API for managing student clubs at ISIMG (Institut Supérieur d'Informatique et de Multimédia de Gafsa).
+Full-stack platform for managing student clubs at ISIMG (Institut Supérieur d'Informatique et de Multimédia de Gafsa). Includes a React frontend dashboard and a Node.js backend API.
 
 ## Tech Stack
 
+### Frontend
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: CSS Modules + Tailwind (no config, utility classes only)
+- **State**: React hooks (useState, useEffect, useCallback)
+- **Routing**: React Router v6
+- **HTTP**: Axios with JWT interceptors
+- **Icons**: Lucide React (22×22 SVG)
+
+### Backend
 - **Runtime**: Node.js + TypeScript
 - **Framework**: Express.js
 - **Database**: MongoDB (Mongoose ODM)
@@ -13,36 +23,82 @@ Backend API for managing student clubs at ISIMG (Institut Supérieur d'Informati
 ## Project Structure
 
 ```
-server/
-├── src/
-│   ├── config/          # Environment, database, constants
-│   ├── middleware/       # Auth, RBAC, validation, error handling
-│   ├── models/          # Mongoose schemas & models
-│   ├── modules/         # Feature modules (controller/service/repo/validation)
-│   ├── routes/          # Central route registry
-│   ├── seeds/           # Super admin seed
-│   ├── shared/          # Enums, types, utils (ApiError, ApiResponse, asyncHandler)
-│   ├── app.ts           # Express app setup
-│   └── server.ts        # Entry point
-├── .env.example
-├── package.json
-├── tsconfig.json
-└── jest.config.js
+├── client/                        # React frontend
+│   ├── src/
+│   │   ├── features/              # Feature modules (business logic + UI)
+│   │   │   ├── attendance/        # Attendance session management
+│   │   │   ├── clubLeader/        # Club leader dashboard + components
+│   │   │   ├── forms/             # Form builder + response handling
+│   │   │   ├── notifications/     # Notification service
+│   │   │   └── users/             # User management service
+│   │   ├── layouts/               # Layout components (Dashboard, Root)
+│   │   ├── pages/                 # Page components
+│   │   │   ├── admin/             # Admin users page
+│   │   │   ├── dashboard/         # Super admin dashboard
+│   │   │   └── settings/          # Admin settings page
+│   │   ├── routes/                # Route definitions + paths
+│   │   ├── services/              # API client, auth service
+│   │   ├── styles/                # Design tokens, global CSS
+│   │   └── types/                 # TypeScript types + enums
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── server/                        # Express backend
+│   ├── src/
+│   │   ├── config/                # Environment, database, constants
+│   │   ├── middleware/            # Auth, RBAC, validation, error handling
+│   │   ├── models/                # Mongoose schemas & models
+│   │   ├── modules/               # Feature modules
+│   │   │   ├── auth/              # Authentication
+│   │   │   ├── clubs/             # Club management
+│   │   │   ├── dashboard/         # Dashboard stats API
+│   │   │   ├── events/            # Event management
+│   │   │   ├── finance/           # Financial transactions
+│   │   │   ├── forms/             # Dynamic forms
+│   │   │   ├── attendance/        # Attendance tracking
+│   │   │   ├── membership/        # Membership management
+│   │   │   ├── trainings/         # Training sessions
+│   │   │   └── users/             # User management (Super Admin)
+│   │   ├── routes/                # Central route registry
+│   │   ├── seeds/                 # Super admin seed
+│   │   ├── shared/                # Enums, types, utils
+│   │   ├── app.ts                 # Express app setup
+│   │   └── server.ts              # Entry point
+│   ├── .env.example
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── jest.config.js
+│
+└── README.md
 ```
+
+## Design System (Donezo Style)
+
+| Token | Value |
+|-------|-------|
+| Primary | `emerald-800` (#0A5F3A) |
+| Accent | `#C7E8D6` (mint) |
+| Background | `#F7F8F9` (slate) |
+| Card | `#1A1A1A` (dark) |
+| Font | Inter |
+| Corners | 16px (lg) / 12px (md) |
 
 ## Modules
 
 | Module | Description |
 |--------|-------------|
 | **Auth** | Registration, login, logout, token refresh, password management |
-| **Clubs** | CRUD, leader assignment, club settings (membership fee, training capacity) |
+| **Users** | User list, role management, activate/deactivate (Super Admin) |
+| **Clubs** | CRUD, leader assignment, club settings |
 | **Trainings** | Sessions, schedules, capacity management, CRUD per club |
 | **Events** | CRUD per club, date/location management |
 | **Forms** | Dynamic forms with versioning, snapshot-on-publish, file upload |
 | **Responses** | Form submission handling, multi-file upload |
 | **Attendance** | State machine (not_attended → checked_in → checked_out), QR check-in, bulk check-in |
 | **Finance** | Transactions (income/expense), balance, category breakdown, per-club treasury |
-| **Membership** | Fee tracking, payment records, auto-activation on full payment, per-academic-year |
+| **Membership** | Fee tracking, payment records, auto-activation on full payment |
+| **Dashboard** | Stats API (clubs count, members, attendance rate, events) |
 
 ## API Routes
 
@@ -58,6 +114,15 @@ GET    /auth/me                # Get current user profile
 PATCH  /auth/password          # Change password
 ```
 
+### Users (Super Admin)
+```
+GET    /users                  # List all users (paginated, searchable)
+GET    /users/:id              # Get user details
+PATCH  /users/:id/role         # Update user role
+PATCH  /users/:id/toggle-active # Toggle user active status
+DELETE /users/:id              # Delete user
+```
+
 ### Clubs
 ```
 GET    /clubs                  # List all active clubs
@@ -66,6 +131,11 @@ GET    /clubs/:clubId          # Get club details
 PATCH  /clubs/:clubId          # Update club (Super Admin / Club Leader)
 DELETE /clubs/:clubId          # Deactivate club (Super Admin)
 PATCH  /clubs/:clubId/leader   # Assign club leader (Super Admin)
+```
+
+### Dashboard
+```
+GET    /dashboard/stats        # Global stats (Super Admin)
 ```
 
 ### Trainings
@@ -149,38 +219,69 @@ GET    /memberships/                      # All memberships across clubs
 
 | Role | Access |
 |------|--------|
-| **Super Admin** | Global access to everything |
-| **Club Leader** | Own club only (assigned via `clubs/:clubId/leader`) |
-| **Student** | Own profile + own membership status + QR check-in |
+| **Super Admin** | Global access — all clubs, all users, dashboard, settings |
+| **Club Leader** | Own club only — members, trainings, events, finance, forms |
+| **Student** | Own profile, own membership, QR check-in |
+
+## Frontend Pages
+
+| Page | Route | Description |
+|------|-------|-------------|
+| **Super Admin Dashboard** | `/admin/dashboard` | Stats cards, bar chart, donut chart, notifications, quick actions |
+| **Admin Users** | `/admin/users` | User list with search, role filters, toggle active, pagination |
+| **Admin Settings** | `/admin/settings` | Profile, General, Notifications, Security tabs |
+| **Admin Clubs** | `/admin/clubs` | Club management (route defined) |
+| **Events** | `/admin/events` | Event management (route defined) |
+| **Help & Support** | `/admin/help` | Help page (route defined) |
+| **Notifications** | `/admin/notifications` | Notifications (route defined) |
+| **Club Leader Dashboard** | `/leader/dashboard` | KPIs, finance gauge, attendance chart, member table |
+| **Student Dashboard** | `/student/dashboard` | Student view (route defined) |
 
 ## Getting Started
 
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally or Atlas URI
+
+### Backend Setup
 ```bash
-# 1. Install dependencies
 cd server
 npm install
-
-# 2. Configure environment
 cp .env.example .env
 # Edit .env with your MongoDB URI and JWT secrets
-
-# 3. Seed super admin (runs automatically on first start)
-
-# 4. Start dev server
 npm run dev
-
-# 5. Run tests
-npm test
 ```
+
+### Frontend Setup
+```bash
+cd client
+npm install
+npm run dev
+```
+
+### Default Accounts (auto-seeded)
+| Email | Password | Role |
+|-------|----------|------|
+| admin@isimg.tn | admin123 | super_admin |
+| leader@isimg.tn | leader123 | club_leader |
+| student@isimg.tn | student123 | student |
 
 ## Scripts
 
 ```bash
+# Backend
+cd server
 npm run dev       # Start dev server (ts-node-dev)
 npm run build     # Compile TypeScript
 npm start         # Run production build
 npm test          # Run Jest tests
 npm run lint      # Run ESLint
+
+# Frontend
+cd client
+npm run dev       # Start Vite dev server
+npm run build     # Production build
+npm run preview   # Preview production build
 ```
 
 ## Environment Variables
@@ -195,14 +296,6 @@ npm run lint      # Run ESLint
 | `JWT_ACCESS_EXPIRY` | Access token TTL | `15m` |
 | `JWT_REFRESH_EXPIRY` | Refresh token TTL | `7d` |
 | `CORS_ORIGIN` | Allowed CORS origin | `http://localhost:5173` |
-
-## Testing
-
-```bash
-npm test                          # Run all tests
-npm test -- --testPathPatterns=attendance  # Run specific module tests
-npm test -- --verbose             # Verbose output
-```
 
 ## License
 
