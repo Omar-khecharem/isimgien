@@ -47,6 +47,36 @@ export const createEventSchema = {
     ),
 };
 
+// ─── Create faculty event ──────────────────────────────────────────────────
+
+export const createFacultyEventSchema = {
+  body: z
+    .object({
+      title: z.string().trim().min(1).max(300),
+      description: z.string().trim().min(1).max(10000),
+      date: z.coerce.date(),
+      startTime: z.string().regex(timeRegex, "Time format: HH:mm"),
+      endTime: z.string().regex(timeRegex, "Time format: HH:mm"),
+      location: z.string().trim().min(1).max(300),
+      capacity: z.number().int().min(1).nullable().optional(),
+      isPublic: z.boolean().optional(),
+      slug: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format")
+        .optional(),
+    })
+    .refine(
+      (data) => {
+        const [startH, startM] = data.startTime.split(":").map(Number);
+        const [endH, endM] = data.endTime.split(":").map(Number);
+        return startH * 60 + startM < endH * 60 + endM;
+      },
+      { message: "End time must be after start time", path: ["endTime"] }
+    ),
+};
+
 // ─── Update event ────────────────────────────────────────────────────────────
 
 export const updateEventSchema = {

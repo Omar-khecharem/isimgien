@@ -21,6 +21,16 @@ export const authService = {
     return res.data;
   },
 
+  async uploadAvatar(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    const res = await apiClient.upload<ApiResponse<{ avatar: string }>>(
+      "/auth/avatar",
+      formData
+    );
+    return res.data.avatar;
+  },
+
   async refresh(): Promise<string | null> {
     return apiClient.refreshAccessToken();
   },

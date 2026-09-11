@@ -90,6 +90,18 @@ export const listGlobalEvents = asyncHandler(
   }
 );
 
+// ─── Super Admin: Create faculty event ─────────────────────────────────────
+
+export const createFacultyEvent = asyncHandler(
+  async (req: Request, res: Response) => {
+    const event = await eventService.createFacultyEvent(
+      req.body,
+      req.user!.id
+    );
+    ApiResponse.created(res, event, "Faculty event created successfully");
+  }
+);
+
 export const getPublicEvent = asyncHandler(
   async (req: Request, res: Response) => {
     const event = await eventService.getPublicEventById(req.params.id);

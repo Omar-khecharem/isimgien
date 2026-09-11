@@ -19,6 +19,8 @@ export function LoginPage() {
       // Redirect based on role
       if (user.role === Role.STUDENT) {
         navigate("/student");
+      } else if (user.role === Role.CLUB_LEADER) {
+        navigate("/leader");
       } else {
         navigate("/dashboard");
       }

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as clubService from "./club.service";
 import { ApiResponse } from "../../shared/utils/apiResponse";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
+import { ApiError } from "../../shared/utils/ApiError";
 
 // ─── Super Admin: Club CRUD ──────────────────────────────────────────────────
 
@@ -69,6 +70,13 @@ export const inviteMember = asyncHandler(
 
 // ─── Club Leader: Update own club ────────────────────────────────────────────
 
+export const getClubByLeader = asyncHandler(
+  async (req: Request, res: Response) => {
+    const club = await clubService.getClubByLeader(req.user!.id);
+    ApiResponse.success(res, club);
+  }
+);
+
 export const updateClubByLeader = asyncHandler(
   async (req: Request, res: Response) => {
     const club = await clubService.updateClubByLeader(
@@ -105,5 +113,17 @@ export const getMyMemberships = asyncHandler(
       req.query as any
     );
     ApiResponse.paginated(res, result.memberships, result.meta);
+  }
+);
+
+// ─── Club image upload ──────────────────────────────────────────────────────
+
+export const uploadClubImage = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.file) {
+      throw ApiError.badRequest("No file uploaded");
+    }
+    const imageUrl = `/uploads/clubs/${req.file.filename}`;
+    ApiResponse.success(res, { url: imageUrl }, 200, "Image uploaded successfully");
   }
 );

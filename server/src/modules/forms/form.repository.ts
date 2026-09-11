@@ -56,6 +56,7 @@ export async function findFormsByClub(
   const [forms, total] = await Promise.all([
     Form.find(combinedFilter)
       .populate("createdBy", "firstName lastName email")
+      .populate("club", "name slug logo")
       .sort(sort)
       .skip(skip)
       .limit(limit)

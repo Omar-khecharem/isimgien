@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../features/auth";
 import { PageLoader } from "../components/ui";
 import { ROUTES } from "./paths";
-import type { Role } from "../types";
+import { Role } from "../types";
 
 // ─── RequireAuth ────────────────────────────────────────────────────────────
 
@@ -24,11 +24,15 @@ export function RequireRole({
   roles: Role[];
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isInitialized, hasRole } = useAuth();
+  const { user, isAuthenticated, isInitialized, hasRole } = useAuth();
 
   if (!isInitialized) return <PageLoader />;
   if (!isAuthenticated) return <Navigate to={ROUTES.LOGIN} replace />;
-  if (!hasRole(...roles)) return <Navigate to={ROUTES.DASHBOARD} replace />;
+  if (!hasRole(...roles)) {
+    if (user?.role === Role.CLUB_LEADER) return <Navigate to={ROUTES.LEADER_HOME} replace />;
+    if (user?.role === Role.STUDENT) return <Navigate to="/student" replace />;
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
+  }
 
   return <>{children}</>;
 }
@@ -36,10 +40,14 @@ export function RequireRole({
 // ─── GuestOnly ──────────────────────────────────────────────────────────────
 
 export function GuestOnly({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isInitialized } = useAuth();
+  const { isAuthenticated, isInitialized, user } = useAuth();
 
   if (!isInitialized) return <PageLoader />;
-  if (isAuthenticated) return <Navigate to={ROUTES.DASHBOARD} replace />;
+  if (isAuthenticated) {
+    if (user?.role === Role.CLUB_LEADER) return <Navigate to={ROUTES.LEADER_HOME} replace />;
+    if (user?.role === Role.STUDENT) return <Navigate to="/student" replace />;
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
+  }
 
   return <>{children}</>;
 }

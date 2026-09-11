@@ -1,8 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import { EventStatus } from "../shared/enums";
 
+export type EventType = "club" | "faculty";
+
 export interface IEvent extends Document {
-  club: mongoose.Types.ObjectId;
+  club?: mongoose.Types.ObjectId;
+  eventType: EventType;
   title: string;
   slug: string;
   description: string;
@@ -14,6 +17,7 @@ export interface IEvent extends Document {
   capacity: number | null;
   status: EventStatus;
   isPublic: boolean;
+  form?: mongoose.Types.ObjectId;
   createdBy: mongoose.Types.ObjectId;
   registeredCount: number;
   createdAt: Date;
@@ -25,7 +29,13 @@ const eventSchema = new Schema<IEvent>(
     club: {
       type: Schema.Types.ObjectId,
       ref: "Club",
-      required: [true, "Club is required"],
+      required: false,
+    },
+    eventType: {
+      type: String,
+      enum: ["club", "faculty"],
+      default: "club",
+      required: true,
     },
     title: {
       type: String,
@@ -82,6 +92,11 @@ const eventSchema = new Schema<IEvent>(
       type: Boolean,
       default: true,
     },
+    form: {
+      type: Schema.Types.ObjectId,
+      ref: "Form",
+      required: false,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -107,6 +122,7 @@ const eventSchema = new Schema<IEvent>(
 eventSchema.index({ club: 1, date: 1 });
 eventSchema.index({ status: 1, date: 1 });
 eventSchema.index({ club: 1, status: 1 });
-eventSchema.index({ club: 1, slug: 1 }, { unique: true });
+eventSchema.index({ eventType: 1, date: 1 });
+eventSchema.index({ createdBy: 1 });
 
 export const Event: Model<IEvent> = mongoose.model<IEvent>("Event", eventSchema);

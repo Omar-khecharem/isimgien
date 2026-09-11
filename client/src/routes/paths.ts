@@ -8,6 +8,7 @@ export const ROUTES = {
 
   // Club Leader / Super Admin
   CLUBS: "/clubs",
+  CLUB_PROFILE: "/club-profile",
   CLUB_DETAIL: "/clubs/:clubId",
   TRAININGS: "/clubs/:clubId/trainings",
   EVENTS: "/clubs/:clubId/events",
@@ -15,6 +16,19 @@ export const ROUTES = {
   ATTENDANCE: "/clubs/:clubId/trainings/:trainingId/attendance",
   FINANCE: "/clubs/:clubId/finance",
   MEMBERSHIPS: "/clubs/:clubId/memberships",
+
+  // Club Leader
+  LEADER_HOME: "/leader",
+  LEADER_PROFILE: "/leader/profile",
+  LEADER_CLUBS: "/leader/clubs",
+  LEADER_FORMS: "/leader/forms",
+  LEADER_MEMBERS: "/leader/members",
+  LEADER_FINANCE: "/leader/finance",
+  LEADER_REPORTS: "/leader/reports",
+  LEADER_NOTIFICATIONS: "/leader/notifications",
+  LEADER_DOCUMENTS: "/leader/documents",
+  LEADER_SETTINGS: "/leader/settings",
+  LEADER_HELP: "/leader/help",
 
   // Super Admin
   ADMIN_CLUBS: "/admin/clubs",

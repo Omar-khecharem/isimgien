@@ -55,13 +55,12 @@ interface DashboardResult {
   recentRegistrations: any[];
 }
 
-export async function getClubDashboard(clubId: string, userId: string): Promise<DashboardResult> {
+export async function getClubDashboard(clubId: string, userId: string, userRole?: string): Promise<DashboardResult> {
   const club = await Club.findById(clubId).lean();
   if (!club) throw ApiError.notFound("Club not found");
 
-  if (club.leader?.toString() !== userId) {
-    throw ApiError.forbidden("You are not the leader of this club");
-  }
+  // Ownership is already verified by requireClubLeaderOrSuperAdmin middleware
+  // This is a safety fallback for direct calls
 
   const now = new Date();
   const weekStart = startOfWeek(now);

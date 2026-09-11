@@ -76,6 +76,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 interface AuthContextValue extends AuthState {
   login: (credentials: LoginCredentials) => Promise<AuthenticatedUser>;
   logout: () => Promise<void>;
+  updateUser: (data: Partial<AuthenticatedUser>) => void;
   hasRole: (...roles: Role[]) => boolean;
 }
 
@@ -132,6 +133,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "LOGOUT" });
   }, []);
 
+  const updateUser = useCallback((data: Partial<AuthenticatedUser>) => {
+    dispatch({ type: "USER_UPDATE", payload: data });
+  }, []);
+
   const hasRole = useCallback(
     (...roles: Role[]) => {
       if (!state.user) return false;
@@ -146,6 +151,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ...state,
         login,
         logout,
+        updateUser,
         hasRole,
       }}
     >

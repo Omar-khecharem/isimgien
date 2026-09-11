@@ -80,6 +80,32 @@ export async function createEvent(
 
   const event = await eventRepo.createEvent({
     club: new mongoose.Types.ObjectId(clubId),
+    eventType: "club",
+    title: input.title,
+    slug,
+    description: input.description,
+    date: input.date,
+    startTime: input.startTime,
+    endTime: input.endTime,
+    location: input.location,
+    capacity: input.capacity ?? null,
+    isPublic: input.isPublic ?? true,
+    createdBy: new mongoose.Types.ObjectId(creatorId),
+    status: EventStatus.DRAFT,
+    registeredCount: 0,
+  });
+
+  return event.toJSON();
+}
+
+export async function createFacultyEvent(
+  input: CreateEventInput,
+  creatorId: string
+) {
+  const slug = input.slug || slugify(input.title);
+
+  const event = await eventRepo.createEvent({
+    eventType: "faculty",
     title: input.title,
     slug,
     description: input.description,

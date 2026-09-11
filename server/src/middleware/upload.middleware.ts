@@ -58,3 +58,9 @@ export const uploadReceipt = multer({
   limits: { fileSize: config.upload.maxSizes.receipt },
   fileFilter: fileFilter(config.upload.allowedFileTypes),
 });
+
+export const uploadClubImage = multer({
+  storage: createStorage("clubs"),
+  limits: { fileSize: config.upload.maxSizes.avatar },
+  fileFilter: fileFilter(config.upload.allowedImageTypes),
+});

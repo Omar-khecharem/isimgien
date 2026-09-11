@@ -105,3 +105,17 @@ export async function getCurrentUser(userId: string): Promise<IUser> {
 
   return user;
 }
+
+export async function updateAvatar(userId: string, avatarUrl: string): Promise<IUser> {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { avatar: avatarUrl },
+    { new: true }
+  );
+
+  if (!user) {
+    throw ApiError.notFound("User not found");
+  }
+
+  return user;
+}

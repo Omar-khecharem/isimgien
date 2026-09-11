@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { validate } from "../../middleware/validate.middleware";
 import { authenticate } from "../../middleware/auth.middleware";
+import { uploadClubImage } from "../../middleware/upload.middleware";
 import * as clubController from "./club.controller";
 import * as clubPolicies from "./club.policies";
 import {
@@ -57,6 +58,15 @@ router.post(
   clubPolicies.requireSuperAdmin,
   validate(createClubSchema),
   clubController.createClub
+);
+
+// ─── Club Leader: Get own club ───────────────────────────────────────────────
+
+router.get(
+  "/my-club",
+  authenticate,
+  clubPolicies.requireStudentOrAbove,
+  clubController.getClubByLeader
 );
 
 // ─── Get club by ID (role-dependent) ─────────────────────────────────────────
@@ -147,6 +157,16 @@ router.post(
   clubPolicies.requireStudentOrAbove,
   validate(joinClubSchema),
   clubController.joinClub
+);
+
+// ─── Club image upload ──────────────────────────────────────────────────────
+
+router.post(
+  "/upload",
+  authenticate,
+  clubPolicies.requireStudentOrAbove,
+  uploadClubImage.single("file"),
+  clubController.uploadClubImage
 );
 
 export default router;

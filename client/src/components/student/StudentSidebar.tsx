@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth";
 import { Avatar, Button, Input } from "../ui";
 import { Separator } from "../layout";
@@ -190,6 +190,7 @@ export function StudentSidebar() {
       {/* User Profile */}
       <div className={styles.userSection}>
         <Avatar
+          src={user?.avatar}
           name={user ? `${user.firstName} ${user.lastName}` : ""}
           size="sm"
         />

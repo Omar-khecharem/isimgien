@@ -39,6 +39,7 @@ export function StudentDashboard() {
           </button>
           <div className={styles.profileInfo}>
             <Avatar
+              src={user?.avatar}
               name={user ? `${user.firstName} ${user.lastName}` : ""}
               size="sm"
             />
@@ -348,7 +349,7 @@ export function StudentDashboard() {
                           </div>
                           <div className={styles.membershipDetail}>
                             <span className={styles.membershipLabel}>Montant payé</span>
-                            <span className={styles.membershipValue}>{membership.amountPaid} DA</span>
+                            <span className={styles.membershipValue}>{membership.amountPaid} TND</span>
                           </div>
                           {membership.paymentDate && (
                             <div className={styles.membershipDetail}>

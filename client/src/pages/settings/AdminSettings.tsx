@@ -1,10 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "../../features/auth";
+import { authService } from "../../features/auth/authService";
 import { useLogo } from "../../features/logo";
 import { Avatar } from "../../components/ui";
 import styles from "./AdminSettings.module.css";
-
-const PROFILE_PHOTO_KEY = "clubhub_profile_photo";
 
 type Tab = "profile" | "general" | "notifications" | "security";
 
@@ -65,21 +64,14 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 }
 
 export function AdminSettings() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { logo, setLogo, saveLogo, saving: logoSaving, saved: logoSaved } = useLogo();
   const [activeTab, setActiveTab] = useState<Tab>("profile");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(() => {
-    try {
-      return localStorage.getItem(PROFILE_PHOTO_KEY);
-    } catch {
-      return null;
-    }
-  });
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const [profile, setProfile] = useState({
     firstName: user?.firstName || "",
@@ -95,20 +87,22 @@ export function AdminSettings() {
     registration: true,
   });
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) {
       alert("Le fichier ne doit pas dépasser 2 Mo");
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const result = ev.target?.result as string;
-      setProfilePhoto(result);
-      localStorage.setItem(PROFILE_PHOTO_KEY, result);
-    };
-    reader.readAsDataURL(file);
+    setUploadingPhoto(true);
+    try {
+      const avatarUrl = await authService.uploadAvatar(file);
+      updateUser({ avatar: avatarUrl });
+    } catch {
+      alert("Erreur lors de l'upload de la photo");
+    } finally {
+      setUploadingPhoto(false);
+    }
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,7 +190,7 @@ export function AdminSettings() {
               <div className={styles.avatarRow}>
                 <div className={styles.avatarWrap}>
                   <Avatar
-                    src={profilePhoto}
+                    src={user?.avatar}
                     name={user ? `${user.firstName} ${user.lastName}` : ""}
                     size="lg"
                   />
@@ -214,8 +208,9 @@ export function AdminSettings() {
                   <button
                     className={styles.uploadBtn}
                     onClick={() => photoInputRef.current?.click()}
+                    disabled={uploadingPhoto}
                   >
-                    Changer la photo
+                    {uploadingPhoto ? "Upload en cours..." : "Changer la photo"}
                   </button>
                   <p className={styles.uploadHint}>JPG, PNG ou GIF. Max 2 Mo.</p>
                 </div>

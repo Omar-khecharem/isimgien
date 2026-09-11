@@ -38,7 +38,7 @@ export async function deactivateClub(id: string): Promise<IClub | null> {
 
 export async function findClubsPaginated(filter: Record<string, unknown>, sort: Record<string, 1 | -1>, skip: number, limit: number) {
   const [clubs, total] = await Promise.all([
-    Club.find(filter).sort(sort).skip(skip).limit(limit).lean(),
+    Club.find(filter).sort(sort).skip(skip).limit(limit).populate("leader", "firstName lastName email").lean(),
     Club.countDocuments(filter),
   ]);
   return { clubs, total };
@@ -87,6 +87,12 @@ export async function removeClubLeader(clubId: string): Promise<IClub | null> {
 
 export async function findClubByLeader(leaderId: string): Promise<IClub | null> {
   return Club.findOne({ leader: leaderId });
+}
+
+export async function findClubByLeaderPopulated(leaderId: string) {
+  return Club.findOne({ leader: leaderId })
+    .populate("leader", "firstName lastName email avatar")
+    .lean();
 }
 
 // ─── Membership queries ──────────────────────────────────────────────────────

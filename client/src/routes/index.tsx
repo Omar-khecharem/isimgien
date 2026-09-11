@@ -16,6 +16,10 @@ import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { DesignSystemPage } from "../pages/design-system/DesignSystemPage";
 import { StudentDashboard } from "../components/student";
 import { ClubLeaderDashboard } from "../features/clubLeader";
+import { ClubProfile } from "../features/clubLeader/ClubProfile";
+import LeaderMembersPage from "../features/clubLeader/LeaderMembersPage";
+import LeaderFormsPage from "../features/clubLeader/LeaderFormsPage";
+import LeaderFinancePage from "../features/clubLeader/LeaderFinancePage";
 import { AttendanceSessionPage } from "../features/attendance";
 import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
 import { AdminSettings } from "../pages/settings/AdminSettings";
@@ -82,8 +86,8 @@ export const router = createBrowserRouter([
             element: <PlaceholderPage title="Clubs" />,
           },
           {
-            path: "registrations",
-            element: <PlaceholderPage title="Formulaires & Inscriptions" />,
+            path: "forms",
+            element: <LeaderFormsPage />,
           },
           {
             path: "attendance",
@@ -100,7 +104,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // ─── Dashboard (admin/leader) ───────────────────────────
+      // ─── Dashboard (admin) ────────────────────────────────
       {
         path: ROUTES.DASHBOARD,
         element: (
@@ -109,7 +113,10 @@ export const router = createBrowserRouter([
           </RequireAuth>
         ),
         children: [
-          { index: true, element: <RoleDashboard /> },
+          {
+            index: true,
+            element: <AdminDashboard />,
+          },
         ],
       },
 
@@ -123,6 +130,64 @@ export const router = createBrowserRouter([
         ),
         children: [
           { index: true, element: <AttendanceSessionPage /> },
+        ],
+      },
+
+      // ─── Club Leader ──────────────────────────────────────
+      {
+        path: "/leader",
+        element: (
+          <RequireAuth>
+            <RequireRole roles={[Role.CLUB_LEADER]}>
+              <DashboardLayout />
+            </RequireRole>
+          </RequireAuth>
+        ),
+        children: [
+          {
+            index: true,
+            element: <ClubLeaderDashboard />,
+          },
+          {
+            path: "profile",
+            element: <ClubProfile />,
+          },
+          {
+            path: "clubs",
+            element: <PlaceholderPage title="Mes Clubs" />,
+          },
+          {
+            path: "forms",
+            element: <LeaderFormsPage />,
+          },
+          {
+            path: "members",
+            element: <LeaderMembersPage />,
+          },
+          {
+            path: "finance",
+            element: <LeaderFinancePage />,
+          },
+          {
+            path: "reports",
+            element: <PlaceholderPage title="Rapports & Stats" />,
+          },
+          {
+            path: "notifications",
+            element: <PlaceholderPage title="Notifications" />,
+          },
+          {
+            path: "documents",
+            element: <PlaceholderPage title="Documents" />,
+          },
+          {
+            path: "settings",
+            element: <PlaceholderPage title="Paramètres" />,
+          },
+          {
+            path: "help",
+            element: <PlaceholderPage title="Aide & Support" />,
+          },
         ],
       },
 
@@ -216,23 +281,26 @@ export const router = createBrowserRouter([
 // Placeholder page for routes not yet implemented
 function PlaceholderPage({ title }: { title: string }) {
   return (
-    <div style={{ padding: 20 }}>
-      <h2 style={{ fontSize: 20, fontWeight: 600 }}>{title}</h2>
-      <p style={{ color: "var(--color-text-secondary)", marginTop: 8 }}>
-        This page will be implemented in a future iteration.
+    <div className="flex flex-col items-center justify-center py-20 text-center">
+      <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M9 9h6M9 13h6M9 17h4" />
+        </svg>
+      </div>
+      <h2 className="text-lg font-semibold text-gray-900 mb-1">{title}</h2>
+      <p className="text-sm text-gray-400 max-w-sm">
+        Cette section sera implementée prochainement.
       </p>
     </div>
   );
 }
 
 // Renders the appropriate dashboard based on user role
-function RoleDashboard() {
+function AdminDashboard() {
   const { user } = useAuth();
   if (user?.role === Role.SUPER_ADMIN) {
     return <SuperAdminDashboard />;
-  }
-  if (user?.role === Role.CLUB_LEADER) {
-    return <ClubLeaderDashboard />;
   }
   return <DashboardPage />;
 }

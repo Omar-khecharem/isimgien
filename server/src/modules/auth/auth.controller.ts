@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as authService from "./auth.service";
 import { ApiResponse } from "../../shared/utils/apiResponse";
+import { ApiError } from "../../shared/utils/ApiError";
 import { asyncHandler } from "../../shared/utils/asyncHandler";
 import { config } from "../../config";
 
@@ -65,4 +66,15 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
 export const logout = asyncHandler(async (_req: Request, res: Response) => {
   res.clearCookie("refreshToken", CLEAR_COOKIE_OPTIONS);
   ApiResponse.success(res, null, 200, "Logged out successfully");
+});
+
+export const uploadAvatar = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.file) {
+    throw ApiError.badRequest("No file uploaded");
+  }
+
+  const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+  const user = await authService.updateAvatar(req.user!.id, avatarUrl);
+
+  ApiResponse.success(res, { avatar: user.avatar }, 200, "Avatar uploaded successfully");
 });

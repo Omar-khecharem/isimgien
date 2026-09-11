@@ -7,8 +7,6 @@ import { ROUTES } from "../routes/paths";
 import { Role } from "../types";
 import styles from "./DashboardLayout.module.css";
 
-const PROFILE_PHOTO_KEY = "clubhub_profile_photo";
-
 interface NavItem {
   to: string;
   label: string;
@@ -29,6 +27,20 @@ const NAV_ITEMS: NavItem[] = [
         <rect x="12.5" y="12.5" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_HOME,
+    label: "Tableau de bord",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="3" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="12.5" y="3" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="3" y="12.5" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="12.5" y="12.5" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
   },
   {
     to: ROUTES.ADMIN_CLUBS,
@@ -40,6 +52,32 @@ const NAV_ITEMS: NavItem[] = [
       </svg>
     ),
     badge: "12",
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_PROFILE,
+    label: "Profil du club",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2L4 5.5v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10v-5L11 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <circle cx="11" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 17.5c0-1.5 1.3-3 3-3s3 1.5 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
+    to: ROUTES.LEADER_CLUBS,
+    label: "Formations",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M3 8.5h16" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M7 2.5v3.5M15 2.5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="11" cy="13.5" r="1.5" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
   },
   {
     to: ROUTES.MY_REGISTRATIONS,
@@ -92,6 +130,19 @@ const ADMIN_ITEMS: NavItem[] = [
     roles: [Role.SUPER_ADMIN],
   },
   {
+    to: ROUTES.LEADER_MEMBERS,
+    label: "Membres",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="9" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M4 19c0-3 2.5-5.5 5-5.5s5 2.5 5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="15.5" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M15.5 11.5c2 0 3.5 1.5 3.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
     to: ROUTES.ADMIN_EVENTS,
     label: "Événements",
     icon: (
@@ -105,6 +156,17 @@ const ADMIN_ITEMS: NavItem[] = [
     roles: [Role.SUPER_ADMIN],
   },
   {
+    to: ROUTES.LEADER_FORMS,
+    label: "Formulaires",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="4" y="3" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8 8h6M8 11.5h6M8 15h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
     to: ROUTES.ADMIN_FORMS,
     label: "Formulaires",
     icon: (
@@ -116,6 +178,29 @@ const ADMIN_ITEMS: NavItem[] = [
     roles: [Role.SUPER_ADMIN],
   },
   {
+    to: ROUTES.LEADER_FINANCE,
+    label: "Caisse",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M3 9h16" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M7 13h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
+    to: ROUTES.LEADER_REPORTS,
+    label: "Rapports",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M3 17V7l4-4 4 4 6-6v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 17h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
     to: ROUTES.ADMIN_GLOBAL_ATTENDANCE,
     label: "Présences",
     icon: (
@@ -125,6 +210,17 @@ const ADMIN_ITEMS: NavItem[] = [
       </svg>
     ),
     roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_DOCUMENTS,
+    label: "Documents",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M14 2H6a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V7l-5-5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M14 2v5h5M8 13h6M8 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
   },
 ];
 
@@ -173,29 +269,7 @@ export function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(() => {
-    try {
-      return localStorage.getItem(PROFILE_PHOTO_KEY);
-    } catch {
-      return null;
-    }
-  });
-
-  useEffect(() => {
-    const handleStorage = () => {
-      try {
-        setProfilePhoto(localStorage.getItem(PROFILE_PHOTO_KEY));
-      } catch {
-        setProfilePhoto(null);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    const interval = setInterval(handleStorage, 1000);
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-      clearInterval(interval);
-    };
-  }, []);
+  const profilePhoto = user?.avatar ?? null;
 
   const toggleMobile = useCallback(() => setMobileOpen((p) => !p), []);
   const toggleCollapse = useCallback(() => setCollapsed((p) => !p), []);
@@ -224,7 +298,7 @@ export function DashboardLayout() {
       <NavLink
         key={item.to}
         to={item.to}
-        end={item.to === ROUTES.DASHBOARD}
+        end={true}
         className={({ isActive }) =>
           `${styles.navLink} ${isActive ? styles["navLink--active"] : ""}`
         }

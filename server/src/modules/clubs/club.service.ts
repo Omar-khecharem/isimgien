@@ -242,6 +242,14 @@ export async function getClubMembers(clubId: string, query: GetClubMembersQuery)
 
 // ─── Club Leader operations ──────────────────────────────────────────────────
 
+export async function getClubByLeader(leaderId: string) {
+  const club = await clubRepo.findClubByLeaderPopulated(leaderId);
+  if (!club) {
+    throw ApiError.notFound("No club assigned to this leader");
+  }
+  return club;
+}
+
 export async function updateClubByLeader(
   clubId: string,
   leaderId: string,
@@ -252,8 +260,45 @@ export async function updateClubByLeader(
     throw ApiError.notFound("Club not found");
   }
 
-  // Leaders cannot change name, slug, or settings (those are Super Admin only)
-  const { name, slug, settings, ...allowedUpdates } = input;
+  // Verify the requester is the leader
+  if (club.leader?.toString() !== leaderId) {
+    throw ApiError.forbidden("You are not the leader of this club");
+  }
+
+  // Leaders cannot change slug or settings (Super Admin only)
+  const { slug, settings, ...rawUpdates } = input;
+
+  // Clean empty strings to null for nullable fields
+  const allowedUpdates: Record<string, any> = {};
+  for (const [key, value] of Object.entries(rawUpdates)) {
+    if (value === "" || value === undefined) {
+      // Convert empty strings to null for nullable fields
+      if (["contactEmail", "contactPhone", "establishedDate", "logo", "coverImage"].includes(key)) {
+        allowedUpdates[key] = null;
+      }
+    } else if (key === "socialLinks" && typeof value === "object") {
+      // Clean social links — convert empty strings to undefined
+      const cleaned: Record<string, string> = {};
+      for (const [k, v] of Object.entries(value as Record<string, string>)) {
+        if (v && v.trim()) {
+          cleaned[k] = v.trim();
+        }
+      }
+      allowedUpdates.socialLinks = cleaned;
+    } else {
+      allowedUpdates[key] = value;
+    }
+  }
+
+  // If name is being changed, auto-sync the slug and check uniqueness
+  if (allowedUpdates.name && allowedUpdates.name !== club.name) {
+    const newSlug = slugify(allowedUpdates.name);
+    const slugExists = await clubRepo.clubExistsBySlug(newSlug, clubId);
+    if (slugExists) {
+      throw ApiError.conflict("A club with this name already exists");
+    }
+    allowedUpdates.slug = newSlug;
+  }
 
   if (Object.keys(allowedUpdates).length === 0) {
     throw ApiError.badRequest("No updatable fields provided");

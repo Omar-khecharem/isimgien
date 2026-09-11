@@ -1,4 +1,4 @@
-import type { ApiError, ApiResponse } from "../types";
+import type { ApiError } from "../types";
 
 const BASE_URL = "/api/v1";
 
@@ -103,6 +103,25 @@ class ApiClient {
 
   async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: "DELETE" });
+  }
+
+  async upload<T>(endpoint: string, formData: FormData): Promise<T> {
+    const token = this.getAccessToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: "POST",
+      headers,
+      body: formData,
+      credentials: "include",
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw data as ApiError;
+    }
+    return data as T;
   }
 
   async refreshAccessToken(): Promise<string | null> {

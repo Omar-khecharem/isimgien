@@ -14,10 +14,10 @@ const paginationQuery = z.object({
 
 const socialLinksSchema = z
   .object({
-    website: z.string().url().optional(),
-    facebook: z.string().url().optional(),
-    instagram: z.string().url().optional(),
-    linkedin: z.string().url().optional(),
+    website: z.string().url().or(z.literal("")).optional(),
+    facebook: z.string().url().or(z.literal("")).optional(),
+    instagram: z.string().url().or(z.literal("")).optional(),
+    linkedin: z.string().url().or(z.literal("")).optional(),
   })
   .partial()
   .optional();
@@ -65,9 +65,11 @@ export const updateClubSchema = {
       .toLowerCase()
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format")
       .optional(),
+    logo: z.string().nullable().optional(),
+    coverImage: z.string().nullable().optional(),
     establishedDate: z.coerce.date().nullable().optional(),
-    contactEmail: z.string().email().nullable().optional(),
-    contactPhone: z.string().trim().max(20).nullable().optional(),
+    contactEmail: z.string().email().or(z.literal("")).nullable().optional(),
+    contactPhone: z.string().trim().max(20).or(z.literal("")).nullable().optional(),
     socialLinks: socialLinksSchema,
     settings: clubSettingsSchema,
   }),

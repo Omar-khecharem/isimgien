@@ -13,7 +13,8 @@ export enum EventStatus {
 
 export interface Event {
   _id: string;
-  club: string | { _id: string; name: string; slug: string; logo?: string };
+  club?: string | { _id: string; name: string; slug: string; logo?: string };
+  eventType: "club" | "faculty";
   title: string;
   slug: string;
   description: string;
@@ -25,6 +26,7 @@ export interface Event {
   capacity: number | null;
   status: EventStatus;
   isPublic: boolean;
+  form?: string;
   createdBy: string;
   registeredCount: number;
   createdAt: string;
