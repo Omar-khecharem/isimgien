@@ -267,6 +267,7 @@ function ClubProfileInner() {
   /* ── Errors ──────────────────────────────────────────────────────── */
 
   if (clubError) {
+    const errMsg = (clubError as any)?.error?.message || (clubError as any)?.message || "Impossible de charger les données";
     return (
       <div className={styles.page}>
         <div className={styles.emptyState}>
@@ -274,7 +275,10 @@ function ClubProfileInner() {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>
           </div>
           <h3 className={styles.emptyTitle}>Erreur de chargement</h3>
-          <p className={styles.emptyDesc}>{clubError?.message || "Impossible de charger les données"}</p>
+          <p className={styles.emptyDesc}>{errMsg}</p>
+          <button className={`${styles.btn} ${styles["btn--primary"]}`} style={{ marginTop: 12 }} onClick={() => window.location.reload()}>
+            Réessayer
+          </button>
         </div>
       </div>
     );

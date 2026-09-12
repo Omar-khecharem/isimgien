@@ -36,7 +36,7 @@ function buildSort(sort?: string): Record<string, 1 | -1> {
  * Source → allowed targets.
  */
 const VALID_TRANSITIONS: Record<TrainingStatus, TrainingStatus[]> = {
-  [TrainingStatus.DRAFT]: [TrainingStatus.PUBLISHED, TrainingStatus.CANCELLED],
+  [TrainingStatus.DRAFT]: [TrainingStatus.PUBLISHED, TrainingStatus.REGISTRATION_OPEN, TrainingStatus.CANCELLED],
   [TrainingStatus.PUBLISHED]: [
     TrainingStatus.REGISTRATION_OPEN,
     TrainingStatus.IN_PROGRESS,
@@ -93,6 +93,7 @@ export async function createTraining(
     title: input.title,
     slug,
     description: input.description,
+    poster: input.poster ?? null,
     date: input.date,
     startTime: input.startTime,
     endTime: input.endTime,
@@ -123,8 +124,8 @@ export async function updateTraining(
     throw ApiError.forbidden("Training does not belong to this club");
   }
 
-  if (training.status !== TrainingStatus.DRAFT) {
-    throw ApiError.badRequest("Only draft trainings can be updated");
+  if (training.status === TrainingStatus.COMPLETED || training.status === TrainingStatus.CANCELLED) {
+    throw ApiError.badRequest("Cannot update a completed or cancelled training");
   }
 
   if (input.slug && input.slug !== training.slug) {
@@ -148,7 +149,15 @@ export async function updateTraining(
     }
   }
 
-  const updated = await trainingRepo.updateTraining(trainingId, input as any);
+  const updateData: Record<string, unknown> = { ...input };
+  if ("linkedFormId" in input) {
+    updateData.linkedForm = input.linkedFormId
+      ? new mongoose.Types.ObjectId(input.linkedFormId)
+      : null;
+    delete updateData.linkedFormId;
+  }
+
+  const updated = await trainingRepo.updateTraining(trainingId, updateData as any);
   return updated!.toJSON();
 }
 

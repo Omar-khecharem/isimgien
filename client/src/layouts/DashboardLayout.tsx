@@ -235,7 +235,29 @@ const BOTTOM_ITEMS: NavItem[] = [
       </svg>
     ),
     badge: "3",
-    roles: [Role.SUPER_ADMIN, Role.CLUB_LEADER, Role.STUDENT],
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_NOTIFICATIONS,
+    label: "Notifications",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M16 8a5 5 0 10-10 0c0 5.5-2.5 7-2.5 7h15S16 13.5 16 8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M12.5 18a2 2 0 01-3 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
+    to: ROUTES.MY_REGISTRATIONS,
+    label: "Notifications",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M16 8a5 5 0 10-10 0c0 5.5-2.5 7-2.5 7h15S16 13.5 16 8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M12.5 18a2 2 0 01-3 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
   },
   {
     to: ROUTES.ADMIN_HELP,
@@ -247,7 +269,31 @@ const BOTTOM_ITEMS: NavItem[] = [
         <circle cx="11.2" cy="15.5" r="0.7" fill="currentColor" />
       </svg>
     ),
-    roles: [Role.SUPER_ADMIN, Role.CLUB_LEADER, Role.STUDENT],
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_HELP,
+    label: "Aide & Support",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8.5 8.5a3 3 0 014.2 2c0 .8-.5 1.3-1.2 1.8v.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="11.2" cy="15.5" r="0.7" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
+  },
+  {
+    to: ROUTES.ADMIN_HELP,
+    label: "Aide & Support",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M8.5 8.5a3 3 0 014.2 2c0 .8-.5 1.3-1.2 1.8v.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="11.2" cy="15.5" r="0.7" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
   },
   {
     to: ROUTES.ADMIN_SETTINGS,
@@ -258,7 +304,18 @@ const BOTTOM_ITEMS: NavItem[] = [
         <path d="M11 3v2.5M11 16.5v2.5M3 11h2.5M16.5 11H19M5.2 5.2l1.8 1.8M15 15l1.8 1.8M5.2 16.8l1.8-1.8M15 7l1.8-1.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
-    roles: [Role.SUPER_ADMIN, Role.CLUB_LEADER],
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
+    to: ROUTES.LEADER_SETTINGS,
+    label: "Paramètres",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M11 3v2.5M11 16.5v2.5M3 11h2.5M16.5 11H19M5.2 5.2l1.8 1.8M15 15l1.8 1.8M5.2 16.8l1.8-1.8M15 7l1.8-1.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.CLUB_LEADER],
   },
 ];
 

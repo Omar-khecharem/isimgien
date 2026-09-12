@@ -24,6 +24,7 @@ export const createTrainingSchema = {
     .object({
       title: z.string().trim().min(1).max(300),
       description: z.string().trim().min(1).max(10000),
+      poster: z.string().trim().max(500).nullable().optional(),
       date: z.coerce.date(),
       startTime: z.string().regex(timeRegex, "Time format: HH:mm"),
       endTime: z.string().regex(timeRegex, "Time format: HH:mm"),
@@ -56,6 +57,7 @@ export const updateTrainingSchema = {
     .object({
       title: z.string().trim().min(1).max(300).optional(),
       description: z.string().trim().min(1).max(10000).optional(),
+      poster: z.string().trim().max(500).nullable().optional(),
       date: z.coerce.date().optional(),
       startTime: z.string().regex(timeRegex, "Time format: HH:mm").optional(),
       endTime: z.string().regex(timeRegex, "Time format: HH:mm").optional(),

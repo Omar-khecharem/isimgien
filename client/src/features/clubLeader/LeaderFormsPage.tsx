@@ -133,7 +133,7 @@ export default function LeaderFormsPage() {
       const params: Record<string, any> = { page, limit };
       if (isPublishedFilter !== undefined) params.isPublished = isPublishedFilter;
       if (search.trim()) params.search = search.trim();
-      return (await clubLeaderService.listForms(clubId, params)).data;
+      return (await clubLeaderService.listForms(clubId, params)) as any;
     },
     enabled: !!clubId,
   });
@@ -155,7 +155,7 @@ export default function LeaderFormsPage() {
     queryKey: ["leader", "form-responses", clubId, viewingResponses?._id, responsePage],
     queryFn: async () => {
       if (!clubId || !viewingResponses) return null;
-      return (await clubLeaderService.getFormResponses(clubId, viewingResponses._id, { page: responsePage, limit: 10 })).data;
+      return (await clubLeaderService.getFormResponses(clubId, viewingResponses._id, { page: responsePage, limit: 10 })) as any;
     },
     enabled: !!clubId && !!viewingResponses,
   });
@@ -601,27 +601,102 @@ export default function LeaderFormsPage() {
             <div className={styles.modalHead}>
               <div>
                 <div className={styles.modalTitle}>Réponses — {viewingResponses.title}</div>
-                <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>Version {viewingResponses.version}</div>
+                <div className={styles.modalSubtitle}>Version {viewingResponses.version} · {viewingResponses.questions.length} question{viewingResponses.questions.length !== 1 ? "s" : ""}</div>
               </div>
-              <button className={styles.modalClose} onClick={() => setViewingResponses(null)}>{I.close}</button>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                {responseStats && responseStats.totalResponses > 0 && (
+                  <button className={`${styles.btn} ${styles["btn--ghost"]} ${styles["btn--sm"]}`}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                    Exporter
+                  </button>
+                )}
+                <button className={styles.modalClose} onClick={() => setViewingResponses(null)}>{I.close}</button>
+              </div>
             </div>
             <div className={styles.modalBody}>
+              {/* ── Enhanced Stats ── */}
               {responseStats && (
-                <div className={styles.responseStatsRow}>
-                  <div className={styles.responseStat}>
-                    <div className={styles.responseStatValue}>{responseStats.totalResponses}</div>
-                    <div className={styles.responseStatLabel}>Total réponses</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+                  <div style={{ background: "linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)", borderRadius: 14, padding: "18px 16px", textAlign: "center", border: "1px solid #A7F3D0" }}>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: "#059669", lineHeight: 1 }}>{responseStats.totalResponses}</div>
+                    <div style={{ fontSize: 12, color: "#047857", marginTop: 4, fontWeight: 600 }}>Total réponses</div>
                   </div>
-                  <div className={styles.responseStat}>
-                    <div className={styles.responseStatValue}>{responseStats.currentVersionResponses}</div>
-                    <div className={styles.responseStatLabel}>Version actuelle</div>
+                  <div style={{ background: "linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)", borderRadius: 14, padding: "18px 16px", textAlign: "center", border: "1px solid #93C5FD" }}>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: "#2563EB", lineHeight: 1 }}>{responseStats.currentVersionResponses}</div>
+                    <div style={{ fontSize: 12, color: "#1D4ED8", marginTop: 4, fontWeight: 600 }}>Version actuelle</div>
                   </div>
-                  <div className={styles.responseStat}>
-                    <div className={styles.responseStatValue}>{responseStats.previousVersionResponses}</div>
-                    <div className={styles.responseStatLabel}>Versions précédentes</div>
+                  <div style={{ background: "linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)", borderRadius: 14, padding: "18px 16px", textAlign: "center", border: "1px solid #C4B5FD" }}>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: "#7C3AED", lineHeight: 1 }}>{responseStats.previousVersionResponses}</div>
+                    <div style={{ fontSize: 12, color: "#6D28D9", marginTop: 4, fontWeight: 600 }}>Versions précédentes</div>
                   </div>
                 </div>
               )}
+
+              {/* ── Version Distribution Bar ── */}
+              {responseStats && responseStats.totalResponses > 0 && (
+                <div style={{ marginBottom: 20, padding: "14px 16px", background: "#F8FAFC", borderRadius: 12, border: "1px solid #E2E8F0" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>Répartition par version</span>
+                    <span style={{ fontSize: 12, color: "#64748B" }}>
+                      {responseStats.totalResponses > 0 ? Math.round((responseStats.currentVersionResponses / responseStats.totalResponses) * 100) : 0}% version actuelle
+                    </span>
+                  </div>
+                  <div style={{ height: 8, background: "#E2E8F0", borderRadius: 4, overflow: "hidden", display: "flex" }}>
+                    <div style={{ width: `${responseStats.totalResponses > 0 ? (responseStats.currentVersionResponses / responseStats.totalResponses) * 100 : 0}%`, background: "linear-gradient(90deg, #3B82F6, #2563EB)", borderRadius: 4, transition: "width 0.6s ease" }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: 2, background: "#2563EB" }} />
+                      <span style={{ fontSize: 11, color: "#64748B" }}>v{viewingResponses.version} (actuelle)</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: 2, background: "#C4B5FD" }} />
+                      <span style={{ fontSize: 11, color: "#64748B" }}>Précédentes</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── Per-Question Summary ── */}
+              {viewingResponses.questions.length > 0 && (
+                <div style={{ marginBottom: 20 }}>
+                  <h4 style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", marginBottom: 10, letterSpacing: "-0.01em" }}>Résumé par question</h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {viewingResponses.questions.slice(0, 4).map((q, i) => (
+                      <div key={q._id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#FAFBFC", borderRadius: 10, border: "1px solid #F1F5F9" }}>
+                        <div style={{ width: 26, height: 26, borderRadius: 7, background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#475569", flexShrink: 0 }}>{i + 1}</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "#0F172A", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{q.label}</div>
+                          <div style={{ fontSize: 11, color: "#94A3B8", marginTop: 1 }}>
+                            {q.type === "single_choice" || q.type === "multiple_choice" || q.type === "dropdown"
+                              ? `${q.options?.length ?? 0} options`
+                              : q.type === "short_text" ? "Texte libre" : q.type === "email" ? "Email" : q.type === "number" ? "Nombre" : q.type === "date" ? "Date" : "Texte long"}
+                          </div>
+                        </div>
+                        <span style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: q.required ? "#FEF3C7" : "#F1F5F9", color: q.required ? "#D97706" : "#94A3B8" }}>
+                          {q.required ? "Requis" : "Optionnel"}
+                        </span>
+                      </div>
+                    ))}
+                    {viewingResponses.questions.length > 4 && (
+                      <div style={{ textAlign: "center", padding: 6, fontSize: 12, color: "#94A3B8" }}>
+                        +{viewingResponses.questions.length - 4} question{viewingResponses.questions.length - 4 > 1 ? "s" : ""} de plus
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Divider ── */}
+              <div style={{ borderTop: "1px solid #F1F5F9", margin: "0 -24px", padding: "0 24px" }} />
+
+              {/* ── Response List Header ── */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0 12px" }}>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: "#0F172A", letterSpacing: "-0.01em" }}>
+                  Membres ayant répondu
+                  <span style={{ fontSize: 12, fontWeight: 500, color: "#94A3B8", marginLeft: 6 }}>({respMeta?.total ?? 0})</span>
+                </h4>
+              </div>
 
               {responses.length === 0 ? (
                 <div className={styles.emptyState} style={{ padding: "40px 0" }}>
@@ -631,7 +706,7 @@ export default function LeaderFormsPage() {
                 </div>
               ) : (
                 <div className={styles.responseList}>
-                  {responses.map((r) => {
+                  {responses.map((r, idx) => {
                     const name = `${r.user?.firstName || ""} ${r.user?.lastName || ""}`.trim() || "—";
                     const color = getAvatarColor(name);
                     return (
@@ -645,8 +720,13 @@ export default function LeaderFormsPage() {
                             <div className={styles.responseUserEmail}>{r.user?.email}</div>
                           </div>
                         </div>
-                        <div className={styles.responseDate}>
-                          {new Date(r.submittedAt || r.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+                          <span style={{ fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: "#ECFDF5", color: "#059669" }}>
+                            v{r.formVersion || viewingResponses.version}
+                          </span>
+                          <div className={styles.responseDate}>
+                            {new Date(r.submittedAt || r.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                          </div>
                         </div>
                       </div>
                     );
@@ -661,6 +741,22 @@ export default function LeaderFormsPage() {
                     <button className={styles.pageBtn} disabled={responsePage <= 1} onClick={() => setResponsePage((p) => p - 1)}>
                       {I.arrowLeft}
                     </button>
+                    {Array.from({ length: Math.min(respMeta.totalPages, 5) }, (_, i) => {
+                      let pageNum: number;
+                      if (respMeta.totalPages <= 5) pageNum = i + 1;
+                      else if (responsePage <= 3) pageNum = i + 1;
+                      else if (responsePage >= respMeta.totalPages - 2) pageNum = respMeta.totalPages - 4 + i;
+                      else pageNum = responsePage - 2 + i;
+                      return (
+                        <button
+                          key={pageNum}
+                          className={`${styles.pageBtn} ${pageNum === responsePage ? styles["pageBtn--active"] : ""}`}
+                          onClick={() => setResponsePage(pageNum)}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
                     <button className={styles.pageBtn} disabled={responsePage >= respMeta.totalPages} onClick={() => setResponsePage((p) => p + 1)}>
                       {I.arrowRight}
                     </button>

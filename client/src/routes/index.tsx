@@ -20,6 +20,10 @@ import { ClubProfile } from "../features/clubLeader/ClubProfile";
 import LeaderMembersPage from "../features/clubLeader/LeaderMembersPage";
 import LeaderFormsPage from "../features/clubLeader/LeaderFormsPage";
 import LeaderFinancePage from "../features/clubLeader/LeaderFinancePage";
+import LeaderFormationsPage from "../features/clubLeader/LeaderFormationsPage";
+import LeaderNotificationsPage from "../features/clubLeader/LeaderNotificationsPage";
+import LeaderSettingsPage from "../features/clubLeader/LeaderSettingsPage";
+import LeaderHelpPage from "../features/clubLeader/LeaderHelpPage";
 import { AttendanceSessionPage } from "../features/attendance";
 import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
 import { AdminSettings } from "../pages/settings/AdminSettings";
@@ -154,7 +158,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "clubs",
-            element: <PlaceholderPage title="Mes Clubs" />,
+            element: <LeaderFormationsPage />,
           },
           {
             path: "forms",
@@ -174,7 +178,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "notifications",
-            element: <PlaceholderPage title="Notifications" />,
+            element: <LeaderNotificationsPage />,
           },
           {
             path: "documents",
@@ -182,11 +186,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "settings",
-            element: <PlaceholderPage title="Paramètres" />,
+            element: <LeaderSettingsPage />,
           },
           {
             path: "help",
-            element: <PlaceholderPage title="Aide & Support" />,
+            element: <LeaderHelpPage />,
           },
         ],
       },

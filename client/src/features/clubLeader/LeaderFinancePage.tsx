@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../../features/auth";
 import { clubsService } from "../clubs/clubsService";
-import { financeService, type Transaction } from "../../features/finance/financeService";
-import { clubLeaderService, type MembershipStats } from "./clubLeaderService";
+import { financeService, type Transaction, type FinanceSummary } from "../finance/financeService";
+import { clubLeaderService } from "./clubLeaderService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./LeaderFinancePage.module.css";
 
@@ -14,37 +14,58 @@ const I = {
   check: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
   x: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
   close: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
-  dollar: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>,
-  trendingUp: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>,
-  trendingDown: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6" /><polyline points="17 18 23 18 23 12" /></svg>,
-  users: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>,
+  arrowUp: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></svg>,
+  arrowDown: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></svg>,
+  wallet: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4" /><path d="M3 5v14a2 2 0 002 2h16v-5" /><path d="M18 12a2 2 0 100 4 2 2 0 000-4z" /></svg>,
+  trendingUp: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>,
+  trendingDown: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6" /><polyline points="17 18 23 18 23 12" /></svg>,
+  alert: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>,
   arrowLeft: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>,
   arrowRight: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
-  receipt: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /><path d="M14 8h-4" /><path d="M16 12h-6" /></svg>,
-  alert: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>,
+  receipt: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z" /><path d="M14 8H8" /><path d="M16 12H8" /></svg>,
+  calendar: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>,
+  user: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
 };
 
-const CATEGORIES: Record<string, { label: string; color: string; bg: string }> = {
-  membership_fee: { label: "Cotisation", color: "#059669", bg: "#ECFDF5" },
-  event_revenue: { label: "Événement", color: "#2563EB", bg: "#EFF6FF" },
-  training_fee: { label: "Formation", color: "#7C3AED", bg: "#F5F3FF" },
-  equipment: { label: "Équipement", color: "#EA580C", bg: "#FFF7ED" },
-  supplies: { label: "Fournitures", color: "#0891B2", bg: "#ECFEFF" },
-  transport: { label: "Transport", color: "#D97706", bg: "#FFFBEB" },
-  other_income: { label: "Autre revenu", color: "#059669", bg: "#ECFDF5" },
-  other_expense: { label: "Autre dépense", color: "#6B7280", bg: "#F3F4F6" },
+const CATEGORIES: Record<string, { label: string; type: "income" | "expense" }> = {
+  membership_fee: { label: "Cotisation", type: "income" },
+  event_revenue: { label: "Événement", type: "income" },
+  training_fee: { label: "Formation", type: "income" },
+  other_income: { label: "Autre revenu", type: "income" },
+  equipment: { label: "Équipement", type: "expense" },
+  supplies: { label: "Fournitures", type: "expense" },
+  transport: { label: "Transport", type: "expense" },
+  other_expense: { label: "Autre dépense", type: "expense" },
 };
 
-function getCategoryInfo(cat: string) {
-  return CATEGORIES[cat] || { label: cat, color: "#6B7280", bg: "#F3F4F6" };
-}
+const CATEGORY_LABELS: Record<string, string> = {
+  membership_fee: "Cotisation",
+  event_revenue: "Événement",
+  training_fee: "Formation",
+  other_income: "Autre revenu",
+  equipment: "Équipement",
+  supplies: "Fournitures",
+  transport: "Transport",
+  other_expense: "Autre dépense",
+};
 
-function formatAmount(n: number) {
-  return new Intl.NumberFormat("fr-TN", { style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + " TND";
+const BREAKDOWN_COLORS: Record<string, string> = {
+  membership_fee: "#059669",
+  event_revenue: "#10B981",
+  training_fee: "#34D399",
+  other_income: "#6EE7B7",
+  equipment: "#DC2626",
+  supplies: "#F87171",
+  transport: "#FCA5A5",
+  other_expense: "#FECACA",
+};
+
+function formatTND(amount: number | undefined | null) {
+  return (amount ?? 0).toLocaleString("fr-TN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT
+   MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export default function LeaderFinancePage() {
@@ -55,33 +76,37 @@ export default function LeaderFinancePage() {
   const [typeFilter, setTypeFilter] = useState<"all" | "income" | "expense">("all");
   const [page, setPage] = useState(1);
   const [showCreate, setShowCreate] = useState(false);
+
+  // Create form state
+  const [txType, setTxType] = useState<"income" | "expense">("income");
+  const [txCategory, setTxCategory] = useState("membership_fee");
+  const [txAmount, setTxAmount] = useState("");
+  const [txDescription, setTxDescription] = useState("");
+  const [txDate, setTxDate] = useState(new Date().toISOString().split("T")[0]);
+  const [txNotes, setTxNotes] = useState("");
+
   const [toast, setToast] = useState<{ msg: string; error?: boolean } | null>(null);
   const showToast = (msg: string, error = false) => {
     setToast({ msg, error });
     setTimeout(() => setToast(null), 3000);
   };
 
-  const limit = 12;
+  const limit = 15;
 
-  /* ── Create form state ─────────────────────────────────────────────── */
-  const [txType, setTxType] = useState<"income" | "expense">("income");
-  const [txCategory, setTxCategory] = useState("membership_fee");
-  const [txAmount, setTxAmount] = useState("");
-  const [txDesc, setTxDesc] = useState("");
-  const [txDate, setTxDate] = useState(new Date().toISOString().slice(0, 10));
-  const [txNotes, setTxNotes] = useState("");
+  /* ── Fetch club ──────────────────────────────────────────────────────── */
 
-  /* ── Fetch club ────────────────────────────────────────────────────── */
   const { data: clubData } = useQuery({
     queryKey: ["leader", "my-club"],
     queryFn: async () => (await clubsService.getMyClub()).data,
     enabled: !!user,
   });
+
   const clubId = clubData?._id;
 
-  /* ── Fetch balance ─────────────────────────────────────────────────── */
+  /* ── Fetch balance ───────────────────────────────────────────────────── */
+
   const { data: balanceData } = useQuery({
-    queryKey: ["leader", "balance", clubId],
+    queryKey: ["leader", "finance-balance", clubId],
     queryFn: async () => {
       if (!clubId) return null;
       return (await financeService.getBalance(clubId)).data;
@@ -89,9 +114,10 @@ export default function LeaderFinancePage() {
     enabled: !!clubId,
   });
 
-  /* ── Fetch summary ─────────────────────────────────────────────────── */
+  /* ── Fetch summary ───────────────────────────────────────────────────── */
+
   const { data: summaryData } = useQuery({
-    queryKey: ["leader", "summary", clubId],
+    queryKey: ["leader", "finance-summary", clubId],
     queryFn: async () => {
       if (!clubId) return null;
       return (await financeService.getSummary(clubId)).data;
@@ -99,7 +125,8 @@ export default function LeaderFinancePage() {
     enabled: !!clubId,
   });
 
-  /* ── Fetch membership stats ────────────────────────────────────────── */
+  /* ── Fetch membership stats for cotisations ──────────────────────────── */
+
   const { data: memberStats } = useQuery({
     queryKey: ["leader", "member-stats", clubId],
     queryFn: async () => {
@@ -109,9 +136,10 @@ export default function LeaderFinancePage() {
     enabled: !!clubId,
   });
 
-  /* ── Fetch transactions ────────────────────────────────────────────── */
+  /* ── Fetch transactions ──────────────────────────────────────────────── */
+
   const { data: txData, isLoading: txLoading } = useQuery({
-    queryKey: ["leader", "transactions", clubId, page, typeFilter, search],
+    queryKey: ["leader", "finance-tx", clubId, page, typeFilter, search],
     queryFn: async () => {
       if (!clubId) return null;
       const params: Record<string, any> = { page, limit, sort: "-date" };
@@ -122,78 +150,73 @@ export default function LeaderFinancePage() {
     enabled: !!clubId,
   });
 
-  /* ── Create mutation ───────────────────────────────────────────────── */
+  /* ── Create mutation ─────────────────────────────────────────────────── */
+
   const createMutation = useMutation({
     mutationFn: async () => {
-      if (!clubId) throw new Error("Missing");
+      if (!clubId) throw new Error("Club non trouvé");
+      if (!txDescription.trim()) throw new Error("La description est requise");
+      if (!txAmount || Number(txAmount) <= 0) throw new Error("Le montant doit être supérieur à 0");
       return financeService.createTransaction(clubId, {
         type: txType,
-        category: txCategory as any,
-        amount: parseFloat(txAmount),
-        description: txDesc.trim(),
-        date: new Date(txDate).toISOString(),
-        notes: txNotes.trim() || null,
+        category: txCategory,
+        amount: Number(txAmount),
+        description: txDescription.trim(),
+        date: txDate,
+        notes: txNotes.trim() || undefined,
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["leader", "transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["leader", "balance"] });
-      queryClient.invalidateQueries({ queryKey: ["leader", "summary"] });
+      queryClient.invalidateQueries({ queryKey: ["leader", "finance-balance"] });
+      queryClient.invalidateQueries({ queryKey: ["leader", "finance-summary"] });
+      queryClient.invalidateQueries({ queryKey: ["leader", "finance-tx"] });
+      queryClient.invalidateQueries({ queryKey: ["leader", "member-stats"] });
       setShowCreate(false);
       resetForm();
       showToast("Transaction enregistrée");
     },
-    onError: () => showToast("Erreur lors de l'enregistrement", true),
+    onError: (error: any) => {
+      let msg = "Erreur lors de l'enregistrement";
+      if (error?.error?.details) {
+        const details = error.error.details;
+        const firstKey = Object.keys(details)[0];
+        if (firstKey) msg = details[firstKey];
+      } else if (error?.error?.message) {
+        msg = error.error.message;
+      } else if (error?.message) {
+        msg = error.message;
+      }
+      showToast(msg, true);
+    },
   });
 
   const resetForm = () => {
     setTxType("income");
     setTxCategory("membership_fee");
     setTxAmount("");
-    setTxDesc("");
-    setTxDate(new Date().toISOString().slice(0, 10));
+    setTxDescription("");
+    setTxDate(new Date().toISOString().split("T")[0]);
     setTxNotes("");
   };
 
-  /* ── Derived ───────────────────────────────────────────────────────── */
-  const balance = balanceData ?? null;
-  const summary = summaryData ?? null;
+  /* ── Derived ─────────────────────────────────────────────────────────── */
+
+  const balance = balanceData;
+  const summary = summaryData as FinanceSummary | null;
   const transactions = txData?.data ?? [];
   const meta = txData?.meta;
   const totalPages = meta?.totalPages ?? 1;
 
-  const incomeCategories = summary?.categoryBreakdown
-    ? Object.entries(summary.categoryBreakdown).filter(([, v]) => v.income > 0)
-    : [];
-  const expenseCategories = summary?.categoryBreakdown
-    ? Object.entries(summary.categoryBreakdown).filter(([, v]) => v.expense > 0)
-    : [];
-  const maxCatAmount = Math.max(
-    ...incomeCategories.map(([, v]) => v.income),
-    ...expenseCategories.map(([, v]) => v.expense),
-    1
-  );
-
-  const currentCategories = txType === "income"
-    ? [
-        { value: "membership_fee", label: "Cotisation" },
-        { value: "event_revenue", label: "Événement" },
-        { value: "training_fee", label: "Formation" },
-        { value: "other_income", label: "Autre revenu" },
-      ]
-    : [
-        { value: "equipment", label: "Équipement" },
-        { value: "supplies", label: "Fournitures" },
-        { value: "transport", label: "Transport" },
-        { value: "other_expense", label: "Autre dépense" },
-      ];
+  const incomeCategories = Object.entries(CATEGORIES).filter(([, c]) => c.type === "income");
+  const expenseCategories = Object.entries(CATEGORIES).filter(([, c]) => c.type === "expense");
+  const availableCategories = txType === "income" ? incomeCategories : expenseCategories;
 
   if (txLoading && !txData) {
     return (
       <div className={styles.page}>
         <div className={styles.loadingWrap}>
           <div className={styles.spinner} />
-          <p className={styles.loadingText}>Chargement des finances...</p>
+          <p className={styles.loadingText}>Chargement de la caisse...</p>
         </div>
       </div>
     );
@@ -218,261 +241,248 @@ export default function LeaderFinancePage() {
         </button>
       </div>
 
-      {/* Stats */}
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <div className={`${styles.statIcon} ${styles["statIcon--balance"]}`}>{I.dollar}</div>
-          <div className={styles.statInfo}>
-            <div className={styles.statValue}>{formatAmount(balance?.balance ?? 0)}</div>
-            <div className={styles.statLabel}>Solde actuel</div>
+      {/* Balance Cards */}
+      <div className={styles.balanceGrid}>
+        <div className={`${styles.balanceCard} ${styles["balanceCard--income"]}`}>
+          <div className={`${styles.balanceIcon} ${styles["balanceIcon--income"]}`}>{I.arrowUp}</div>
+          <div className={styles.balanceInfo}>
+            <div className={styles.balanceLabel}>Revenus totaux</div>
+            <div className={`${styles.balanceValue} ${styles["balanceValue--income"]}`}>
+              {formatTND(balance?.totalIncome ?? 0)}<span className={styles.balanceCurrency}>TND</span>
+            </div>
           </div>
         </div>
-        <div className={styles.statCard}>
-          <div className={`${styles.statIcon} ${styles["statIcon--income"]}`}>{I.trendingUp}</div>
-          <div className={styles.statInfo}>
-            <div className={`${styles.statValue} ${styles.amount} ${styles["amount--income"]}`}>{formatAmount(balance?.totalIncome ?? 0)}</div>
-            <div className={styles.statLabel}>Revenus</div>
+        <div className={`${styles.balanceCard} ${styles["balanceCard--expense"]}`}>
+          <div className={`${styles.balanceIcon} ${styles["balanceIcon--expense"]}`}>{I.arrowDown}</div>
+          <div className={styles.balanceInfo}>
+            <div className={styles.balanceLabel}>Dépenses totales</div>
+            <div className={`${styles.balanceValue} ${styles["balanceValue--expense"]}`}>
+              {formatTND(balance?.totalExpenses ?? 0)}<span className={styles.balanceCurrency}>TND</span>
+            </div>
           </div>
         </div>
-        <div className={styles.statCard}>
-          <div className={`${styles.statIcon} ${styles["statIcon--expense"]}`}>{I.trendingDown}</div>
-          <div className={styles.statInfo}>
-            <div className={`${styles.statValue} ${styles.amount} ${styles["amount--expense"]}`}>{formatAmount(balance?.totalExpenses ?? 0)}</div>
-            <div className={styles.statLabel}>Dépenses</div>
-          </div>
-        </div>
-        <div className={styles.statCard}>
-          <div className={`${styles.statIcon} ${styles["statIcon--count"]}`}>{I.receipt}</div>
-          <div className={styles.statInfo}>
-            <div className={styles.statValue}>{meta?.total ?? 0}</div>
-            <div className={styles.statLabel}>Transactions</div>
+        <div className={`${styles.balanceCard} ${styles["balanceCard--net"]} ${(balance?.balance ?? 0) < 0 ? styles.negative : ""}`}>
+          <div className={`${styles.balanceIcon} ${styles["balanceIcon--net"]}`}>{I.wallet}</div>
+          <div className={styles.balanceInfo}>
+            <div className={styles.balanceLabel}>Solde net</div>
+            <div className={`${styles.balanceValue} ${styles["balanceValue--net"]} ${(balance?.balance ?? 0) < 0 ? styles.negative : ""}`}>
+              {formatTND(balance?.balance ?? 0)}<span className={styles.balanceCurrency}>TND</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Content Grid */}
-      <div className={styles.contentGrid}>
-        {/* Left: Transactions */}
-        <div>
-          {/* Toolbar */}
-          <div className={styles.toolbar}>
-            <div className={styles.toolbarLeft}>
-              <div className={styles.searchWrap}>
-                <span className={styles.searchIcon}>{I.search}</span>
-                <input
-                  className={styles.searchInput}
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={search}
-                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                />
-              </div>
-              <div className={styles.filterTabs}>
-                {(["all", "income", "expense"] as const).map((f) => (
-                  <button
-                    key={f}
-                    className={`${styles.filterTab} ${typeFilter === f ? styles["filterTab--active"] : ""}`}
-                    onClick={() => { setTypeFilter(f); setPage(1); }}
-                  >
-                    {f === "all" ? "Tous" : f === "income" ? "Revenus" : "Dépenses"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className={styles.sectionCard} style={{ marginTop: 12 }}>
-            {transactions.length === 0 ? (
-              <div className={styles.emptyState}>
-                <div className={styles.emptyIcon}>{I.receipt}</div>
-                <div className={styles.emptyTitle}>Aucune transaction</div>
-                <div className={styles.emptyDesc}>
-                  {search || typeFilter !== "all"
-                    ? "Aucune transaction ne correspond à votre recherche"
-                    : "Enregistrez votre première transaction pour commencer"}
-                </div>
-              </div>
-            ) : (
-              <>
-                <table className={styles.table}>
-                  <thead>
-                    <tr>
-                      <th>Type</th>
-                      <th>Catégorie</th>
-                      <th>Description</th>
-                      <th>Montant</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {transactions.map((tx) => {
-                      const cat = getCategoryInfo(tx.category);
-                      return (
-                        <tr key={tx._id}>
-                          <td>
-                            <span className={`${styles.typeBadge} ${tx.type === "income" ? styles["typeBadge--income"] : styles["typeBadge--expense"]}`}>
-                              <span className={styles.typeDot} />
-                              {tx.type === "income" ? "Revenu" : "Dépense"}
-                            </span>
-                          </td>
-                          <td>
-                            <span className={styles.catBadge} style={{ background: cat.bg, color: cat.color }}>
-                              {cat.label}
-                            </span>
-                          </td>
-                          <td style={{ maxWidth: 250, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                            {tx.description}
-                          </td>
-                          <td>
-                            <span className={`${styles.amount} ${tx.type === "income" ? styles["amount--income"] : styles["amount--expense"]}`}>
-                              {tx.type === "income" ? "+" : "−"}{formatAmount(tx.amount)}
-                            </span>
-                          </td>
-                          <td style={{ color: "#6B7280", fontSize: 13 }}>
-                            {new Date(tx.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-
-                {totalPages > 1 && (
-                  <div className={styles.pagination}>
-                    <div className={styles.paginationInfo}>Page {page} sur {totalPages}</div>
-                    <div className={styles.paginationBtns}>
-                      <button className={styles.pageBtn} disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                        {I.arrowLeft}
-                      </button>
-                      {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                        let n: number;
-                        if (totalPages <= 5) n = i + 1;
-                        else if (page <= 3) n = i + 1;
-                        else if (page >= totalPages - 2) n = totalPages - 4 + i;
-                        else n = page - 2 + i;
-                        return (
-                          <button
-                            key={n}
-                            className={`${styles.pageBtn} ${n === page ? styles["pageBtn--active"] : ""}`}
-                            onClick={() => setPage(n)}
-                          >
-                            {n}
-                          </button>
-                        );
-                      })}
-                      <button className={styles.pageBtn} disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                        {I.arrowRight}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Right: Sidebar */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {/* Balance Hero */}
-          <div className={styles.sectionCard}>
-            <div className={styles.balanceHero}>
-              <div className={styles.balanceLabel}>Solde du club</div>
-              <div className={`${styles.balanceValue} ${(balance?.balance ?? 0) >= 0 ? styles["balanceValue--positive"] : styles["balanceValue--negative"]}`}>
-                {formatAmount(balance?.balance ?? 0)}
-              </div>
-              <div className={styles.balanceRow}>
-                <div className={styles.balanceItem}>
-                  <div className={styles.balanceItemLabel}>Revenus</div>
-                  <div className={`${styles.balanceItemValue} ${styles["balanceItemValue--income"]}`}>{formatAmount(balance?.totalIncome ?? 0)}</div>
-                </div>
-                <div className={styles.balanceItem}>
-                  <div className={styles.balanceItemLabel}>Dépenses</div>
-                  <div className={`${styles.balanceItemValue} ${styles["balanceItemValue--expense"]}`}>{formatAmount(balance?.totalExpenses ?? 0)}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Category Breakdown */}
-          <div className={styles.sectionCard}>
-            <div className={styles.sectionHead}>
-              <div>
-                <div className={styles.sectionTitle}>Répartition par catégorie</div>
-                <div className={styles.sectionSubtitle}>Revenus et dépenses</div>
-              </div>
-            </div>
-            <div className={styles.breakdownList}>
-              {incomeCategories.length === 0 && expenseCategories.length === 0 && (
-                <div style={{ textAlign: "center", padding: "20px 0", color: "#9CA3AF", fontSize: 13 }}>
-                  Aucune donnée disponible
-                </div>
-              )}
-              {incomeCategories.map(([cat, data]) => {
-                const info = getCategoryInfo(cat);
+      {/* Category Breakdown + Cotisations */}
+      <div className={styles.twoCol}>
+        {/* Category Breakdown */}
+        <div className={styles.breakdownCard}>
+          <div className={styles.breakdownTitle}>Répartition par catégorie</div>
+          {summary?.categoryBreakdown && Object.keys(summary.categoryBreakdown).length > 0 ? (
+            <div className={styles.breakdownGrid}>
+              {Object.entries(summary.categoryBreakdown).map(([cat, data]) => {
+                const total = (data as any).income + (data as any).expense;
+                if (total === 0) return null;
+                const isIncome = (data as any).income > 0;
                 return (
-                  <div key={`income-${cat}`} className={styles.breakdownItem}>
-                    <div className={styles.breakdownIcon} style={{ background: info.bg, color: info.color }}>↑</div>
-                    <div className={styles.breakdownInfo}>
-                      <div className={styles.breakdownLabel}>{info.label}</div>
-                      <div className={styles.breakdownBar}>
-                        <div
-                          className={`${styles.breakdownBarFill} ${styles["breakdownBarFill--income"]}`}
-                          style={{ width: `${(data.income / maxCatAmount) * 100}%` }}
-                        />
-                      </div>
+                  <div key={cat} className={styles.breakdownItem}>
+                    <div className={styles.breakdownItemLabel}>
+                      <span className={styles.breakdownDot} style={{ background: BREAKDOWN_COLORS[cat] || "#9CA3AF" }} />
+                      {CATEGORY_LABELS[cat] || cat}
                     </div>
-                    <div className={`${styles.breakdownAmount} ${styles["amount--income"]}`}>{formatAmount(data.income)}</div>
-                  </div>
-                );
-              })}
-              {expenseCategories.map(([cat, data]) => {
-                const info = getCategoryInfo(cat);
-                return (
-                  <div key={`expense-${cat}`} className={styles.breakdownItem}>
-                    <div className={styles.breakdownIcon} style={{ background: info.bg, color: info.color }}>↓</div>
-                    <div className={styles.breakdownInfo}>
-                      <div className={styles.breakdownLabel}>{info.label}</div>
-                      <div className={styles.breakdownBar}>
-                        <div
-                          className={`${styles.breakdownBarFill} ${styles["breakdownBarFill--expense"]}`}
-                          style={{ width: `${(data.expense / maxCatAmount) * 100}%` }}
-                        />
-                      </div>
+                    <div className={`${styles.breakdownItemValue} ${isIncome ? styles["breakdownItemValue--income"] : styles["breakdownItemValue--expense"]}`}>
+                      {isIncome ? "+" : "-"}{formatTND(isIncome ? (data as any).income : (data as any).expense)} TND
                     </div>
-                    <div className={`${styles.breakdownAmount} ${styles["amount--expense"]}`}>{formatAmount(data.expense)}</div>
                   </div>
                 );
               })}
             </div>
-          </div>
-
-          {/* Membership Fees */}
-          {memberStats && (
-            <div className={styles.sectionCard}>
-              <div className={styles.sectionHead}>
-                <div>
-                  <div className={styles.sectionTitle}>Cotisations</div>
-                  <div className={styles.sectionSubtitle}>Cotisation: {formatAmount(memberStats.membershipFee)}</div>
-                </div>
-              </div>
-              <div className={styles.feesGrid}>
-                <div className={styles.feeCard}>
-                  <div className={`${styles.feeCardValue} ${styles["amount--income"]}`}>{formatAmount(memberStats.totalRevenue)}</div>
-                  <div className={styles.feeCardLabel}>Total perçu</div>
-                </div>
-                <div className={styles.feeCard}>
-                  <div className={styles.feeCardValue}>{memberStats.active.count}</div>
-                  <div className={styles.feeCardLabel}>Membres actifs</div>
-                </div>
-                <div className={styles.feeCard}>
-                  <div className={`${styles.feeCardValue} ${styles["amount--expense"]}`}>{memberStats.pendingPayment.count}</div>
-                  <div className={styles.feeCardLabel}>En attente</div>
-                </div>
-              </div>
-            </div>
+          ) : (
+            <div className={styles.breakdownEmpty}>Aucune transaction enregistrée</div>
           )}
         </div>
+
+        {/* Cotisations Overview */}
+        <div className={styles.breakdownCard}>
+          <div className={styles.breakdownTitle}>État des cotisations</div>
+          {memberStats ? (
+            <div className={styles.breakdownGrid}>
+              <div className={styles.breakdownItem}>
+                <div className={styles.breakdownItemLabel}>
+                  <span className={styles.breakdownDot} style={{ background: "#059669" }} />
+                  Actifs — à jour
+                </div>
+                <div className={`${styles.breakdownItemValue} ${styles["breakdownItemValue--income"]}`}>
+                  {memberStats.active.count} <span className={styles.breakdownItemSub}>({formatTND(memberStats.active.totalPaid)} TND)</span>
+                </div>
+              </div>
+              <div className={styles.breakdownItem}>
+                <div className={styles.breakdownItemLabel}>
+                  <span className={styles.breakdownDot} style={{ background: "#EA580C" }} />
+                  En attente de paiement
+                </div>
+                <div className={`${styles.breakdownItemValue} ${styles["breakdownItemValue--expense"]}`}>
+                  {memberStats.pendingPayment.count} <span className={styles.breakdownItemSub}>({formatTND(memberStats.pendingPayment.totalPaid)} TND)</span>
+                </div>
+              </div>
+              <div className={styles.breakdownItem}>
+                <div className={styles.breakdownItemLabel}>
+                  <span className={styles.breakdownDot} style={{ background: "#DC2626" }} />
+                  Expirés
+                </div>
+                <div className={`${styles.breakdownItemValue} ${styles["breakdownItemValue--expense"]}`}>
+                  {memberStats.expired.count} <span className={styles.breakdownItemSub}>({formatTND(memberStats.expired.totalPaid)} TND)</span>
+                </div>
+              </div>
+              <div className={styles.breakdownSummary}>
+                <span className={styles.breakdownSummaryLabel}>Total collecté</span>
+                <span className={styles.breakdownSummaryValue}>{formatTND(memberStats.totalRevenue)} TND</span>
+              </div>
+              <div className={styles.breakdownSummaryRow}>
+                <span className={styles.breakdownSummaryLabelMuted}>Cotisation / membre</span>
+                <span className={styles.breakdownSummaryValueDark}>{formatTND(memberStats.membershipFee)} TND</span>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.breakdownEmpty}>Chargement...</div>
+          )}
+        </div>
+      </div>
+
+      {/* Toolbar */}
+      <div className={styles.toolbar}>
+        <div className={styles.toolbarLeft}>
+          <div className={styles.searchWrap}>
+            <span className={styles.searchIcon}>{I.search}</span>
+            <input
+              className={styles.searchInput}
+              type="text"
+              placeholder="Rechercher une transaction..."
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            />
+          </div>
+          <div className={styles.filterTabs}>
+            {(["all", "income", "expense"] as const).map((f) => (
+              <button
+                key={f}
+                className={`${styles.filterTab} ${typeFilter === f ? styles["filterTab--active"] : ""}`}
+                onClick={() => { setTypeFilter(f); setPage(1); }}
+              >
+                {f === "all" ? "Toutes" : f === "income" ? "Revenus" : "Dépenses"}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Transactions Table */}
+      <div className={styles.tableCard}>
+        <div className={styles.tableHead}>
+          <div>
+            <div className={styles.tableTitle}>Transactions</div>
+            <div className={styles.tableSubtitle}>{meta?.total ?? 0} transaction{(meta?.total ?? 0) !== 1 ? "s" : ""}</div>
+          </div>
+        </div>
+
+        {transactions.length === 0 ? (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>{I.receipt}</div>
+            <div className={styles.emptyTitle}>Aucune transaction</div>
+            <div className={styles.emptyDesc}>
+              {search || typeFilter !== "all"
+                ? "Aucune transaction ne correspond à votre recherche"
+                : "Enregistrez votre première transaction pour commencer"}
+            </div>
+            {!search && typeFilter === "all" && (
+              <button className={`${styles.btn} ${styles["btn--primary"]}`} onClick={() => setShowCreate(true)}>
+                {I.plus} Nouvelle transaction
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className={styles.tableCardInner}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Catégorie</th>
+                  <th>Type</th>
+                  <th>Montant</th>
+                  <th>Enregistré par</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((tx) => (
+                  <tr key={tx._id}>
+                    <td className={styles.tdDate}>
+                      <span className={styles.tdDateInner}>
+                        {I.calendar}
+                        {new Date(tx.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" })}
+                      </span>
+                    </td>
+                    <td className={styles.tdDesc}>
+                      {tx.description}
+                      {tx.notes && <span className={styles.tdNotes}>({tx.notes})</span>}
+                    </td>
+                    <td>
+                      <span className={styles.categoryBadge}>{CATEGORY_LABELS[tx.category] || tx.category}</span>
+                    </td>
+                    <td>
+                      <span className={`${styles.typeBadge} ${tx.type === "income" ? styles["typeBadge--income"] : styles["typeBadge--expense"]}`}>
+                        <span className={styles.typeDot} />
+                        {tx.type === "income" ? "Revenu" : "Dépense"}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`${styles.amountCell} ${tx.type === "income" ? styles["amountCell--income"] : styles["amountCell--expense"]}`}>
+                        {tx.type === "income" ? "+" : "-"}{formatTND(tx.amount)} TND
+                      </span>
+                    </td>
+                    <td className={styles.tdUser}>
+                      <span className={styles.tdUserInner}>
+                        {I.user}
+                        {tx.recordedBy?.firstName} {tx.recordedBy?.lastName}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </div>
+
+            {totalPages > 1 && (
+              <div className={styles.pagination}>
+                <div className={styles.paginationInfo}>Page {page} sur {totalPages}</div>
+                <div className={styles.paginationBtns}>
+                  <button className={styles.pageBtn} disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+                    {I.arrowLeft}
+                  </button>
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    let pageNum: number;
+                    if (totalPages <= 5) pageNum = i + 1;
+                    else if (page <= 3) pageNum = i + 1;
+                    else if (page >= totalPages - 2) pageNum = totalPages - 4 + i;
+                    else pageNum = page - 2 + i;
+                    return (
+                      <button
+                        key={pageNum}
+                        className={`${styles.pageBtn} ${pageNum === page ? styles["pageBtn--active"] : ""}`}
+                        onClick={() => setPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  <button className={styles.pageBtn} disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+                    {I.arrowRight}
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* ── Create Modal ──────────────────────────────────────────────── */}
@@ -487,18 +497,18 @@ export default function LeaderFinancePage() {
               {/* Type Toggle */}
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>Type <span className={styles.fieldRequired}>*</span></label>
-                <div className={styles.typeToggle}>
+                <div className={styles.filterTabs} style={{ width: "fit-content" }}>
                   <button
-                    className={`${styles.typeOption} ${styles["typeOption--income"]} ${txType === "income" ? styles["typeOption--active"] : ""}`}
+                    className={`${styles.filterTab} ${txType === "income" ? styles["filterTab--active"] : ""}`}
                     onClick={() => { setTxType("income"); setTxCategory("membership_fee"); }}
                   >
-                    ↑ Revenu
+                    {I.arrowUp} Revenu
                   </button>
                   <button
-                    className={`${styles.typeOption} ${styles["typeOption--expense"]} ${txType === "expense" ? styles["typeOption--active"] : ""}`}
+                    className={`${styles.filterTab} ${txType === "expense" ? styles["filterTab--active"] : ""}`}
                     onClick={() => { setTxType("expense"); setTxCategory("equipment"); }}
                   >
-                    ↓ Dépense
+                    {I.arrowDown} Dépense
                   </button>
                 </div>
               </div>
@@ -506,9 +516,13 @@ export default function LeaderFinancePage() {
               {/* Category */}
               <div className={styles.field}>
                 <label className={styles.fieldLabel}>Catégorie <span className={styles.fieldRequired}>*</span></label>
-                <select className={styles.select} value={txCategory} onChange={(e) => setTxCategory(e.target.value)}>
-                  {currentCategories.map((c) => (
-                    <option key={c.value} value={c.value}>{c.label}</option>
+                <select
+                  className={styles.select}
+                  value={txCategory}
+                  onChange={(e) => setTxCategory(e.target.value)}
+                >
+                  {availableCategories.map(([key, cat]) => (
+                    <option key={key} value={key}>{cat.label}</option>
                   ))}
                 </select>
               </div>
@@ -543,8 +557,8 @@ export default function LeaderFinancePage() {
                 <label className={styles.fieldLabel}>Description <span className={styles.fieldRequired}>*</span></label>
                 <input
                   className={styles.input}
-                  value={txDesc}
-                  onChange={(e) => setTxDesc(e.target.value)}
+                  value={txDescription}
+                  onChange={(e) => setTxDescription(e.target.value)}
                   placeholder="Description de la transaction..."
                 />
               </div>
@@ -567,7 +581,7 @@ export default function LeaderFinancePage() {
               </button>
               <button
                 className={`${styles.btn} ${styles["btn--primary"]}`}
-                disabled={!txAmount || parseFloat(txAmount) <= 0 || !txDesc.trim() || createMutation.isPending}
+                disabled={!txDescription.trim() || !txAmount || Number(txAmount) <= 0 || createMutation.isPending}
                 onClick={() => createMutation.mutate()}
               >
                 {createMutation.isPending ? "Enregistrement..." : "Enregistrer"}

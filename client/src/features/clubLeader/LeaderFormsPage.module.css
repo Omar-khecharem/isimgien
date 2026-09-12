@@ -685,7 +685,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1100;
   animation: fadeIn 0.15s ease;
 }
 
@@ -724,6 +724,12 @@
   font-size: 17px;
   font-weight: 700;
   color: #111827;
+}
+
+.modalSubtitle {
+  font-size: 12px;
+  color: #94A3B8;
+  margin-top: 3px;
 }
 
 .modalClose {

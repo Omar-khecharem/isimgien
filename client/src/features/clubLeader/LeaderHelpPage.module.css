@@ -1,0 +1,383 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LeaderHelpPage — Expert UI/UX
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 48px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.greeting {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #64748B;
+  font-weight: 400;
+}
+
+/* ─── Hero Card ───────────────────────────────────────────────────────── */
+
+.hero {
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #065F46 100%);
+  border-radius: 20px;
+  padding: 40px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.heroTitle {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+
+.heroDesc {
+  font-size: 14px;
+  opacity: 0.85;
+  max-width: 500px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.heroSearch {
+  display: flex;
+  gap: 10px;
+  max-width: 480px;
+}
+
+.heroInput {
+  flex: 1;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0F172A;
+  background: #fff;
+  outline: none;
+}
+
+.heroInput::placeholder { color: #94A3B8; }
+
+.heroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.heroBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Quick Links Grid ────────────────────────────────────────────────── */
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.quickCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 20px;
+  background: #fff;
+  border: 1px solid #F1F5F9;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.quickCard:hover {
+  border-color: transparent;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.quickIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  transition: transform 0.2s ease;
+}
+
+.quickCard:hover .quickIcon { transform: scale(1.08); }
+
+.quickIcon--guide { background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); color: #059669; }
+.quickIcon--faq { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); color: #3B82F6; }
+.quickIcon--contact { background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); color: #7C3AED; }
+.quickIcon--report { background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); color: #D97706; }
+
+.quickTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0F172A;
+  letter-spacing: -0.01em;
+}
+
+.quickDesc {
+  font-size: 12px;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+/* ─── FAQ Section ─────────────────────────────────────────────────────── */
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.sectionDesc {
+  font-size: 13px;
+  color: #64748B;
+  margin-bottom: 16px;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faqItem {
+  background: #fff;
+  border: 1px solid #F1F5F9;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.faqItem:hover {
+  border-color: transparent;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.faqQuestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.faqQuestionText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0F172A;
+  letter-spacing: -0.01em;
+}
+
+.faqChevron {
+  display: flex;
+  color: #94A3B8;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.faqItem--open .faqChevron {
+  transform: rotate(180deg);
+  color: #059669;
+}
+
+.faqAnswer {
+  padding: 0 20px 18px;
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.6;
+}
+
+/* ─── Contact Card ────────────────────────────────────────────────────── */
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.contactCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #F1F5F9;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+.contactCard:hover {
+  border-color: transparent;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+}
+
+.contactIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  flex-shrink: 0;
+}
+
+.contactIcon--email { background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); color: #059669; }
+.contactIcon--phone { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); color: #3B82F6; }
+.contactIcon--chat { background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); color: #7C3AED; }
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contactLabel {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.contactValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.contactLink {
+  font-size: 13px;
+  color: #059669;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contactLink:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .quickGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page { gap: 16px; }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .greeting { font-size: 22px; }
+
+  .hero {
+    padding: 28px;
+  }
+
+  .heroTitle { font-size: 20px; }
+
+  .heroSearch {
+    flex-direction: column;
+  }
+
+  .quickGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .quickCard {
+    padding: 20px 14px;
+  }
+
+  .quickIcon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quickGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 24px;
+  }
+
+  .contactCard {
+    padding: 18px;
+    gap: 12px;
+  }
+}
