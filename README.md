@@ -204,11 +204,13 @@ npm run dev             # Starts on http://localhost:5173
 
 ### Default Accounts (auto-seeded)
 
-| Email | Password | Role |
-|-------|----------|------|
-| `admin@isimg.tn` | `admin123` | Super Admin |
-| `leader@isimg.tn` | `leader123` | Club Leader |
-| `student@isimg.tn` | `student123` | Student |
+| Email | Role |
+|-------|------|
+| `admin@isimg.tn` | Super Admin |
+| `leader@isimg.tn` | Club Leader |
+| `student@isimg.tn` | Student |
+
+> Passwords are defined in the seed script (`server/src/seeds/`).
 
 ---
 
