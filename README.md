@@ -3,7 +3,7 @@
 # ISIMGIEN
 
 **Full-stack platform for managing student clubs at ISIMGIEN**
-(Institut Supérieur d'Informatique et de Multimédia de Gafsa)
+(Institut Supérieur d'Informatique et de Multimédia de Gabès)
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat&logo=typescript)
