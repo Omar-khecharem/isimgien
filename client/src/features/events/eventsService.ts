@@ -69,6 +69,17 @@ export const eventsService = {
     return apiClient.get<PaginatedResponse<Event>>("/events", params as any);
   },
 
+  // Student registration
+  async register(clubId: string, eventId: string) {
+    return apiClient.post<ApiResponse<{ _id: string }>>(
+      `/clubs/${clubId}/events/${eventId}/register`
+    );
+  },
+
+  async cancelRegistration(clubId: string, eventId: string) {
+    return apiClient.delete(`/clubs/${clubId}/events/${eventId}/register`);
+  },
+
   // Super Admin: list all events across all clubs
   async listAll(params?: PaginationParams & { status?: EventStatus; clubId?: string }) {
     return apiClient.get<PaginatedResponse<Event>>("/admin/events", params as any);

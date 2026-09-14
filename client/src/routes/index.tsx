@@ -3,7 +3,6 @@ import { RootLayout } from "../layouts/RootLayout";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { DashboardLayout } from "../layouts/DashboardLayout";
 import { PublicLayout } from "../layouts/PublicLayout";
-import { StudentLayout } from "../components/student";
 import { RequireAuth, RequireRole, GuestOnly } from "./guards";
 import { ROUTES } from "./paths";
 import { Role } from "../types";
@@ -14,7 +13,7 @@ import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { DesignSystemPage } from "../pages/design-system/DesignSystemPage";
-import { StudentDashboard } from "../components/student";
+import { StudentDashboard, StudentSettingsPage, StudentClubsPage, StudentEventsPage, StudentAttendancePage, StudentPastEventsPage, StudentContactPage } from "../components/student";
 import { ClubLeaderDashboard } from "../features/clubLeader";
 import { ClubProfile } from "../features/clubLeader/ClubProfile";
 import LeaderMembersPage from "../features/clubLeader/LeaderMembersPage";
@@ -29,6 +28,10 @@ import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
 import { AdminSettings } from "../pages/settings/AdminSettings";
 import { AdminUsers } from "../pages/admin/AdminUsers";
 import { AdminEvents } from "../pages/admin/AdminEvents";
+import { AdminClubs } from "../pages/admin/AdminClubs";
+import { AdminForms } from "../pages/admin/AdminForms";
+import { AdminAttendance } from "../pages/admin/AdminAttendance";
+import AdminContactPage from "../pages/admin/AdminContact";
 
 export const router = createBrowserRouter([
   {
@@ -73,7 +76,7 @@ export const router = createBrowserRouter([
         path: "/student",
         element: (
           <RequireAuth>
-            <StudentLayout />
+            <DashboardLayout />
           </RequireAuth>
         ),
         children: [
@@ -83,27 +86,35 @@ export const router = createBrowserRouter([
           },
           {
             path: "events",
-            element: <PlaceholderPage title="Événements & Formations" />,
+            element: <StudentEventsPage />,
           },
           {
             path: "clubs",
-            element: <PlaceholderPage title="Clubs" />,
-          },
-          {
-            path: "forms",
-            element: <LeaderFormsPage />,
+            element: <StudentClubsPage />,
           },
           {
             path: "attendance",
-            element: <PlaceholderPage title="Membres & Présences" />,
+            element: <StudentAttendancePage />,
+          },
+          {
+            path: "past-events",
+            element: <StudentPastEventsPage />,
+          },
+          {
+            path: "contact",
+            element: <StudentContactPage />,
           },
           {
             path: "settings",
-            element: <PlaceholderPage title="Paramètres" />,
+            element: <StudentSettingsPage />,
           },
           {
             path: "help",
             element: <PlaceholderPage title="Aide & Support" />,
+          },
+          {
+            path: "memberships",
+            element: <PlaceholderPage title="Mon Profil Étudiant" />,
           },
         ],
       },
@@ -208,7 +219,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "clubs",
-            element: <PlaceholderPage title="All Clubs" />,
+            element: <AdminClubs />,
           },
           {
             path: "users",
@@ -220,7 +231,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "attendance",
-            element: <PlaceholderPage title="Global Attendance" />,
+            element: <AdminAttendance />,
           },
           {
             path: "finance",
@@ -232,7 +243,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "forms",
-            element: <PlaceholderPage title="Formulaires & Inscriptions" />,
+            element: <AdminForms />,
+          },
+          {
+            path: "contact",
+            element: <AdminContactPage />,
           },
           {
             path: "settings",

@@ -1,5 +1,6 @@
 import { apiClient } from "../../services/apiClient";
 import type { ApiResponse, PaginatedResponse, PaginationParams } from "../../types";
+import type { Membership } from "../memberships/membershipsService";
 
 export interface ClubSocialLinks {
   website?: string;
@@ -79,5 +80,9 @@ export const clubsService = {
 
   async deactivate(id: string) {
     return apiClient.patch<ApiResponse<Club>>(`/clubs/${id}/deactivate`);
+  },
+
+  async join(id: string, academicYear: string) {
+    return apiClient.post<ApiResponse<Membership>>(`/clubs/${id}/join`, { academicYear });
   },
 };

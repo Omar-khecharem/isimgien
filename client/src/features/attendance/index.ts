@@ -1,5 +1,5 @@
 export { attendanceService } from "./attendanceService";
-export type { AttendanceRecord } from "./attendanceService";
+export type { AttendanceRecord, GlobalAttendanceRecord } from "./attendanceService";
 export { AttendanceStatus } from "./attendanceService";
 export { useAttendanceSession } from "./useAttendanceSession";
 export { AttendanceSessionPage } from "./components/AttendanceSessionPage";

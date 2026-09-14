@@ -38,11 +38,24 @@ export const ROUTES = {
   ADMIN_GLOBAL_FINANCE: "/admin/finance",
   ADMIN_GLOBAL_MEMBERSHIPS: "/admin/memberships",
   ADMIN_FORMS: "/admin/forms",
+  ADMIN_CONTACT: "/admin/contact",
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_NOTIFICATIONS: "/admin/notifications",
   ADMIN_HELP: "/admin/help",
 
   // Student
+  STUDENT_HOME: "/student",
+  STUDENT_EVENTS: "/student/events",
+  STUDENT_PAST_EVENTS: "/student/past-events",
+  STUDENT_CLUBS: "/student/clubs",
+  STUDENT_FORMS: "/student/forms",
+  STUDENT_ATTENDANCE: "/student/attendance",
+  STUDENT_CONTACT: "/student/contact",
+  STUDENT_SETTINGS: "/student/settings",
+  STUDENT_HELP: "/student/help",
+  STUDENT_MEMBERSHIPS: "/student/memberships",
+
+  // Legacy (kept for backward compat)
   MY_REGISTRATIONS: "/my/registrations",
   MY_ATTENDANCE: "/my/attendance",
   MY_MEMBERSHIPS: "/my/memberships",

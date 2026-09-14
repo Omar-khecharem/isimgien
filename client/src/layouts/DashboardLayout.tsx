@@ -80,19 +80,45 @@ const NAV_ITEMS: NavItem[] = [
     roles: [Role.CLUB_LEADER],
   },
   {
-    to: ROUTES.MY_REGISTRATIONS,
-    label: "Inscriptions",
+    to: ROUTES.STUDENT_HOME,
+    label: "Tableau de bord",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <rect x="4" y="3" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 8h6M8 11.5h6M8 15h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <rect x="3" y="3" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="12.5" y="3" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="3" y="12.5" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="12.5" y="12.5" width="6.5" height="6.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
     roles: [Role.STUDENT],
   },
   {
-    to: ROUTES.MY_ATTENDANCE,
-    label: "Présences",
+    to: ROUTES.STUDENT_EVENTS,
+    label: "Événements & Formations",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M3 8.5h16" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M7 2.5v3.5M15 2.5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="11" cy="13.5" r="1.5" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
+  },
+  {
+    to: ROUTES.STUDENT_CLUBS,
+    label: "Clubs",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2L4 5.5v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10v-5L11 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
+  },
+  {
+    to: ROUTES.STUDENT_ATTENDANCE,
+    label: "Membres & Présences",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
         <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
@@ -102,13 +128,14 @@ const NAV_ITEMS: NavItem[] = [
     roles: [Role.STUDENT],
   },
   {
-    to: ROUTES.MY_MEMBERSHIPS,
-    label: "Cotisations",
+    to: ROUTES.STUDENT_PAST_EVENTS,
+    label: "Événements passés",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M3 9h16" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M7 13h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M3 8.5h16" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M7 2.5v3.5M15 2.5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M8 12h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
     roles: [Role.STUDENT],
@@ -249,7 +276,7 @@ const BOTTOM_ITEMS: NavItem[] = [
     roles: [Role.CLUB_LEADER],
   },
   {
-    to: ROUTES.MY_REGISTRATIONS,
+    to: ROUTES.STUDENT_EVENTS,
     label: "Notifications",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -284,7 +311,7 @@ const BOTTOM_ITEMS: NavItem[] = [
     roles: [Role.CLUB_LEADER],
   },
   {
-    to: ROUTES.ADMIN_HELP,
+    to: ROUTES.STUDENT_HELP,
     label: "Aide & Support",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -294,6 +321,32 @@ const BOTTOM_ITEMS: NavItem[] = [
       </svg>
     ),
     roles: [Role.STUDENT],
+  },
+  {
+    to: ROUTES.STUDENT_CONTACT,
+    label: "Contact",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M18 11.5a1.5 1.5 0 01-1.5 1.5H6L3 17V5.5A1.5 1.5 0 014.5 4h12A1.5 1.5 0 0118 5.5V11.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <circle cx="8" cy="9.5" r="0.7" fill="currentColor" />
+        <circle cx="11" cy="9.5" r="0.7" fill="currentColor" />
+        <circle cx="14" cy="9.5" r="0.7" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
+  },
+  {
+    to: ROUTES.ADMIN_CONTACT,
+    label: "Contact",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M18 11.5a1.5 1.5 0 01-1.5 1.5H6L3 17V5.5A1.5 1.5 0 014.5 4h12A1.5 1.5 0 0118 5.5V11.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <circle cx="8" cy="9.5" r="0.7" fill="currentColor" />
+        <circle cx="11" cy="9.5" r="0.7" fill="currentColor" />
+        <circle cx="14" cy="9.5" r="0.7" fill="currentColor" />
+      </svg>
+    ),
+    roles: [Role.SUPER_ADMIN],
   },
   {
     to: ROUTES.ADMIN_SETTINGS,
@@ -316,6 +369,17 @@ const BOTTOM_ITEMS: NavItem[] = [
       </svg>
     ),
     roles: [Role.CLUB_LEADER],
+  },
+  {
+    to: ROUTES.STUDENT_SETTINGS,
+    label: "Paramètres",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <circle cx="11" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M11 3v2.5M11 16.5v2.5M3 11h2.5M16.5 11H19M5.2 5.2l1.8 1.8M15 15l1.8 1.8M5.2 16.8l1.8-1.8M15 7l1.8-1.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+    roles: [Role.STUDENT],
   },
 ];
 

@@ -18,6 +18,7 @@ import financeGlobalRoutes from "../modules/finance/financeGlobal.routes";
 import membershipRoutes from "../modules/membership/membership.routes";
 import membershipGlobalRoutes from "../modules/membership/membershipGlobal.routes";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes";
+import messagingRoutes from "../modules/messaging/messaging.routes";
 
 const router = Router();
 
@@ -40,5 +41,6 @@ router.use("/forms", responseRoutes);
 router.use("/attendance", attendanceGlobalRoutes);
 router.use("/finance", financeGlobalRoutes);
 router.use("/memberships", membershipGlobalRoutes);
+router.use("/messaging", messagingRoutes);
 
 export default router;

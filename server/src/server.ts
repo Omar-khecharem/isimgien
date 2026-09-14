@@ -2,8 +2,10 @@ import mongoose from "mongoose";
 import app from "./app";
 import { config } from "./config";
 import { connectDatabase, disconnectDatabase } from "./config/database";
+import { User } from "./models/user.model";
 import { seedSuperAdmin } from "./seeds/superAdmin.seed";
 import { seedDemoAccounts } from "./seeds/demoAccounts.seed";
+import { initSocketServer } from "./modules/messaging/socket";
 
 async function fixIndexes() {
   try {
@@ -20,19 +22,31 @@ async function fixIndexes() {
   }
 }
 
+async function seedIfNeeded() {
+  const hasUsers = await User.exists({});
+  if (hasUsers) {
+    console.log("[SEED] Database already seeded, skipping.");
+    return;
+  }
+  console.log("[SEED] Empty database, seeding...");
+  await seedSuperAdmin();
+  await seedDemoAccounts();
+}
+
 async function startServer() {
   try {
     await connectDatabase();
 
     await fixIndexes();
-    await seedSuperAdmin();
-    await seedDemoAccounts();
+    await seedIfNeeded();
 
     const server = app.listen(config.port, () => {
       console.log(
         `[SERVER] Running on http://localhost:${config.port} (${config.env})`
       );
     });
+
+    initSocketServer(server);
 
     const shutdown = async (signal: string) => {
       console.log(`\n[SERVER] ${signal} received. Shutting down gracefully...`);

@@ -67,4 +67,15 @@ export const trainingsService = {
   async listPublic(params?: PaginationParams) {
     return apiClient.get<PaginatedResponse<Training>>("/trainings", params as any);
   },
+
+  // Student registration
+  async register(clubId: string, trainingId: string) {
+    return apiClient.post<ApiResponse<{ _id: string }>>(
+      `/clubs/${clubId}/trainings/${trainingId}/register`
+    );
+  },
+
+  async cancelRegistration(clubId: string, trainingId: string) {
+    return apiClient.delete(`/clubs/${clubId}/trainings/${trainingId}/register`);
+  },
 };

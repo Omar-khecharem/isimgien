@@ -9,3 +9,4 @@ export { Registration, IRegistration } from "./registration.model";
 export { Attendance, IAttendance } from "./attendance.model";
 export { Transaction, ITransaction } from "./transaction.model";
 export { Notification, INotification } from "./notification.model";
+export { Message, IMessage } from "./message.model";

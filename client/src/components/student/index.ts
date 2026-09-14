@@ -1,3 +1,7 @@
-export { StudentLayout } from "./StudentLayout";
-export { StudentSidebar } from "./StudentSidebar";
 export { StudentDashboard } from "./StudentDashboard";
+export { StudentSettingsPage } from "./StudentSettingsPage";
+export { StudentClubsPage } from "./StudentClubsPage";
+export { StudentEventsPage } from "./StudentEventsPage";
+export { StudentAttendancePage } from "./StudentAttendancePage";
+export { StudentPastEventsPage } from "./StudentPastEventsPage";
+export { StudentContactPage } from "./StudentContactPage";
