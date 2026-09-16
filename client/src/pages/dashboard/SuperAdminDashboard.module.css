@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   SuperAdminDashboard — Expert UI/UX
+   SuperAdminDashboard — Green Nature Premium Design System
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
   padding-bottom: 40px;
   width: 100%;
   min-width: 0;
@@ -24,14 +24,14 @@
 .greeting {
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text);
   letter-spacing: -0.03em;
   line-height: 1.15;
 }
 
 .subtitle {
   font-size: 14px;
-  color: #6B7280;
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
@@ -43,58 +43,89 @@
 
 .headerDate {
   padding: 8px 16px;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 10px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   font-size: 13px;
   font-weight: 500;
-  color: #6B7280;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Row 1 — Stat Cards + Timer
+   Row 1 — Stat Cards
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .row1 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
   width: 100%;
 }
 
-/* ─── Stat Card ───────────────────────────────────────────────────────── */
+/* ─── Stat Card (Green Gradient) ──────────────────────────────────────── */
 
 .statCard {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   padding: 22px;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 16px;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-xl);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   min-width: 0;
+  color: #fff;
+  border: none;
+}
+
+.statCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.statCard:hover::before {
+  opacity: 1;
 }
 
 .statCard::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  box-shadow: 0 0 0 0 rgba(10, 95, 58, 0);
-  transition: box-shadow 0.25s ease;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
   pointer-events: none;
 }
 
-.statCard:hover {
-  border-color: transparent;
+.statCard:nth-child(1) {
+  background: linear-gradient(135deg, #276F27 0%, #499A13 100%);
 }
 
-.statCard:hover::after {
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.1);
+.statCard:nth-child(2) {
+  background: linear-gradient(135deg, #499A13 0%, #8ECA3C 100%);
+}
+
+.statCard:nth-child(3) {
+  background: linear-gradient(135deg, #8ECA3C 0%, #BBDC12 100%);
+  color: var(--color-text);
+}
+
+.statCard:nth-child(4) {
+  background: linear-gradient(135deg, #1e5620 0%, #276F27 100%);
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px rgba(73, 154, 19, 0.35);
 }
 
 .statTop {
@@ -107,15 +138,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  flex-shrink: 0;
 }
 
-.statIcon--emerald { background: #ECFDF5; color: #059669; }
-.statIcon--blue { background: #EFF6FF; color: #3B82F6; }
-.statIcon--violet { background: #F5F3FF; color: #7C3AED; }
-.statIcon--amber { background: #FFFBEB; color: #D97706; }
+.statCard:nth-child(3) .statIcon {
+  background: rgba(39, 111, 39, 0.12);
+  color: #276F27;
+}
 
 .statTrend {
   display: inline-flex;
@@ -125,16 +160,28 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.statCard:nth-child(3) .statTrend {
+  background: rgba(39, 111, 39, 0.1);
+  color: #276F27;
 }
 
 .statTrend--up {
-  color: #059669;
-  background: #ECFDF5;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.statCard:nth-child(3) .statTrend--up {
+  background: rgba(39, 111, 39, 0.1);
+  color: #276F27;
 }
 
 .statTrend--down {
   color: #DC2626;
-  background: #FEF2F2;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .statBody {
@@ -146,13 +193,16 @@
 .statLabel {
   font-size: 13px;
   font-weight: 500;
-  color: #6B7280;
+  opacity: 0.85;
+}
+
+.statCard:nth-child(3) .statLabel {
+  color: var(--color-text-muted);
 }
 
 .statValue {
   font-size: 34px;
   font-weight: 700;
-  color: #111827;
   letter-spacing: -0.03em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -160,8 +210,12 @@
 
 .statSecondary {
   font-size: 12px;
-  color: #9CA3AF;
+  opacity: 0.7;
   margin-top: 2px;
+}
+
+.statCard:nth-child(3) .statSecondary {
+  color: var(--color-text-muted);
 }
 
 .statFooter {
@@ -172,100 +226,8 @@
   display: block;
   width: 100%;
   height: 36px;
+  opacity: 0.6;
 }
-
-/* ─── Timer Card ──────────────────────────────────────────────────────── */
-
-.timerCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 22px;
-  background: #111827;
-  border-radius: 16px;
-  transition: all 0.2s ease;
-}
-
-.timerCard:hover {
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.4);
-}
-
-.timerHead {
-  display: flex;
-  align-items: center;
-}
-
-.timerStatus {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 20px;
-  color: #9CA3AF;
-  background: rgba(255, 255, 255, 0.06);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.timerStatus--live {
-  color: #4ADE80;
-  background: rgba(74, 222, 128, 0.12);
-}
-
-.timerTime {
-  font-size: 36px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-mono);
-  line-height: 1;
-}
-
-.timerLabel {
-  font-size: 12px;
-  color: #6B7280;
-}
-
-.timerControls {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.timerBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.timerBtnStart {
-  background: #059669;
-  color: #fff;
-}
-
-.timerBtnStart:hover { background: #047857; transform: scale(1.06); }
-
-.timerBtnPause {
-  background: #D97706;
-  color: #fff;
-}
-
-.timerBtnPause:hover { background: #B45309; transform: scale(1.06); }
-
-.timerBtnReset {
-  background: rgba(255, 255, 255, 0.08);
-  color: #9CA3AF;
-}
-
-.timerBtnReset:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    Row 2 — Bar Chart + Donut + Notifications
@@ -274,7 +236,7 @@
 .row2 {
   display: grid;
   grid-template-columns: 1.4fr 0.8fr 1fr;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
 }
 
@@ -283,9 +245,9 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 16px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   min-width: 0;
 }
@@ -295,19 +257,19 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 22px;
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 
 .cardTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
 }
 
 .cardSubtitle {
   font-size: 12px;
-  color: #9CA3AF;
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -320,8 +282,8 @@
   padding: 0 7px;
   font-size: 12px;
   font-weight: 600;
-  color: #059669;
-  background: #ECFDF5;
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
   border-radius: 20px;
 }
 
@@ -336,7 +298,7 @@
 .chartTabs {
   display: flex;
   gap: 2px;
-  background: #F3F4F6;
+  background: var(--color-border);
   border-radius: 8px;
   padding: 2px;
 }
@@ -345,7 +307,7 @@
   padding: 5px 14px;
   font-size: 12px;
   font-weight: 500;
-  color: #6B7280;
+  color: var(--color-text-muted);
   background: none;
   border: none;
   border-radius: 6px;
@@ -354,8 +316,8 @@
 }
 
 .chartTab--active {
-  background: #fff;
-  color: #111827;
+  background: var(--color-card-bg);
+  color: var(--color-text);
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
@@ -387,7 +349,7 @@
 
 .chartBar {
   width: 100%;
-  background: linear-gradient(180deg, #059669 0%, #047857 100%);
+  background: linear-gradient(180deg, #499A13 0%, #276F27 100%);
   border-radius: 6px 6px 2px 2px;
   min-height: 4px;
   transition: all 0.3s ease;
@@ -402,14 +364,14 @@
 .chartLabel {
   font-size: 11px;
   font-weight: 500;
-  color: #9CA3AF;
+  color: var(--color-text-muted);
 }
 
 .chartSummary {
   display: flex;
   gap: 24px;
   padding: 14px 22px;
-  border-top: 1px solid #F3F4F6;
+  border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 
@@ -418,7 +380,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #6B7280;
+  color: var(--color-text-muted);
 }
 
 .chartSummaryDot {
@@ -429,7 +391,7 @@
 
 .chartSummaryItem strong {
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
 }
 
 /* ─── Donut Chart ─────────────────────────────────────────────────────── */
@@ -461,13 +423,13 @@
 .donutCenterValue {
   font-size: 22px;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text);
   line-height: 1;
 }
 
 .donutCenterLabel {
   font-size: 11px;
-  color: #9CA3AF;
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -483,7 +445,7 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: #374151;
+  color: var(--color-text-secondary);
 }
 
 .donutLegendDot {
@@ -496,7 +458,7 @@
 .donutLegendValue {
   margin-left: auto;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
 
@@ -509,7 +471,7 @@
   justify-content: center;
   gap: 10px;
   padding: 40px 20px;
-  color: #9CA3AF;
+  color: var(--color-text-muted);
 }
 
 .emptyState p {
@@ -526,19 +488,18 @@
   align-items: flex-start;
   gap: 12px;
   padding: 14px 22px;
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 1px solid var(--color-border);
   transition: background 0.12s ease;
 }
 
 .notifItem:last-child { border-bottom: none; }
-
-.notifItem:hover { background: #FAFBFC; }
+.notifItem:hover { background: var(--color-bg-subtle); }
 
 .notifDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #059669;
+  background: var(--color-primary);
   flex-shrink: 0;
   margin-top: 5px;
 }
@@ -551,14 +512,14 @@
 .notifTitle {
   font-size: 13px;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
   margin-bottom: 2px;
   line-height: 1.3;
 }
 
 .notifMsg {
   font-size: 12px;
-  color: #6B7280;
+  color: var(--color-text-muted);
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -570,7 +531,7 @@
    Row 3 — Quick Actions
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.row3 {
+.row4 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 14px;
@@ -582,17 +543,17 @@
   align-items: center;
   gap: 12px;
   padding: 16px 18px;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 14px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
 }
 
 .actionCard:hover {
-  border-color: transparent;
-  box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px -6px rgba(73, 154, 19, 0.2);
   transform: translateY(-2px);
   text-decoration: none;
 }
@@ -601,25 +562,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
   transition: transform 0.15s ease;
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
 }
 
 .actionCard:hover .actionIcon { transform: scale(1.08); }
 
-.actionIcon--blue { background: #EFF6FF; color: #3B82F6; }
-.actionIcon--violet { background: #F5F3FF; color: #7C3AED; }
-.actionIcon--amber { background: #FFFBEB; color: #D97706; }
-.actionIcon--emerald { background: #ECFDF5; color: #059669; }
-.actionIcon--slate { background: #F3F4F6; color: #6B7280; }
-
 .actionLabel {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -631,13 +588,11 @@
 
 @media (max-width: 1280px) {
   .row1 {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .timerCard {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    gap: 20px;
+  .row4 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -646,14 +601,6 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
-  .row1 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .timerCard {
-    grid-column: 1 / -1;
-  }
-
   .row2 {
     grid-template-columns: 1fr 1fr;
   }
@@ -662,7 +609,7 @@
     grid-column: 1 / -1;
   }
 
-  .row3 {
+  .row4 {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -677,7 +624,7 @@
 
 @media (max-width: 768px) {
   .page {
-    gap: 16px;
+    gap: 20px;
   }
 
   .greeting {
@@ -702,17 +649,9 @@
     font-size: 28px;
   }
 
-  .timerCard {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    padding: 18px;
-  }
-
-  .timerTime {
-    font-size: 28px;
+  .statIcon {
+    width: 42px;
+    height: 42px;
   }
 
   .row2 {
@@ -729,18 +668,14 @@
     padding: 14px 16px 8px;
   }
 
-  .chartCol {
-    gap: 6px;
-  }
+  .chartCol { gap: 6px; }
 
   .chartBar {
     border-radius: 4px 4px 1px 1px;
     min-height: 6px;
   }
 
-  .chartLabel {
-    font-size: 10px;
-  }
+  .chartLabel { font-size: 10px; }
 
   .chartSummary {
     gap: 16px;
@@ -748,11 +683,9 @@
     flex-wrap: wrap;
   }
 
-  .chartSummaryItem {
-    font-size: 11px;
-  }
+  .chartSummaryItem { font-size: 11px; }
 
-  .row3 {
+  .row4 {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
@@ -763,13 +696,11 @@
   }
 
   .actionIcon {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
   }
 
-  .actionLabel {
-    font-size: 13px;
-  }
+  .actionLabel { font-size: 13px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -819,16 +750,7 @@
     display: none;
   }
 
-  .timerCard {
-    flex-direction: column;
-    padding: 16px;
-  }
-
-  .timerTime {
-    font-size: 26px;
-  }
-
-  .row3 {
+  .row4 {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -838,13 +760,8 @@
     padding: 12px 12px 6px;
   }
 
-  .chartBar {
-    border-radius: 3px 3px 1px 1px;
-  }
-
-  .chartLabel {
-    font-size: 9px;
-  }
+  .chartBar { border-radius: 3px 3px 1px 1px; }
+  .chartLabel { font-size: 9px; }
 
   .chartSummary {
     gap: 12px;

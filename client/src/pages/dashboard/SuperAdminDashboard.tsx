@@ -58,11 +58,13 @@ const ATTENDANCE_SPARKLINE = [50, 40, 60, 55, 70, 65, 85, 75, 95];
 const EVENTS_SPARKLINE = [15, 25, 20, 35, 30, 45, 40, 55, 50];
 
 const DONUT_DATA = [
-  { label: "Informatique", value: 42, color: "#0A5F3A" },
-  { label: "Design", value: 28, color: "#3B82F6" },
-  { label: "Business", value: 18, color: "#8B5CF6" },
-  { label: "Science", value: 12, color: "#F59E0B" },
+  { label: "Informatique", value: 42, color: "#276F27" },
+  { label: "Design", value: 28, color: "#499A13" },
+  { label: "Business", value: 18, color: "#8ECA3C" },
+  { label: "Science", value: 12, color: "#BBDC12" },
 ];
+
+
 
 function Sparkline({ data, color }: { data: number[]; color: string }) {
   const max = Math.max(...data);
@@ -144,6 +146,8 @@ function DonutChart() {
   );
 }
 
+
+
 export function SuperAdminDashboard() {
   const { user } = useAuth();
   const timer = useTimer();
@@ -193,7 +197,7 @@ export function SuperAdminDashboard() {
       <div className={styles.header}>
         <div>
           <h1 className={styles.greeting}>Bonjour, {user?.firstName}</h1>
-          <p className={styles.subtitle}>Vue d'ensemble de la plateforme</p>
+          <p className={styles.subtitle}>Vue d'ensemble de la plateforme ISIMGIEN</p>
         </div>
         <div className={styles.headerRight}>
           <div className={styles.headerDate}>
@@ -202,12 +206,12 @@ export function SuperAdminDashboard() {
         </div>
       </div>
 
-      {/* ═══ Row 1: Rich Stats ═══ */}
+      {/* ═══ Row 1: Stats ═══ */}
       <div className={styles.row1}>
-        {/* ── Clubs ── */}
+        {/* Clubs */}
         <div className={styles.statCard}>
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--emerald"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L4 5.5v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10v-5L11 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -218,17 +222,17 @@ export function SuperAdminDashboard() {
           <div className={styles.statBody}>
             <div className={styles.statLabel}>Clubs actifs</div>
             <div className={styles.statValue}>{totalClubs}</div>
-            <div className={styles.statSecondary}>10 actifs · 2 inactifs</div>
+            <div className={styles.statSecondary}>Tous les clubs enregistrés</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={CLUB_SPARKLINE} color="#0A5F3A" />
+            <Sparkline data={CLUB_SPARKLINE} color="#fff" />
           </div>
         </div>
 
-        {/* ── Membres ── */}
+        {/* Membres */}
         <div className={styles.statCard}>
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--blue"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" /><path d="M4 19c0-3 2.5-5.5 5-5.5s5 2.5 5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="15.5" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.5" /><path d="M15.5 11.5c2 0 3.5 1.5 3.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -239,17 +243,17 @@ export function SuperAdminDashboard() {
           <div className={styles.statBody}>
             <div className={styles.statLabel}>Membres inscrits</div>
             <div className={styles.statValue}>{totalMembers}</div>
-            <div className={styles.statSecondary}>28 nouveaux ce mois</div>
+            <div className={styles.statSecondary}>Croissance continue</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={MEMBER_SPARKLINE} color="#3B82F6" />
+            <Sparkline data={MEMBER_SPARKLINE} color="#fff" />
           </div>
         </div>
 
-        {/* ── Présences ── */}
+        {/* Présences */}
         <div className={styles.statCard}>
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--violet"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -260,17 +264,17 @@ export function SuperAdminDashboard() {
           <div className={styles.statBody}>
             <div className={styles.statLabel}>Présences totales</div>
             <div className={styles.statValue}>{totalAttendance.toLocaleString()}</div>
-            <div className={styles.statSecondary}>32 aujourd'hui · 78% taux moyen</div>
+            <div className={styles.statSecondary}>Suivi en temps réel</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={ATTENDANCE_SPARKLINE} color="#8B5CF6" />
+            <Sparkline data={ATTENDANCE_SPARKLINE} color="#276F27" />
           </div>
         </div>
 
-        {/* ── Événements ── */}
+        {/* Événements */}
         <div className={styles.statCard}>
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--amber"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M3 8.5h16" stroke="currentColor" strokeWidth="1.5" /><path d="M7 2.5v3.5M15 2.5v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="11" cy="14" r="1.5" fill="currentColor" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -281,33 +285,10 @@ export function SuperAdminDashboard() {
           <div className={styles.statBody}>
             <div className={styles.statLabel}>Événements créés</div>
             <div className={styles.statValue}>{totalEvents}</div>
-            <div className={styles.statSecondary}>3 cette semaine · 12 ce mois</div>
+            <div className={styles.statSecondary}>Organisés par les clubs</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={EVENTS_SPARKLINE} color="#F59E0B" />
-          </div>
-        </div>
-
-        {/* ── Timer ── */}
-        <div className={styles.timerCard}>
-          <div className={styles.timerHead}>
-            <span className={`${styles.timerStatus} ${timer.running ? styles["timerStatus--live"] : ""}`}>
-              {timer.running ? "En cours" : "Arrêté"}
-            </span>
-          </div>
-          <div className={styles.timerTime}>{timer.formatted}</div>
-          <div className={styles.timerLabel}>Chrono session</div>
-          <div className={styles.timerControls}>
-            <button className={`${styles.timerBtn} ${timer.running ? styles.timerBtnPause : styles.timerBtnStart}`} onClick={timer.toggle}>
-              {timer.running ? (
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor" /><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor" /></svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 2.5l9 5.5-9 5.5V2.5z" fill="currentColor" /></svg>
-              )}
-            </button>
-            <button className={`${styles.timerBtn} ${styles.timerBtnReset}`} onClick={timer.reset}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1011.5-2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><path d="M14 2v4h-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
+            <Sparkline data={EVENTS_SPARKLINE} color="#fff" />
           </div>
         </div>
       </div>
@@ -338,17 +319,17 @@ export function SuperAdminDashboard() {
           </div>
           <div className={styles.chartSummary}>
             <div className={styles.chartSummaryItem}>
-              <span className={styles.chartSummaryDot} style={{ background: "#0A5F3A" }} />
+              <span className={styles.chartSummaryDot} style={{ background: "#499A13" }} />
               <span>Total</span>
               <strong>{chartData.reduce((a, b) => a + b.value, 0).toLocaleString()}</strong>
             </div>
             <div className={styles.chartSummaryItem}>
-              <span className={styles.chartSummaryDot} style={{ background: "#3B82F6" }} />
+              <span className={styles.chartSummaryDot} style={{ background: "#8ECA3C" }} />
               <span>Moyenne</span>
               <strong>{Math.round(chartData.reduce((a, b) => a + b.value, 0) / chartData.length)}</strong>
             </div>
             <div className={styles.chartSummaryItem}>
-              <span className={styles.chartSummaryDot} style={{ background: "#F59E0B" }} />
+              <span className={styles.chartSummaryDot} style={{ background: "#BBDC12" }} />
               <span>Pic</span>
               <strong>{maxChart}</strong>
             </div>
@@ -399,38 +380,39 @@ export function SuperAdminDashboard() {
       </div>
 
       {/* ═══ Row 3: Quick Actions ═══ */}
-      <div className={styles.row3}>
+      <div className={styles.row4}>
         <a href="/admin/users" className={styles.actionCard}>
-          <div className={`${styles.actionIcon} ${styles["actionIcon--blue"]}`}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" /><path d="M3 17c0-3 2.5-5 5-5s5 2 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Membres</span>
         </a>
         <a href="/admin/events" className={styles.actionCard}>
-          <div className={`${styles.actionIcon} ${styles["actionIcon--amber"]}`}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M3 8h14" stroke="currentColor" strokeWidth="1.5" /><path d="M7 2.5v3M13 2.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Événements</span>
         </a>
         <a href="/admin/forms" className={styles.actionCard}>
-          <div className={`${styles.actionIcon} ${styles["actionIcon--violet"]}`}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M7 7h6M7 10h6M7 13h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Formulaires</span>
         </a>
         <a href="/admin/attendance" className={styles.actionCard}>
-          <div className={`${styles.actionIcon} ${styles["actionIcon--emerald"]}`}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" /><path d="M10 5.5v5l3.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Présences</span>
         </a>
         <a href="/admin/settings" className={styles.actionCard}>
-          <div className={`${styles.actionIcon} ${styles["actionIcon--slate"]}`}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" /><path d="M10 3v2.5M10 14.5v2.5M3 10h2.5M14.5 10H17M5 5l1.8 1.8M13.2 13.2L15 15M5 15l1.8-1.8M13.2 6.8L15 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Paramètres</span>
         </a>
       </div>
+
     </div>
   );
 }

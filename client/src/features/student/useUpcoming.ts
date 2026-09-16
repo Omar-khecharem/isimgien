@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { trainingsService, type Training } from "../trainings/trainingsService";
 import { eventsService, type Event } from "../events/eventsService";
 
@@ -18,6 +18,7 @@ export function useUpcomingTrainings() {
       });
       return response.data;
     },
+    refetchInterval: 30000,
   });
 }
 
@@ -31,5 +32,14 @@ export function useUpcomingEvents() {
       });
       return response.data;
     },
+    refetchInterval: 30000,
   });
+}
+
+export function useInvalidateUpcoming() {
+  const qc = useQueryClient();
+  return () => {
+    qc.invalidateQueries({ queryKey: ["student", "upcoming-trainings"] });
+    qc.invalidateQueries({ queryKey: ["student", "upcoming-events"] });
+  };
 }

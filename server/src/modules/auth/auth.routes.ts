@@ -26,4 +26,10 @@ router.post(
   authController.uploadAvatar
 );
 
+router.patch(
+  "/profile",
+  authenticate,
+  authController.updateProfile
+);
+
 export default router;

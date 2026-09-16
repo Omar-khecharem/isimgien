@@ -78,3 +78,15 @@ export const uploadAvatar = asyncHandler(async (req: Request, res: Response) => 
 
   ApiResponse.success(res, { avatar: user.avatar }, 200, "Avatar uploaded successfully");
 });
+
+export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
+  const { firstName, lastName, phone } = req.body;
+
+  const user = await authService.updateProfile(req.user!.id, {
+    firstName,
+    lastName,
+    phone,
+  });
+
+  ApiResponse.success(res, user, 200, "Profile updated successfully");
+});

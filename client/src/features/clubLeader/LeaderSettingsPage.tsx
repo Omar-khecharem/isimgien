@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../features/auth";
 import { authService } from "../../features/auth/authService";
-import { clubsService } from "../clubs/clubsService";
+import { clubsService, type UpdateClubByLeaderInput } from "../clubs/clubsService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import styles from "./LeaderSettingsPage.module.css";
 
@@ -20,12 +20,32 @@ export default function LeaderSettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>("general");
   const [toast, setToast] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
-  // General settings
-  const [clubName, setClubName] = useState("Club Photographie ISIMM");
-  const [clubDesc, setClubDesc] = useState("Club dédié à la photographie et au visuel créatif.");
-  const [contactEmail, setContactEmail] = useState("photo@isimm.rnu.tn");
-  const [contactPhone, setContactPhone] = useState("+216 71 000 000");
+  /* ── Fetch club data ─────────────────────────────────────────────────── */
+
+  const { data: clubData } = useQuery({
+    queryKey: ["leader", "my-club"],
+    queryFn: async () => (await clubsService.getMyClub()).data,
+    enabled: !!user,
+  });
+
+  // General settings — loaded from server data
+  const [clubName, setClubName] = useState("");
+  const [clubDesc, setClubDesc] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+
+  // Populate form from server data when available
+  useEffect(() => {
+    if (clubData) {
+      setClubName(clubData.name || "");
+      setClubDesc(clubData.description || "");
+      setContactEmail(clubData.contactEmail || "");
+      setContactPhone(clubData.contactPhone || "");
+    }
+  }, [clubData]);
 
   // Notification toggles
   const [notifNewMember, setNotifNewMember] = useState(true);
@@ -40,14 +60,6 @@ export default function LeaderSettingsPage() {
 
   // Advanced
   const [maintenanceMode, setMaintenanceMode] = useState(false);
-
-  /* ── Fetch club data ─────────────────────────────────────────────────── */
-
-  const { data: clubData } = useQuery({
-    queryKey: ["leader", "my-club"],
-    queryFn: async () => (await clubsService.getMyClub()).data,
-    enabled: !!user,
-  });
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -76,8 +88,39 @@ export default function LeaderSettingsPage() {
     }
   };
 
-  const handleSave = () => {
-    showToast("Paramètres sauvegardés avec succès");
+  /* ── Save settings ──────────────────────────────────────────────────── */
+
+  const handleSave = async () => {
+    if (!clubData?._id) return;
+    setSaving(true);
+    setSaved(false);
+    try {
+      // Save user profile
+      await authService.updateProfile({
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        phone: user?.phone,
+      });
+
+      // Save club data
+      const payload: UpdateClubByLeaderInput = {
+        name: clubName || undefined,
+        description: clubDesc || undefined,
+        contactEmail: contactEmail || null,
+        contactPhone: contactPhone || null,
+      };
+      await clubsService.updateByLeader(clubData._id, payload);
+
+      // Invalidate cached data
+      queryClient.invalidateQueries({ queryKey: ["leader", "my-club"] });
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch {
+      showToast("Erreur lors de la sauvegarde");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const NAV_ITEMS: { key: SettingsTab; label: string; icon: React.ReactNode }[] = [
@@ -117,9 +160,22 @@ export default function LeaderSettingsPage() {
           <p className={styles.subtitle}>Configurez votre club et vos préférences</p>
         </div>
         <div className={styles.headerActions}>
-          <button className={`${styles.btn} ${styles["btn--primary"]}`} onClick={handleSave}>
+          {saved && (
+            <div className={styles.savedBadge}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="#499A13" strokeWidth="1.5" />
+                <path d="M5 8l2 2 4-4" stroke="#499A13" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Enregistré
+            </div>
+          )}
+          <button
+            className={`${styles.btn} ${styles["btn--primary"]}`}
+            onClick={handleSave}
+            disabled={saving || !clubData}
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-            Sauvegarder
+            {saving ? "Enregistrement..." : "Sauvegarder"}
           </button>
         </div>
       </div>

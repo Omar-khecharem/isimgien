@@ -32,6 +32,9 @@
 .contactsHeader {
   padding: var(--space-5);
   border-bottom: 1px solid var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .contactsTitle {
@@ -41,18 +44,31 @@
   margin: 0;
 }
 
+.contactsCount {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  background: #499A13;
+  border-radius: 10px;
+  padding: 2px 8px;
+  min-width: 22px;
+  text-align: center;
+}
+
 .contactsList {
   flex: 1;
   overflow-y: auto;
   padding: var(--space-2);
 }
 
+/* ── Contact Item ──────────────────────────────────────────────────── */
+
 .contactItem {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  padding: var(--space-3) var(--space-3);
+  padding: var(--space-3);
   border: none;
   background: transparent;
   border-radius: 12px;
@@ -70,22 +86,34 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+/* ── Avatar ────────────────────────────────────────────────────────── */
+
 .contactAvatar {
   position: relative;
   width: 44px;
   height: 44px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #059669, #10b981);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
+.contactAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
 .contactInitials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 15px;
   font-weight: 700;
   color: white;
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
 }
 
 .contactStatus {
@@ -98,13 +126,15 @@
   border: 2px solid var(--color-gray-50);
 }
 
-.contactStatus--online {
+.contactStatusOnline {
   background: #10b981;
 }
 
-.contactStatus--offline {
+.contactStatusOffline {
   background: var(--color-gray-300);
 }
+
+/* ── Contact Info ──────────────────────────────────────────────────── */
 
 .contactInfo {
   display: flex;
@@ -125,6 +155,132 @@
 .contactRole {
   font-size: 12px;
   color: var(--color-gray-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Unread Badge ──────────────────────────────────────────────────── */
+
+.unreadBadge {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #499A13;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Loading Skeletons
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.contactsLoading,
+.messagesLoading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contactSkeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.contactAvatarSkeleton {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--color-gray-200);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.contactTextSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactNameSkeleton {
+  height: 12px;
+  width: 70%;
+  border-radius: 6px;
+  background: var(--color-gray-200);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.contactRoleSkeleton {
+  height: 10px;
+  width: 50%;
+  border-radius: 6px;
+  background: var(--color-gray-100);
+  animation: skeletonPulse 1.5s ease-in-out infinite 0.15s;
+}
+
+.messageSkeleton {
+  display: flex;
+}
+
+.messageSkeletonLeft {
+  justify-content: flex-start;
+}
+
+.messageSkeletonRight {
+  justify-content: flex-end;
+}
+
+.bubbleSkeleton {
+  width: 160px;
+  height: 36px;
+  border-radius: 16px;
+  background: var(--color-gray-200);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Empty States ──────────────────────────────────────────────────── */
+
+.contactsEmpty,
+.chatEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: var(--space-3);
+  color: var(--color-gray-400);
+  padding: var(--space-8);
+}
+
+.contactsEmpty p,
+.chatEmpty p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.chatEmptyIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-300);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -150,21 +306,34 @@
   gap: var(--space-3);
 }
 
+/* ── Chat Avatar ───────────────────────────────────────────────────── */
+
 .chatAvatar {
   position: relative;
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #059669, #10b981);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.chatAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .chatAvatarInitials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
   font-weight: 700;
   color: white;
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
 }
 
 .chatStatus {
@@ -177,11 +346,11 @@
   border: 2px solid white;
 }
 
-.chatStatus--online {
+.chatStatusOnline {
   background: #10b981;
 }
 
-.chatStatus--offline {
+.chatStatusOffline {
   background: var(--color-gray-300);
 }
 
@@ -198,6 +367,11 @@
   color: var(--color-gray-400);
 }
 
+.typingText {
+  color: #499A13;
+  font-weight: 600;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    Messages
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -209,19 +383,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-}
-
-.systemMessage {
-  display: flex;
-  justify-content: center;
-}
-
-.systemMessage span {
-  font-size: 12px;
-  color: var(--color-gray-400);
-  background: var(--color-gray-50);
-  padding: var(--space-2) var(--space-4);
-  border-radius: 20px;
 }
 
 .message {
@@ -240,22 +401,35 @@
   align-self: flex-start;
 }
 
+/* ── Message Avatar ────────────────────────────────────────────────── */
+
 .messageAvatar {
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #059669, #10b981);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
+.messageAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .messageAvatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 11px;
   font-weight: 700;
   color: white;
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
 }
+
+/* ── Message Bubble ────────────────────────────────────────────────── */
 
 .messageBubble {
   padding: var(--space-3) var(--space-4);
@@ -264,7 +438,7 @@
 }
 
 .message--mine .messageBubble {
-  background: #059669;
+  background: #499A13;
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -318,8 +492,8 @@
 }
 
 .inputWrap:focus-within {
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  border-color: #499A13;
+  box-shadow: 0 0 0 3px rgba(73, 154, 19, 0.1);
 }
 
 .input {
@@ -329,7 +503,7 @@
   font-size: 14px;
   color: var(--color-gray-900);
   outline: none;
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-2);
 }
 
 .input::placeholder {
@@ -344,7 +518,7 @@
   height: 40px;
   border-radius: 12px;
   border: none;
-  background: #059669;
+  background: #499A13;
   color: white;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -352,7 +526,7 @@
 }
 
 .sendBtn:hover:not(:disabled) {
-  background: #047857;
+  background: #3D8210;
   transform: scale(1.05);
 }
 

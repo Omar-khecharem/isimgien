@@ -89,7 +89,7 @@ export function StudentDashboard() {
         <Link to="/student/events" className={`${styles.stat} ${styles["stat--emerald"]}`}>
           <div className={styles.statHeader}>
             <div className={styles.statIcon}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M2 7.5h16" stroke="currentColor" strokeWidth="1.5"/><path d="M6 1.5v3M14 1.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M2 7.5h16" stroke="currentColor" strokeWidth="1.5"/><path d="M6 1.5v3M14 1.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             </div>
             <svg className={styles.statArrow} width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
@@ -102,7 +102,7 @@ export function StudentDashboard() {
         <Link to="/student/clubs" className={`${styles.stat} ${styles["stat--blue"]}`}>
           <div className={styles.statHeader}>
             <div className={styles.statIcon}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M3 18c0-3 2.2-5 5-5s5 2 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M3 18c0-3 2.2-5 5-5s5 2 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             </div>
             <svg className={styles.statArrow} width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
@@ -115,7 +115,7 @@ export function StudentDashboard() {
         <Link to="/student/attendance" className={`${styles.stat} ${styles["stat--violet"]}`}>
           <div className={styles.statHeader}>
             <div className={styles.statIcon}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
             <svg className={styles.statArrow} width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
@@ -128,7 +128,7 @@ export function StudentDashboard() {
         <Link to="/student/clubs" className={`${styles.stat} ${styles["stat--amber"]}`}>
           <div className={styles.statHeader}>
             <div className={styles.statIcon}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5.5v4.5c0 4 3 8 6 9.5 3-1.5 6-5.5 6-9.5V5.5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+              <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5.5v4.5c0 4 3 8 6 9.5 3-1.5 6-5.5 6-9.5V5.5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
             </div>
             <svg className={styles.statArrow} width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
@@ -140,29 +140,72 @@ export function StudentDashboard() {
         </Link>
       </section>
 
+      {/* ═══ Formations — Prominent Posters ═══ */}
+      {(upcomingTrainings?.length ?? 0) > 0 && (
+        <section className={styles.formationsSection}>
+          <div className={styles.cardHead}>
+            <div>
+              <h2 className={styles.cardTitle}>Formations à venir</h2>
+              <p className={styles.cardSubtitle}>{upcomingTrainings?.length} formation{upcomingTrainings && upcomingTrainings.length > 1 ? "s" : ""}</p>
+            </div>
+            <Link to="/student/events" className={styles.cardLink}>Voir tout →</Link>
+          </div>
+          <div className={styles.formationsGrid}>
+            {upcomingTrainings?.map((t) => (
+              <Link to="/student/events" key={t._id} className={styles.formationCard}>
+                <div className={styles.formationPoster}>
+                  {t.poster ? (
+                    <img src={t.poster} alt={t.title} />
+                  ) : (
+                    <div className={styles.formationPlaceholder}>
+                      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                        <rect x="8" y="12" width="40" height="32" rx="6" stroke="#8ECA3C" strokeWidth="2" strokeDasharray="4 3"/>
+                        <path d="M8 22h40" stroke="#8ECA3C" strokeWidth="2"/>
+                        <path d="M20 8v6M36 8v6" stroke="#8ECA3C" strokeWidth="2" strokeLinecap="round"/>
+                        <circle cx="28" cy="32" r="6" stroke="#499A13" strokeWidth="2"/>
+                        <path d="M28 29v6M25 32h6" stroke="#499A13" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                      <span className={styles.formationPlaceholderText}>Pas d'affiche</span>
+                    </div>
+                  )}
+                  <div className={styles.formationPosterOverlay} />
+                </div>
+                <div className={styles.formationInfo}>
+                  <div className={styles.formationTitle}>{t.title}</div>
+                  <div className={styles.formationMeta}>
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.2"/><path d="M7 4v3l2 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                    {new Date(t.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })} · {t.startTime}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ═══ Quick Actions ═══ */}
       <section className={styles.actionsRow}>
         <Link to="/student/events" className={styles.actionCard}>
           <div className={`${styles.actionIcon} ${styles["actionIcon--emerald"]}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M3 8h14" stroke="currentColor" strokeWidth="1.5"/><path d="M7 2.5v3M13 2.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M3 8h14" stroke="currentColor" strokeWidth="1.5"/><path d="M7 2.5v3M13 2.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
           <span className={styles.actionLabel}>Événements</span>
         </Link>
         <Link to="/student/clubs" className={styles.actionCard}>
           <div className={`${styles.actionIcon} ${styles["actionIcon--blue"]}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5.5v4.5c0 4 3 8 6 9.5 3-1.5 6-5.5 6-9.5V5.5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5.5v4.5c0 4 3 8 6 9.5 3-1.5 6-5.5 6-9.5V5.5L10 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
           </div>
           <span className={styles.actionLabel}>Clubs</span>
         </Link>
         <Link to="/student/attendance" className={styles.actionCard}>
           <div className={`${styles.actionIcon} ${styles["actionIcon--violet"]}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
           <span className={styles.actionLabel}>Présences</span>
         </Link>
         <Link to="/student/settings" className={styles.actionCard}>
           <div className={`${styles.actionIcon} ${styles["actionIcon--amber"]}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M15.8 4.2l-1.4 1.4M5.6 14.4l-1.4 1.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M15.8 4.2l-1.4 1.4M5.6 14.4l-1.4 1.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
           <span className={styles.actionLabel}>Paramètres</span>
         </Link>
@@ -191,10 +234,10 @@ export function StudentDashboard() {
               <Empty icon="calendar" title="Aucun événement" desc="Pas de formation prévue pour le moment." />
             ) : (
               <div className={styles.eventsList}>
-                {upcomingTrainings?.slice(0, 4).map((t) => (
+                {upcomingTrainings?.slice(0, 6).map((t) => (
                   <EventRow key={t._id} type="training" title={t.title} date={t.date} startTime={t.startTime} endTime={t.endTime} location={t.location} poster={t.poster} />
                 ))}
-                {upcomingEvents?.slice(0, 4).map((e) => (
+                {upcomingEvents?.slice(0, 6).map((e) => (
                   <EventRow key={e._id} type="event" title={e.title} date={e.date} startTime={e.startTime} endTime={e.endTime} location={e.location} poster={e.poster} />
                 ))}
               </div>
@@ -220,7 +263,7 @@ export function StudentDashboard() {
               </div>
             ) : (
               <>
-                <PremiumCalendar attendanceData={allAttendance} />
+                <PremiumCalendar attendanceData={allAttendance} upcomingTrainings={upcomingTrainings} upcomingEvents={upcomingEvents} />
                 {allAttendance.length > 0 ? (
                   <div className={styles.tableWrap}>
                     <table className={styles.table}>
@@ -318,7 +361,7 @@ export function StudentDashboard() {
    Premium Calendar
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function PremiumCalendar({ attendanceData }: { attendanceData: any[] }) {
+function PremiumCalendar({ attendanceData, upcomingTrainings, upcomingEvents }: { attendanceData: any[]; upcomingTrainings?: any[]; upcomingEvents?: any[] }) {
   const [currentDate, setCurrentDate] = useState(() => new Date());
 
   const year = currentDate.getFullYear();
@@ -330,7 +373,7 @@ function PremiumCalendar({ attendanceData }: { attendanceData: any[] }) {
   const firstDayOfWeek = (new Date(year, month, 1).getDay() + 6) % 7;
 
   const attendanceDates = useMemo(() => {
-    const set = new Set<string>();
+    const set = new Set<number>();
     attendanceData.forEach((r) => {
       const d = new Date(r.checkIn.time ?? r.date);
       if (d.getMonth() === month && d.getFullYear() === year) {
@@ -339,6 +382,44 @@ function PremiumCalendar({ attendanceData }: { attendanceData: any[] }) {
     });
     return set;
   }, [attendanceData, month, year]);
+
+  const upcomingDates = useMemo(() => {
+    const set = new Set<number>();
+    (upcomingTrainings ?? []).forEach((t: any) => {
+      const d = new Date(t.date);
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        set.add(d.getDate());
+      }
+    });
+    (upcomingEvents ?? []).forEach((e: any) => {
+      const d = new Date(e.date);
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        set.add(d.getDate());
+      }
+    });
+    return set;
+  }, [upcomingTrainings, upcomingEvents, month, year]);
+
+  const dayItems = useMemo(() => {
+    const map: Record<number, { type: string; title: string; time: string }[]> = {};
+    (upcomingTrainings ?? []).forEach((t: any) => {
+      const d = new Date(t.date);
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        const day = d.getDate();
+        if (!map[day]) map[day] = [];
+        map[day].push({ type: "training", title: t.title, time: t.startTime });
+      }
+    });
+    (upcomingEvents ?? []).forEach((e: any) => {
+      const d = new Date(e.date);
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        const day = d.getDate();
+        if (!map[day]) map[day] = [];
+        map[day].push({ type: "event", title: e.title, time: e.startTime });
+      }
+    });
+    return map;
+  }, [upcomingTrainings, upcomingEvents, month, year]);
 
   const today = new Date();
   const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
@@ -369,17 +450,57 @@ function PremiumCalendar({ attendanceData }: { attendanceData: any[] }) {
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const day = i + 1;
           const hasAttendance = attendanceDates.has(day);
+          const hasUpcoming = upcomingDates.has(day);
           const isToday = isCurrentMonth && today.getDate() === day;
+          const items = dayItems[day] ?? [];
           return (
             <span
               key={day}
-              className={`${styles.calendarDay} ${hasAttendance ? styles["calendarDay--active"] : ""} ${isToday ? styles["calendarDay--today"] : ""}`}
+              className={`${styles.calendarDay} ${hasAttendance ? styles["calendarDay--active"] : ""} ${hasUpcoming && !hasAttendance ? styles["calendarDay--upcoming"] : ""} ${isToday ? styles["calendarDay--today"] : ""}`}
             >
               {day}
               {hasAttendance && <span className={styles.calendarDot} />}
+              {hasUpcoming && !hasAttendance && <span className={styles.calendarDotUpcoming} />}
+              {items.length > 0 && (
+                <div className={styles.calendarTooltip}>
+                  <div className={styles.calendarTooltipTitle}>
+                    <span className={styles.calendarTooltipTitleDot} />
+                    {day} {currentDate.toLocaleDateString("fr-FR", { month: "short" })}
+                  </div>
+                  {items.map((item, idx) => (
+                    <div key={idx} className={styles.calendarTooltipItem}>
+                      <span className={`${styles.calendarTooltipItemType} ${item.type === "training" ? styles["calendarTooltipItemType--training"] : styles["calendarTooltipItemType--event"]}`}>
+                        {item.type === "training" ? "Form." : "Évén."}
+                      </span>
+                      <span className={styles.calendarTooltipItemTitle}>{item.title}</span>
+                      <span className={styles.calendarTooltipItemTime}>{item.time}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {items.length === 0 && hasAttendance && (
+                <div className={styles.calendarTooltip}>
+                  <div className={styles.calendarTooltipTitle}>
+                    <span className={styles.calendarTooltipTitleDot} />
+                    {day} {currentDate.toLocaleDateString("fr-FR", { month: "short" })}
+                  </div>
+                  <div className={styles.calendarTooltipEmpty}>Présence enregistrée</div>
+                </div>
+              )}
             </span>
           );
         })}
+      </div>
+      <div className={styles.calendarLegend}>
+        <span className={styles.calendarLegendItem}>
+          <span className={styles.calendarLegendDot} /> Aujourd'hui
+        </span>
+        <span className={styles.calendarLegendItem}>
+          <span className={`${styles.calendarLegendDot} ${styles["calendarLegendDot--upcoming"]}`} /> À venir
+        </span>
+        <span className={styles.calendarLegendItem}>
+          <span className={`${styles.calendarLegendDot} ${styles["calendarLegendDot--attended"]}`} /> Présent
+        </span>
       </div>
     </div>
   );

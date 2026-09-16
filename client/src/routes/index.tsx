@@ -13,7 +13,7 @@ import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { DesignSystemPage } from "../pages/design-system/DesignSystemPage";
-import { StudentDashboard, StudentSettingsPage, StudentClubsPage, StudentEventsPage, StudentAttendancePage, StudentPastEventsPage, StudentContactPage } from "../components/student";
+import { StudentDashboard, StudentSettingsPage, StudentClubsPage, StudentClubDetailPage, StudentEventsPage, StudentAttendancePage, StudentPastEventsPage, StudentContactPage, StudentNotificationsPage } from "../components/student";
 import { ClubLeaderDashboard } from "../features/clubLeader";
 import { ClubProfile } from "../features/clubLeader/ClubProfile";
 import LeaderMembersPage from "../features/clubLeader/LeaderMembersPage";
@@ -26,6 +26,7 @@ import LeaderHelpPage from "../features/clubLeader/LeaderHelpPage";
 import { AttendanceSessionPage } from "../features/attendance";
 import { SuperAdminDashboard } from "../pages/dashboard/SuperAdminDashboard";
 import { AdminSettings } from "../pages/settings/AdminSettings";
+import { AdminHomepagePage } from "../pages/admin/AdminHomepagePage";
 import { AdminUsers } from "../pages/admin/AdminUsers";
 import { AdminEvents } from "../pages/admin/AdminEvents";
 import { AdminClubs } from "../pages/admin/AdminClubs";
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
             element: <StudentClubsPage />,
           },
           {
+            path: "clubs/:clubId",
+            element: <StudentClubDetailPage />,
+          },
+          {
             path: "attendance",
             element: <StudentAttendancePage />,
           },
@@ -115,6 +120,10 @@ export const router = createBrowserRouter([
           {
             path: "memberships",
             element: <PlaceholderPage title="Mon Profil Étudiant" />,
+          },
+          {
+            path: "notifications",
+            element: <StudentNotificationsPage />,
           },
         ],
       },
@@ -252,6 +261,10 @@ export const router = createBrowserRouter([
           {
             path: "settings",
             element: <AdminSettings />,
+          },
+          {
+            path: "homepage",
+            element: <AdminHomepagePage />,
           },
           {
             path: "notifications",

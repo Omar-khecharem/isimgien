@@ -24,6 +24,12 @@
   text-decoration: none;
 }
 
+.logoImage {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
 .logoMark {
   font-size: var(--text-md);
   font-weight: var(--font-bold);

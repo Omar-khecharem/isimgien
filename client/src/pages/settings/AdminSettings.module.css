@@ -36,12 +36,12 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: #ecfdf3;
-  border: 1px solid #C7E8D6;
+  background: #ecfdf5;
+  border: 1px solid #d1f0a3;
   border-radius: 12px;
   font-size: 13px;
   font-weight: 600;
-  color: #0A5F3A;
+  color: #499A13;
   animation: fadeInBadge 0.2s ease;
   flex-shrink: 0;
 }
@@ -97,8 +97,8 @@
 }
 
 .tabBtn--active {
-  background: #ecfdf3;
-  color: #0A5F3A;
+  background: #f4fbe8;
+  color: #276F27;
   font-weight: 600;
 }
 
@@ -190,9 +190,9 @@
   padding: 10px 20px;
   font-size: 13px;
   font-weight: 600;
-  color: #0A5F3A;
-  background: #ECFDF5;
-  border: 1px solid #A7F3D0;
+  color: #276F27;
+  background: #f4fbe8;
+  border: 1px solid #d1f0a3;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -243,7 +243,7 @@
 }
 
 .logoPreview:hover {
-  border-color: #0A5F3A;
+  border-color: #499A13;
   background: #ECFDF5;
 }
 
@@ -315,7 +315,7 @@
 
 .input:focus {
   background: #fff;
-  border-color: #0A5F3A;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(10, 95, 58, 0.08);
 }
 
@@ -335,7 +335,7 @@
 
 .inputPrefix:focus-within {
   background: #fff;
-  border-color: #0A5F3A;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(10, 95, 58, 0.08);
 }
 
@@ -374,7 +374,7 @@
 
 .textarea:focus {
   background: #fff;
-  border-color: #0A5F3A;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(10, 95, 58, 0.08);
 }
 
@@ -396,7 +396,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #fff;
-  background: #0A5F3A;
+  background: #499A13;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -404,7 +404,7 @@
 }
 
 .saveBtn:hover:not(:disabled) {
-  background: #084d2f;
+  background: #499A13;
   transform: translateY(-1px);
 }
 
@@ -467,7 +467,7 @@
 }
 
 .toggle--on {
-  background: #0A5F3A;
+  background: #499A13;
 }
 
 .toggleThumb {

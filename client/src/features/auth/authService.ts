@@ -31,6 +31,18 @@ export const authService = {
     return res.data.avatar;
   },
 
+  async updateProfile(data: {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+  }): Promise<AuthenticatedUser> {
+    const res = await apiClient.patch<ApiResponse<AuthenticatedUser>>(
+      "/auth/profile",
+      data
+    );
+    return res.data;
+  },
+
   async refresh(): Promise<string | null> {
     return apiClient.refreshAccessToken();
   },

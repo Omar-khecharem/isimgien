@@ -34,14 +34,14 @@ function timeAgo(dateStr: string) {
   return formatDate(dateStr);
 }
 
-const AVATAR_COLORS = ["#059669", "#3B82F6", "#7C3AED", "#D97706", "#DC2626", "#0891B2"];
+const GREEN_SHADES = ["#276F27", "#499A13", "#8ECA3C", "#1e5620", "#0A5F3A", "#2d8a1e"];
 
 function getAvatarColor(name: string) {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  return GREEN_SHADES[Math.abs(hash) % GREEN_SHADES.length];
 }
 
 export function AdminUsers() {

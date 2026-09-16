@@ -43,7 +43,27 @@
 
 .headerActions {
   display: flex;
+  align-items: center;
   gap: 10px;
+}
+
+.savedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #276F27;
+  background: linear-gradient(135deg, #f4fbe8, #e8f7d0);
+  border: 1.5px solid #d1f0a3;
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .btn {

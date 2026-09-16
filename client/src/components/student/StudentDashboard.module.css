@@ -1,23 +1,23 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   StudentDashboard — Clean, Balanced, Premium
+   StudentDashboard — Vibrant, iOS-Inspired, No Empty Spaces
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .page {
-  padding: var(--space-6) var(--space-8);
+  padding: var(--space-5) var(--space-6);
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Welcome Banner
+   Welcome Banner — Vibrant Green Gradient
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .banner {
-  background: linear-gradient(135deg, #0A5F3A 0%, #10b981 50%, #34d399 100%);
-  border-radius: 18px;
+  background: linear-gradient(135deg, #276F27 0%, #499A13 40%, #8ECA3C 80%, #BBDC12 100%);
+  border-radius: 20px;
   padding: var(--space-6) var(--space-8);
   position: relative;
   overflow: hidden;
@@ -26,11 +26,11 @@
 .banner::before {
   content: "";
   position: absolute;
-  top: -40%;
-  right: -10%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+  top: -60%;
+  right: -15%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(187, 220, 18, 0.3) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -38,11 +38,11 @@
 .banner::after {
   content: "";
   position: absolute;
-  bottom: -50%;
-  left: 20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  bottom: -40%;
+  left: 10%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -62,17 +62,18 @@
 }
 
 .bannerAvatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .bannerAvatarImg {
@@ -82,8 +83,8 @@
 }
 
 .bannerInitials {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
 }
@@ -91,80 +92,84 @@
 .bannerText {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .bannerDate {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
   text-transform: capitalize;
   margin: 0;
+  letter-spacing: 0.02em;
 }
 
 .bannerGreeting {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: #fff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .bannerName {
-  color: #d1fae5;
+  color: #BBDC12;
 }
 
 .bannerSubtitle {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
+  font-weight: 500;
 }
 
 .bannerQuickStats {
   display: flex;
   align-items: center;
   gap: var(--space-5);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
   padding: var(--space-4) var(--space-6);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .bannerStat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   text-decoration: none;
-  transition: transform 0.15s ease;
+  transition: transform 0.2s ease;
 }
 
 .bannerStat:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .bannerStatValue {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   color: #fff;
   line-height: 1;
 }
 
 .bannerStatLabel {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
 }
 
 .bannerDivider {
-  width: 1px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.25);
+  width: 1.5px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Stats
+   Stats Grid — Colorful Cards
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .statsGrid {
@@ -179,18 +184,40 @@
   gap: var(--space-3);
   padding: var(--space-5);
   background: white;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 16px;
+  border: 1.5px solid var(--color-gray-100);
+  border-radius: 18px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  overflow: hidden;
+}
+
+.stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.stat:hover::before {
+  opacity: 1;
 }
 
 .stat:hover {
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px -6px rgba(73, 154, 19, 0.15);
   border-color: transparent;
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
+
+.stat--emerald::before { background: linear-gradient(90deg, #499A13, #8ECA3C); }
+.stat--blue::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+.stat--violet::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+.stat--amber::before { background: linear-gradient(90deg, #BBDC12, #499A13); }
 
 .statHeader {
   display: flex;
@@ -202,38 +229,44 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.stat:hover .statIcon {
+  transform: scale(1.1);
 }
 
 .statArrow {
   color: var(--color-gray-300);
-  transition: color 0.15s ease, transform 0.15s ease;
+  transition: color 0.15s ease, transform 0.2s ease;
 }
 
 .stat:hover .statArrow {
   color: var(--color-gray-500);
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 
-.stat--emerald .statIcon { background: #ecfdf5; color: #059669; }
-.stat--blue .statIcon { background: #eff6ff; color: #2563eb; }
-.stat--violet .statIcon { background: #f5f3ff; color: #7c3aed; }
-.stat--amber .statIcon { background: #fffbeb; color: #d97706; }
+.stat--emerald .statIcon { background: linear-gradient(135deg, #f4fbe8, #e8f7d0); color: #499A13; }
+.stat--blue .statIcon { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #2563eb; }
+.stat--violet .statIcon { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; }
+.stat--amber .statIcon { background: linear-gradient(135deg, #f4fbe8, #BBDC12); color: #276F27; }
 
 .statBody {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .statValue {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 800;
   color: var(--color-gray-900);
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .statLabel {
@@ -250,7 +283,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Quick Actions
+   Quick Actions — Pill Style
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .actionsRow {
@@ -265,32 +298,37 @@
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   background: white;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 12px;
+  border: 1.5px solid var(--color-gray-100);
+  border-radius: 14px;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .actionCard:hover {
-  border-color: transparent;
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+  border-color: var(--color-primary-200);
+  box-shadow: 0 8px 20px -4px rgba(73, 154, 19, 0.12);
+  transform: translateY(-2px);
 }
 
 .actionIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-.actionIcon--emerald { background: #ecfdf5; color: #059669; }
-.actionIcon--blue { background: #eff6ff; color: #2563eb; }
-.actionIcon--violet { background: #f5f3ff; color: #7c3aed; }
-.actionIcon--amber { background: #fffbeb; color: #d97706; }
+.actionCard:hover .actionIcon {
+  transform: scale(1.1);
+}
+
+.actionIcon--emerald { background: linear-gradient(135deg, #f4fbe8, #e8f7d0); color: #499A13; }
+.actionIcon--blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #2563eb; }
+.actionIcon--violet { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; }
+.actionIcon--amber { background: linear-gradient(135deg, #f4fbe8, #BBDC12); color: #276F27; }
 
 .actionLabel {
   font-size: 14px;
@@ -299,14 +337,14 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Main Grid — 50/50
+   Main Grid — 2 Column Layout
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .mainGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-6);
-  align-items: start;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-5);
+  align-items: stretch;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -315,9 +353,17 @@
 
 .card {
   background: white;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 16px;
+  border: 1.5px solid var(--color-gray-100);
+  border-radius: 18px;
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px -4px rgba(73, 154, 19, 0.06);
 }
 
 .cardHead {
@@ -325,11 +371,12 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1.5px solid var(--color-gray-100);
+  background: linear-gradient(180deg, rgba(244, 251, 232, 0.3) 0%, transparent 100%);
 }
 
 .cardTitle {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--color-gray-900);
   margin: 0;
@@ -344,68 +391,77 @@
 .cardLink {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary-600);
+  color: #499A13;
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: #f4fbe8;
 }
 
 .cardLink:hover {
-  color: var(--color-primary-700);
+  color: #276F27;
+  background: #e8f7d0;
 }
 
 .cardBody {
   padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Tag
+   Tag — Vibrant
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .tag {
   display: inline-flex;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .tag--md {
-  padding: 3px 8px;
+  padding: 4px 10px;
   font-size: 11px;
 }
 
 .tag--sm {
-  padding: 2px 6px;
+  padding: 3px 8px;
   font-size: 10px;
 }
 
-.tag--green { background: #ecfdf5; color: #047857; }
+.tag--green { background: #f4fbe8; color: #276F27; }
 .tag--blue { background: #eff6ff; color: #1d4ed8; }
-.tag--yellow { background: #fffbeb; color: #b45309; }
+.tag--yellow { background: #fef3c7; color: #92400e; }
 .tag--red { background: #fef2f2; color: #dc2626; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Empty
+   Empty State
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: var(--space-8) var(--space-4);
   text-align: center;
+  flex: 1;
 }
 
 .emptyIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  background: var(--color-gray-50);
-  color: var(--color-gray-300);
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #f4fbe8, #e8f7d0);
+  color: #8ECA3C;
+  border-radius: 16px;
   margin-bottom: var(--space-3);
 }
 
@@ -423,26 +479,32 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Event Row
+   Events List — Formation Cards with Posters
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .eventsList {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
+  overflow-y: auto;
 }
 
 .eventRow {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3);
-  border-radius: 12px;
-  transition: background 0.15s ease;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  background: var(--color-gray-25);
+  border: 1.5px solid transparent;
+  min-height: 60px;
 }
 
 .eventRow:hover {
-  background: var(--color-gray-50);
+  background: white;
+  border-color: var(--color-primary-200);
+  box-shadow: 0 4px 16px -2px rgba(73, 154, 19, 0.1);
 }
 
 .eventDate {
@@ -450,35 +512,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 48px;
-  border-radius: 10px;
-  background: #ecfdf5;
+  width: 48px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
   flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(73, 154, 19, 0.25);
 }
 
 .eventDay {
-  font-size: 18px;
-  font-weight: 700;
-  color: #059669;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
   line-height: 1;
 }
 
 .eventMonth {
   font-size: 9px;
   font-weight: 700;
-  color: #059669;
+  color: rgba(255, 255, 255, 0.85);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .eventPoster {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--color-gray-100);
+  background: linear-gradient(135deg, #f4fbe8, #e8f7d0);
+  border: 2px solid #e8f7d0;
+  box-shadow: 0 2px 8px rgba(73, 154, 19, 0.15);
 }
 
 .eventPoster img {
@@ -496,12 +561,12 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .eventTitle {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-gray-900);
   white-space: nowrap;
   overflow: hidden;
@@ -517,24 +582,25 @@
 .eventMeta {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-size: 12px;
   color: var(--color-gray-400);
 }
 
 .eventLabel {
   flex-shrink: 0;
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 5px 12px;
+  border-radius: 10px;
   font-size: 11px;
   font-weight: 700;
-  color: #059669;
-  background: #ecfdf5;
+  color: #276F27;
+  background: linear-gradient(135deg, #f4fbe8, #e8f7d0);
   white-space: nowrap;
+  border: 1px solid #d1f0a3;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Memberships — Full Width Grid
+   Memberships Grid
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .membershipsGrid {
@@ -546,20 +612,20 @@
 .membershipCard {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
-  border-radius: 14px;
-  background: var(--color-gray-50);
-  border: 1px solid var(--color-gray-100);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f4fbe8 0%, white 100%);
+  border: 1.5px solid #e8f7d0;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .membershipCard:hover {
   background: white;
-  border-color: var(--color-gray-200);
-  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.06);
-  transform: translateY(-2px);
+  border-color: #8ECA3C;
+  box-shadow: 0 12px 28px -6px rgba(73, 154, 19, 0.15);
+  transform: translateY(-3px);
 }
 
 .membershipCardLeft {
@@ -567,15 +633,15 @@
 }
 
 .membershipLogo {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 12px rgba(73, 154, 19, 0.3);
 }
 
 .membershipLogoImg {
@@ -585,8 +651,8 @@
 }
 
 .membershipLogoInitials {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
 }
@@ -608,7 +674,7 @@
 
 .membershipClub {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-gray-900);
   white-space: nowrap;
   overflow: hidden;
@@ -625,27 +691,30 @@
 .membershipYear {
   font-size: 12px;
   color: var(--color-gray-400);
+  font-weight: 500;
 }
 
 .membershipAmount {
   font-size: 13px;
   font-weight: 700;
-  color: #059669;
-  background: #ecfdf5;
-  padding: 2px 8px;
-  border-radius: 6px;
+  color: #276F27;
+  background: #f4fbe8;
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1f0a3;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Premium Calendar
+   iOS-Inspired Calendar — Colorful, Vibrant
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .calendar {
-  background: var(--color-gray-50);
-  border: 1px solid var(--color-gray-100);
-  border-radius: 14px;
-  padding: var(--space-4);
+  background: linear-gradient(135deg, #f4fbe8 0%, #e8f7d0 100%);
+  border: 1.5px solid #d1f0a3;
+  border-radius: 18px;
+  padding: var(--space-5);
   margin-bottom: var(--space-4);
+  box-shadow: 0 4px 16px -4px rgba(73, 154, 19, 0.1);
 }
 
 .calendarHeader {
@@ -656,43 +725,47 @@
 }
 
 .calendarTitle {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-gray-900);
+  font-size: 17px;
+  font-weight: 800;
+  color: #276F27;
   text-transform: capitalize;
   margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .calendarNav {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  border: 1px solid var(--color-gray-200);
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 2px solid #d1f0a3;
   background: white;
-  color: var(--color-gray-500);
+  color: #499A13;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  font-weight: 600;
 }
 
 .calendarNav:hover {
-  border-color: var(--color-gray-300);
-  color: var(--color-gray-700);
-  background: var(--color-gray-50);
+  background: #499A13;
+  border-color: #499A13;
+  color: white;
+  box-shadow: 0 4px 12px rgba(73, 154, 19, 0.3);
+  transform: scale(1.08);
 }
 
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+  gap: 5px;
 }
 
 .calendarWeekday {
   font-size: 11px;
   font-weight: 700;
-  color: var(--color-gray-400);
+  color: #499A13;
   text-align: center;
   padding: var(--space-2) 0;
   text-transform: uppercase;
@@ -701,6 +774,7 @@
 
 .calendarDayEmpty {
   aspect-ratio: 1;
+  min-height: 36px;
 }
 
 .calendarDay {
@@ -709,43 +783,235 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
+  min-height: 36px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--color-gray-600);
   cursor: default;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.calendarDay:hover {
+  background: #d1f0a3;
+  color: #276F27;
+  transform: scale(1.05);
 }
 
 .calendarDay--today {
-  background: var(--color-gray-900);
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
   color: white;
-  font-weight: 700;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(73, 154, 19, 0.35);
+  transform: scale(1.08);
+}
+
+.calendarDay--today:hover {
+  transform: scale(1.12);
 }
 
 .calendarDay--active {
-  background: #ecfdf5;
-  color: #059669;
-  font-weight: 700;
+  background: linear-gradient(135deg, #BBDC12, #8ECA3C);
+  color: #276F27;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 3px 8px rgba(142, 202, 60, 0.3);
 }
 
 .calendarDay--active:hover {
-  background: #d1fae5;
+  background: linear-gradient(135deg, #8ECA3C, #499A13);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(73, 154, 19, 0.3);
 }
 
 .calendarDot {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: #059669;
+  background: #499A13;
   position: absolute;
   bottom: 4px;
+  box-shadow: 0 1px 3px rgba(73, 154, 19, 0.4);
 }
 
 .calendarDay--today .calendarDot {
   background: white;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+.calendarDay--active .calendarDot {
+  background: #276F27;
+  box-shadow: 0 1px 3px rgba(39, 111, 39, 0.4);
+}
+
+.calendarDay--upcoming {
+  background: rgba(187, 220, 18, 0.25);
+  color: #276F27;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.calendarDay--upcoming:hover {
+  background: rgba(187, 220, 18, 0.5);
+  transform: scale(1.08);
+}
+
+.calendarDotUpcoming {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #BBDC12;
+  position: absolute;
+  bottom: 4px;
+  box-shadow: 0 1px 3px rgba(187, 220, 18, 0.5);
+}
+
+.calendarLegend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid #d1f0a3;
+}
+
+.calendarLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #276F27;
+  font-weight: 500;
+}
+
+.calendarLegendDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #499A13;
+}
+
+.calendarLegendDot--upcoming {
+  background: #BBDC12;
+}
+
+.calendarLegendDot--attended {
+  background: #276F27;
+}
+
+/* ─── Calendar Tooltip ────────────────────────────────────────────── */
+
+.calendarTooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1.5px solid #d1f0a3;
+  border-radius: 12px;
+  padding: 10px 14px;
+  min-width: 200px;
+  max-width: 280px;
+  box-shadow: 0 8px 24px -4px rgba(73, 154, 19, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.calendarDay:hover .calendarTooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.calendarTooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: white;
+}
+
+.calendarTooltipTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #499A13;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.calendarTooltipTitleDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #499A13;
+}
+
+.calendarTooltipItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid #f4fbe8;
+}
+
+.calendarTooltipItem:last-child {
+  border-bottom: none;
+}
+
+.calendarTooltipItemType {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.calendarTooltipItemType--training {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.calendarTooltipItemType--event {
+  background: #f4fbe8;
+  color: #276F27;
+}
+
+.calendarTooltipItemTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d2939;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.calendarTooltipItemTime {
+  font-size: 11px;
+  color: #98a2b3;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.calendarTooltipEmpty {
+  font-size: 12px;
+  color: #98a2b3;
+  text-align: center;
+  padding: 4px 0;
 }
 
 .emptySmall {
@@ -760,12 +1026,13 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Table
+   Table — Clean & Modern
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .tableWrap {
   margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-5));
   overflow-x: auto;
+  flex: 1;
 }
 
 .table {
@@ -779,11 +1046,11 @@
   text-align: left;
   font-size: 11px;
   font-weight: 700;
-  color: var(--color-gray-400);
+  color: #499A13;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: var(--color-gray-50);
-  border-bottom: 1px solid var(--color-gray-100);
+  background: linear-gradient(180deg, #f4fbe8 0%, transparent 100%);
+  border-bottom: 1.5px solid #d1f0a3;
   white-space: nowrap;
 }
 
@@ -798,7 +1065,7 @@
 }
 
 .table tbody tr:hover td {
-  background: var(--color-gray-50);
+  background: rgba(244, 251, 232, 0.5);
 }
 
 .tdBold {
@@ -816,13 +1083,14 @@
   justify-content: center;
   gap: 6px;
   padding: var(--space-8) 0;
+  flex: 1;
 }
 
 .loadingDot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-gray-300);
+  background: linear-gradient(135deg, #499A13, #8ECA3C);
   animation: dotPulse 1.2s ease-in-out infinite;
 }
 
@@ -835,12 +1103,119 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Responsive
+   Formation Poster Section — Full Width, Prominent
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.formationsSection {
+  margin-top: var(--space-2);
+}
+
+.formationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.formationCard {
+  border-radius: 18px;
+  overflow: hidden;
+  background: white;
+  border: 1.5px solid var(--color-gray-100);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: block;
+}
+
+.formationCard:hover {
+  border-color: #8ECA3C;
+  box-shadow: 0 12px 32px -6px rgba(73, 154, 19, 0.2);
+  transform: translateY(-6px);
+}
+
+.formationPoster {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f4fbe8 0%, #e8f7d0 50%, #d1f0a3 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1.5px solid #e8f7d0;
+}
+
+.formationPoster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.formationCard:hover .formationPoster img {
+  transform: scale(1.06);
+}
+
+.formationPosterOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.formationCard:hover .formationPosterOverlay {
+  opacity: 1;
+}
+
+.formationPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #8ECA3C;
+}
+
+.formationPlaceholderText {
+  font-size: 11px;
+  font-weight: 600;
+  color: #499A13;
+  opacity: 0.6;
+}
+
+.formationInfo {
+  padding: var(--space-3) var(--space-4);
+}
+
+.formationTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.formationMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: var(--color-gray-400);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive Design
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 1200px) {
   .page {
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-4) var(--space-5);
   }
 
   .statsGrid {
@@ -853,6 +1228,10 @@
 
   .membershipsGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formationsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 
   .bannerContent {
@@ -869,7 +1248,7 @@
 
 @media (max-width: 900px) {
   .page {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-4);
   }
 
   .banner {
@@ -888,12 +1267,12 @@
 @media (max-width: 768px) {
   .page {
     padding: var(--space-4);
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
   .banner {
     padding: var(--space-4) var(--space-5);
-    border-radius: 14px;
+    border-radius: 16px;
   }
 
   .bannerGreeting {
@@ -901,9 +1280,9 @@
   }
 
   .bannerAvatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
   }
 
   .statsGrid {
@@ -918,6 +1297,11 @@
 
   .membershipsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .formationsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
   }
 
   .stat {
@@ -942,17 +1326,17 @@
   }
 
   .eventDate {
-    width: 38px;
-    height: 42px;
+    width: 42px;
+    height: 46px;
   }
 
   .eventDay {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .eventPoster {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -979,6 +1363,10 @@
 
   .eventLabel {
     display: none;
+  }
+
+  .formationsGrid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1021,13 +1409,15 @@
   .stat,
   .eventRow,
   .actionCard,
-  .membershipCard {
+  .membershipCard,
+  .formationCard {
     transition: none;
   }
 
   .stat:hover,
   .actionCard:hover,
-  .membershipCard:hover {
+  .membershipCard:hover,
+  .formationCard:hover {
     transform: none;
   }
 }

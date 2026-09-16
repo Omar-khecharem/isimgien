@@ -200,6 +200,7 @@ function EventCard({
   acting: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [posterOpen, setPosterOpen] = useState(false);
 
   const d = new Date(item.date);
   const dayNum = d.getDate();
@@ -219,9 +220,37 @@ function EventCard({
     <div className={`${styles.card} ${expanded ? styles["card--expanded"] : ""}`}>
       {/* Poster */}
       {item.poster && (
-        <div className={styles.cardPoster}>
-          <img src={item.poster} alt="" />
+        <div className={styles.cardPoster} onClick={() => setPosterOpen(true)}>
+          <img src={item.poster} alt={item.title} />
           <div className={styles.cardPosterOverlay} />
+          <div className={styles.cardPosterZoom}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+              <path d="M11 8v6M8 11h6" />
+            </svg>
+          </div>
+        </div>
+      )}
+
+      {/* Poster Modal */}
+      {posterOpen && (
+        <div className={styles.posterModal} onClick={() => setPosterOpen(false)}>
+          <div className={styles.posterModalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.posterModalClose} onClick={() => setPosterOpen(false)}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+            <img src={item.poster} alt={item.title} className={styles.posterModalImg} />
+            <div className={styles.posterModalInfo}>
+              <span className={`${styles.kindBadge} ${styles[`kindBadge--${item.kind}`]}`}>
+                {item.kind === "training" ? "Formation" : "Événement"}
+              </span>
+              <h3 className={styles.posterModalTitle}>{item.title}</h3>
+              <p className={styles.posterModalDate}>{dateFormatted}</p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -242,17 +271,18 @@ function EventCard({
               {statusInfo.label}
             </span>
           </div>
-          {item.clubName && (
-            <span className={styles.clubBadge}>
-              {item.clubLogo && (
-                <img src={item.clubLogo} alt="" className={styles.clubBadgeLogo} />
-              )}
-              {item.clubName}
-            </span>
-          )}
         </div>
 
         <h3 className={styles.cardTitle}>{item.title}</h3>
+
+        {item.clubName && (
+          <div className={styles.clubInfo}>
+            {item.clubLogo && (
+              <img src={item.clubLogo} alt="" className={styles.clubLogo} />
+            )}
+            <span className={styles.clubName}>{item.clubName}</span>
+          </div>
+        )}
 
         <div className={styles.cardMeta}>
           <span className={styles.cardMetaItem}>
@@ -282,18 +312,25 @@ function EventCard({
           <div className={styles.capacity}>
             <div className={styles.capacityBar}>
               <div
-                className={styles.capacityFill}
+                className={`${styles.capacityFill} ${
+                  item.registeredCount >= item.capacity ? styles["capacityFill--full"] : ""
+                }`}
                 style={{
                   width: `${Math.min((item.registeredCount / item.capacity) * 100, 100)}%`,
                 }}
               />
             </div>
-            <span className={styles.capacityText}>
-              {item.registeredCount}/{item.capacity} inscrits
+            <div className={styles.capacityInfo}>
+              <span className={styles.capacityText}>
+                {item.registeredCount}/{item.capacity} inscrits
+              </span>
               {spotsLeft !== null && spotsLeft > 0 && (
-                <span className={styles.capacityLeft}> · {spotsLeft} place{spotsLeft > 1 ? "s" : ""}</span>
+                <span className={styles.capacityLeft}>{spotsLeft} place{spotsLeft > 1 ? "s" : ""} restante{spotsLeft > 1 ? "s" : ""}</span>
               )}
-            </span>
+              {spotsLeft !== null && spotsLeft <= 0 && (
+                <span className={styles.capacityFull}>Complet</span>
+              )}
+            </div>
           </div>
         )}
 

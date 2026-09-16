@@ -39,6 +39,7 @@ export const ROUTES = {
   ADMIN_GLOBAL_MEMBERSHIPS: "/admin/memberships",
   ADMIN_FORMS: "/admin/forms",
   ADMIN_CONTACT: "/admin/contact",
+  ADMIN_HOMEPAGE: "/admin/homepage",
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_NOTIFICATIONS: "/admin/notifications",
   ADMIN_HELP: "/admin/help",
@@ -53,6 +54,7 @@ export const ROUTES = {
   STUDENT_CONTACT: "/student/contact",
   STUDENT_SETTINGS: "/student/settings",
   STUDENT_HELP: "/student/help",
+  STUDENT_NOTIFICATIONS: "/student/notifications",
   STUDENT_MEMBERSHIPS: "/student/memberships",
 
   // Legacy (kept for backward compat)

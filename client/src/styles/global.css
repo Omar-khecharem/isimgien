@@ -6,28 +6,28 @@
 @import "./tokens.css";
 
 @theme {
-  --color-brand: #0A5F3A;
-  --color-brand-light: #0A5F3A;
-  --color-brand-dark: #064e3b;
-  --color-brand-50: #ecfdf3;
-  --color-brand-100: #d1fae5;
-  --color-brand-200: #C7E8D6;
-  --color-brand-400: #3D9970;
-  --color-brand-500: #10b981;
-  --color-brand-600: #059669;
-  --color-brand-700: #0A5F3A;
-  --color-brand-800: #0A5F3A;
-  --color-brand-900: #064e3b;
-  --color-brand-950: #022c22;
+  --color-brand: #499A13;
+  --color-brand-light: #8ECA3C;
+  --color-brand-dark: #276F27;
+  --color-brand-50: #f4fbe8;
+  --color-brand-100: #e8f7d0;
+  --color-brand-200: #d1f0a3;
+  --color-brand-400: #8ECA3C;
+  --color-brand-500: #499A13;
+  --color-brand-600: #3d8211;
+  --color-brand-700: #276F27;
+  --color-brand-800: #1e5620;
+  --color-brand-900: #153d17;
+  --color-brand-950: #0c260e;
 
-  --color-surface: #F7F8F9;
+  --color-surface: #F7FAF3;
   --color-card: #FFFFFF;
-  --color-card-border: #F2F4F7;
+  --color-card-border: #E8F0D8;
 
   --color-accent-orange: #FFF3E0;
   --color-accent-orange-text: #E65100;
-  --color-accent-mint: #C7E8D6;
-  --color-accent-mint-text: #0A5F3A;
+  --color-accent-lime: #f4fbe8;
+  --color-accent-lime-text: #276F27;
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;

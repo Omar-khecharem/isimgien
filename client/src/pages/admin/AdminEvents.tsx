@@ -45,14 +45,14 @@ function getClubLogo(club: Event["club"]): string | null {
   return null;
 }
 
-const AVATAR_COLORS = ["#059669", "#3B82F6", "#7C3AED", "#D97706", "#DC2626", "#0891B2"];
+const GREEN_SHADES = ["#499A13", "#276F27", "#8ECA3C", "#3d8211", "#1e5620"];
 
 function getClubColor(name: string) {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  return GREEN_SHADES[Math.abs(hash) % GREEN_SHADES.length];
 }
 
 export function AdminEvents() {
@@ -273,17 +273,17 @@ export function AdminEvents() {
                 const statusColor = STATUS_COLORS[event.status];
                 return (
                   <div key={event._id} className={styles.eventCard}>
-                    <div className={styles.eventCardHeader}>
-                      <div className={styles.clubBadge}>
-                        {clubLogo ? (
-                          <img src={clubLogo} alt="" className={styles.clubBadgeImg} />
-                        ) : (
-                          <div className={styles.clubBadgeIcon} style={{ background: `${clubColor}12`, color: clubColor }}>
-                            {clubName.charAt(0)}
-                          </div>
-                        )}
-                        <span className={styles.clubBadgeName}>{clubName}</span>
-                      </div>
+                      <div className={styles.eventCardHeader}>
+                        <div className={styles.clubBadge}>
+                          {clubLogo ? (
+                            <img src={clubLogo} alt="" className={styles.clubBadgeImg} />
+                          ) : (
+                            <div className={styles.clubBadgeIcon}>
+                              {clubName.charAt(0)}
+                            </div>
+                          )}
+                          <span className={styles.clubBadgeName}>{clubName}</span>
+                        </div>
                       <span className={`${styles.statusBadge} ${styles[`status--${statusColor}`]}`}>
                         {STATUS_LABELS[event.status]}
                       </span>

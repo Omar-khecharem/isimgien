@@ -119,3 +119,20 @@ export async function updateAvatar(userId: string, avatarUrl: string): Promise<I
 
   return user;
 }
+
+export async function updateProfile(
+  userId: string,
+  data: { firstName?: string; lastName?: string; phone?: string }
+): Promise<IUser> {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $set: data },
+    { new: true, runValidators: true }
+  );
+
+  if (!user) {
+    throw ApiError.notFound("User not found");
+  }
+
+  return user;
+}

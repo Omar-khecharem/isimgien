@@ -1,7 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../features/auth";
 import { useLogo } from "../features/logo";
+import { clubsService } from "../features/clubs/clubsService";
 import { Avatar } from "../components/ui";
 import { ROUTES } from "../routes/paths";
 import { Role } from "../types";
@@ -51,7 +53,6 @@ const NAV_ITEMS: NavItem[] = [
         <path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    badge: "12",
     roles: [Role.SUPER_ADMIN],
   },
   {
@@ -276,7 +277,7 @@ const BOTTOM_ITEMS: NavItem[] = [
     roles: [Role.CLUB_LEADER],
   },
   {
-    to: ROUTES.STUDENT_EVENTS,
+    to: ROUTES.STUDENT_NOTIFICATIONS,
     label: "Notifications",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
@@ -360,6 +361,17 @@ const BOTTOM_ITEMS: NavItem[] = [
     roles: [Role.SUPER_ADMIN],
   },
   {
+    to: ROUTES.ADMIN_HOMEPAGE,
+    label: "Page d'accueil",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M3 9.5L11 3l8 6.5V19a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M8 20V12h6v8" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+    ),
+    roles: [Role.SUPER_ADMIN],
+  },
+  {
     to: ROUTES.LEADER_SETTINGS,
     label: "Paramètres",
     icon: (
@@ -392,6 +404,27 @@ export function DashboardLayout() {
 
   const profilePhoto = user?.avatar ?? null;
 
+  /* ── Dynamic club count for admin sidebar badge ──────────────────── */
+  const { data: clubsCount } = useQuery({
+    queryKey: ["admin", "clubs-count"],
+    queryFn: async () => {
+      const res = await clubsService.list({ limit: 1, isActive: true });
+      return res.meta?.total ?? res.data?.length ?? 0;
+    },
+    enabled: !!user && hasRole(Role.SUPER_ADMIN),
+    staleTime: 60_000,
+  });
+
+  /* ── Inject dynamic badge into nav items ─────────────────────────── */
+  const navWithBadges = useMemo(() => {
+    return NAV_ITEMS.map((item) => {
+      if (item.to === ROUTES.ADMIN_CLUBS && clubsCount !== undefined) {
+        return { ...item, badge: String(clubsCount) };
+      }
+      return item;
+    });
+  }, [clubsCount]);
+
   const toggleMobile = useCallback(() => setMobileOpen((p) => !p), []);
   const toggleCollapse = useCallback(() => setCollapsed((p) => !p), []);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
@@ -410,7 +443,7 @@ export function DashboardLayout() {
     };
   }, [mobileOpen, closeMobile]);
 
-  const filteredNav = NAV_ITEMS.filter((i) => !i.roles || hasRole(...i.roles));
+  const filteredNav = navWithBadges.filter((i) => !i.roles || hasRole(...i.roles));
   const filteredAdmin = ADMIN_ITEMS.filter((i) => !i.roles || hasRole(...i.roles));
   const filteredBottom = BOTTOM_ITEMS.filter((i) => !i.roles || hasRole(...i.roles));
 
@@ -445,16 +478,28 @@ export function DashboardLayout() {
       <aside className={sidebarClass}>
         {/* Logo — always visible */}
         <div className={styles.sidebarLogo}>
-          <div className={styles.logoMark}>
-            {logo ? (
-              <img src={logo} alt="Logo" className={styles.logoImg} />
-            ) : (
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <rect width="28" height="28" rx="8" fill="#0A5F3A" />
-                <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
-                <path d="M11.5 21v-5h5v5" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
-            )}
+          <div className={styles.sidebarBrand}>
+            <div className={styles.sidebarBrandLogo}>
+              {logo ? (
+                <img src={logo} alt="ISIMGIEN" className={styles.sidebarBrandLogoImg} />
+              ) : (
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <rect width="36" height="36" rx="10" fill="url(#logoGrad)" />
+                  <path d="M10 13l8-4.5 8 4.5v10a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 0110 23V13z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
+                  <path d="M14.5 27v-6h7v6" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
+                  <defs>
+                    <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36">
+                      <stop stopColor="#499A13" />
+                      <stop offset="1" stopColor="#276F27" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              )}
+            </div>
+            <div className={styles.sidebarBrandText}>
+              <span className={styles.sidebarBrandName}>ISIMGIEN</span>
+              <span className={styles.sidebarBrandTagline}>Plateforme universitaire</span>
+            </div>
           </div>
           <button className={styles.sidebarClose} onClick={closeMobile} aria-label="Fermer">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -547,7 +592,7 @@ export function DashboardLayout() {
               </svg>
             </button>
 
-            <NavLink to={ROUTES.NOTIFICATIONS} className={({ isActive }) => `${styles.topbarBtn} ${isActive ? styles["topbarBtn--active"] : ""}`} aria-label="Notifications">
+            <NavLink to={user?.role === Role.STUDENT ? ROUTES.STUDENT_NOTIFICATIONS : user?.role === Role.CLUB_LEADER ? ROUTES.LEADER_NOTIFICATIONS : ROUTES.ADMIN_NOTIFICATIONS} className={({ isActive }) => `${styles.topbarBtn} ${isActive ? styles["topbarBtn--active"] : ""}`} aria-label="Notifications">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M13.5 6.5a4.5 4.5 0 10-9 0c0 5-2 6.5-2 6.5h13s-2-1.5-2-6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M10.3 15a1.5 1.5 0 01-2.6 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

@@ -1,4 +1,4 @@
-export { useUpcomingTrainings, useUpcomingEvents } from "./useUpcoming";
+export { useUpcomingTrainings, useUpcomingEvents, useInvalidateUpcoming } from "./useUpcoming";
 export { useMyAttendance } from "./useMyAttendance";
 export { useMyMemberships } from "./useMyMemberships";
 export {

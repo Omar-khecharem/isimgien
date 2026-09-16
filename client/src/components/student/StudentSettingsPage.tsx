@@ -105,9 +105,20 @@ export function StudentSettingsPage() {
     setSaving(true);
     setSaved(false);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const updated = await authService.updateProfile({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        phone: profile.phone,
+      });
+      updateUser({
+        firstName: updated.firstName,
+        lastName: updated.lastName,
+        phone: updated.phone,
+      });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
+    } catch {
+      alert("Erreur lors de la mise à jour du profil");
     } finally {
       setSaving(false);
     }

@@ -3,14 +3,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { clubsService, type Club } from "../../features/clubs/clubsService";
 import styles from "./AdminClubs.module.css";
 
-const AVATAR_COLORS = ["#059669", "#3B82F6", "#7C3AED", "#D97706", "#DC2626", "#0891B2"];
+const GREEN_SHADES = ["#499A13", "#276F27", "#8ECA3C", "#3d8211", "#1e5620"];
 
 function getClubColor(name: string) {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  return GREEN_SHADES[Math.abs(hash) % GREEN_SHADES.length];
 }
 
 function formatDate(dateStr: string) {
@@ -251,17 +251,12 @@ export function AdminClubs() {
                       {club.coverImage ? (
                         <img src={club.coverImage} alt="" className={styles.clubCoverImg} />
                       ) : (
-                        <div
-                          className={styles.clubCoverFallback}
-                          style={{
-                            background: `linear-gradient(135deg, ${clubColor}18, ${clubColor}08)`,
-                          }}
-                        >
-                          <div className={styles.clubCoverPattern} style={{ color: `${clubColor}15` }}>
+                        <div className={styles.clubCoverFallback}>
+                          <div className={styles.clubCoverPattern}>
                             <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                              <circle cx="40" cy="40" r="30" stroke="currentColor" strokeWidth="2" />
-                              <circle cx="40" cy="40" r="18" stroke="currentColor" strokeWidth="1.5" />
-                              <circle cx="40" cy="40" r="6" fill="currentColor" />
+                              <circle cx="40" cy="40" r="30" stroke="#499A13" strokeWidth="2" opacity="0.15" />
+                              <circle cx="40" cy="40" r="18" stroke="#8ECA3C" strokeWidth="1.5" opacity="0.12" />
+                              <circle cx="40" cy="40" r="6" fill="#BBDC12" opacity="0.2" />
                             </svg>
                           </div>
                         </div>
@@ -277,16 +272,13 @@ export function AdminClubs() {
                     {/* Content */}
                     <div className={styles.clubContent}>
                       <div className={styles.clubHeader}>
-                        {club.logo ? (
-                          <img src={club.logo} alt="" className={styles.clubLogo} />
-                        ) : (
-                          <div
-                            className={styles.clubLogoFallback}
-                            style={{ background: `${clubColor}12`, color: clubColor }}
-                          >
-                            {club.name.charAt(0)}
-                          </div>
-                        )}
+                      {club.logo ? (
+                        <img src={club.logo} alt="" className={styles.clubLogo} />
+                      ) : (
+                        <div className={styles.clubLogoFallback}>
+                          {club.name.charAt(0)}
+                        </div>
+                      )}
                         <div className={styles.clubTitleWrap}>
                           <h3 className={styles.clubName}>{club.name}</h3>
                           {club.establishedDate && (
@@ -303,7 +295,7 @@ export function AdminClubs() {
 
                       {/* Leader */}
                       <div className={styles.leaderRow}>
-                        <div className={styles.leaderAvatar} style={{ background: `${leaderColor}12`, color: leaderColor, borderColor: `${leaderColor}25` }}>
+                        <div className={styles.leaderAvatar}>
                           {leaderInitials}
                         </div>
                         <div className={styles.leaderInfo}>

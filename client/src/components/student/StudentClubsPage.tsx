@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth";
 import { useAllClubs, useJoinClub, useStudentClubs } from "../../features/student";
 import styles from "./StudentClubsPage.module.css";
 
 export function StudentClubsPage() {
   const { user } = useAuth();
-  const { data: allClubs } = useAllClubs();
+  const navigate = useNavigate();
+  const { data: allClubs, isLoading } = useAllClubs();
   const { data: myClubs } = useStudentClubs();
   const joinClub = useJoinClub();
 
@@ -13,14 +15,13 @@ export function StudentClubsPage() {
   const [joiningId, setJoiningId] = useState<string | null>(null);
   const [confirmJoin, setConfirmJoin] = useState<string | null>(null);
 
-  const myClubIds = new Set(
-    myClubs?.map((m) => m.club._id) ?? []
-  );
+  const myClubIds = new Set(myClubs?.map((m) => m.club._id) ?? []);
 
   const filteredClubs =
-    allClubs?.filter((club) =>
-      club.name.toLowerCase().includes(search.toLowerCase()) ||
-      club.description.toLowerCase().includes(search.toLowerCase())
+    allClubs?.filter(
+      (club) =>
+        club.name.toLowerCase().includes(search.toLowerCase()) ||
+        club.description.toLowerCase().includes(search.toLowerCase())
     ) ?? [];
 
   const joinedClubs = filteredClubs.filter((c) => myClubIds.has(c._id));
@@ -46,45 +47,71 @@ export function StudentClubsPage() {
     return membership.membership.status;
   };
 
+  const goToDetail = (clubId: string) => {
+    navigate(`/student/clubs/${clubId}`);
+  };
+
   return (
     <div className={styles.page}>
-      {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <h1 className={styles.title}>Clubs</h1>
-          <p className={styles.subtitle}>
-            Découvrez et rejoignez les clubs de l'ISIMGIEN.
-          </p>
-        </div>
-        <div className={styles.headerRight}>
-          <div className={styles.searchBox}>
-            <svg className={styles.searchIcon} width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M12.5 12.5l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            <input
-              className={styles.searchInput}
-              type="text"
-              placeholder="Rechercher un club..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            {search && (
-              <button className={styles.searchClear} onClick={() => setSearch("")} aria-label="Effacer">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </button>
-            )}
+      {/* Hero Header */}
+      <header className={styles.hero}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroText}>
+            <h1 className={styles.title}>Clubs</h1>
+            <p className={styles.subtitle}>
+              Découvrez, rejoignez et gérez vos clubs universitaires.
+            </p>
+          </div>
+          <div className={styles.heroStats}>
+            <div className={styles.statCard}>
+              <span className={styles.statNumber}>{allClubs?.length ?? 0}</span>
+              <span className={styles.statLabel}>Clubs actifs</span>
+            </div>
+            <div className={styles.statCard}>
+              <span className={styles.statNumber}>{myClubIds.size}</span>
+              <span className={styles.statLabel}>Mes clubs</span>
+            </div>
           </div>
         </div>
+        <div className={styles.heroPattern} />
       </header>
+
+      {/* Search */}
+      <div className={styles.searchBar}>
+        <div className={styles.searchBox}>
+          <svg className={styles.searchIcon} width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M12.5 12.5l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="Rechercher un club..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search && (
+            <button className={styles.searchClear} onClick={() => setSearch("")} aria-label="Effacer">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* My Clubs */}
       {joinedClubs.length > 0 && (
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Mes clubs</h2>
+            <div className={styles.sectionTitleWrap}>
+              <div className={styles.sectionIcon}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                </svg>
+              </div>
+              <h2 className={styles.sectionTitle}>Mes clubs</h2>
+            </div>
             <span className={styles.sectionCount}>{joinedClubs.length}</span>
           </div>
           <div className={styles.clubsGrid}>
@@ -99,6 +126,7 @@ export function StudentClubsPage() {
                 joining={false}
                 isOwner={false}
                 academicYear={academicYear}
+                onClick={() => goToDetail(club._id)}
               />
             ))}
           </div>
@@ -108,18 +136,42 @@ export function StudentClubsPage() {
       {/* Available Clubs */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
-            {search ? `Résultats pour "${search}"` : "Tous les clubs"}
-          </h2>
+          <div className={styles.sectionTitleWrap}>
+            <div className={styles.sectionIcon}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+              </svg>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              {search ? `Résultats pour "${search}"` : "Tous les clubs"}
+            </h2>
+          </div>
           <span className={styles.sectionCount}>{availableClubs.length}</span>
         </div>
 
-        {availableClubs.length === 0 ? (
+        {isLoading ? (
+          <div className={styles.clubsGrid}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className={styles.skeletonCard}>
+                <div className={styles.skeletonCover} />
+                <div className={styles.skeletonBody}>
+                  <div className={styles.skeletonLogo} />
+                  <div className={styles.skeletonLine} style={{ width: "60%" }} />
+                  <div className={styles.skeletonLine} style={{ width: "40%" }} />
+                  <div className={styles.skeletonLineShort} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : availableClubs.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L4 6v5c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V6l-8-4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
               </svg>
             </div>
             <p className={styles.emptyTitle}>
@@ -146,6 +198,7 @@ export function StudentClubsPage() {
                 confirmOpen={confirmJoin === club._id}
                 onConfirmCancel={() => setConfirmJoin(null)}
                 academicYear={academicYear}
+                onClick={() => goToDetail(club._id)}
               />
             ))}
           </div>
@@ -170,8 +223,17 @@ function ClubCard({
   confirmOpen,
   onConfirmCancel,
   academicYear,
+  onClick,
 }: {
-  club: { _id: string; name: string; description: string; logo?: string | null; coverImage?: string | null; leader?: { firstName: string; lastName: string } | null; settings: { membershipFee: number } };
+  club: {
+    _id: string;
+    name: string;
+    description: string;
+    logo?: string | null;
+    coverImage?: string | null;
+    leader?: { firstName: string; lastName: string } | null;
+    settings: { membershipFee: number };
+  };
   isJoined: boolean;
   membershipStatus: string | null;
   onJoin: () => void;
@@ -181,6 +243,7 @@ function ClubCard({
   confirmOpen?: boolean;
   onConfirmCancel?: () => void;
   academicYear: string;
+  onClick: () => void;
 }) {
   const initials = club.name
     .split(" ")
@@ -189,17 +252,31 @@ function ClubCard({
     .slice(0, 2)
     .toUpperCase();
 
+  const gradientIndex =
+    club.name.charCodeAt(0) % 5;
+  const gradients = [
+    "linear-gradient(135deg, #499A13, #8ECA3C)",
+    "linear-gradient(135deg, #276F27, #499A13)",
+    "linear-gradient(135deg, #0891b2, #22d3ee)",
+    "linear-gradient(135deg, #7c3aed, #a78bfa)",
+    "linear-gradient(135deg, #ea580c, #fb923c)",
+  ];
+
   return (
-    <div className={`${styles.clubCard} ${isJoined ? styles["clubCard--joined"] : ""}`}>
+    <div
+      className={`${styles.clubCard} ${isJoined ? styles["clubCard--joined"] : ""}`}
+      onClick={onClick}
+    >
       {/* Cover */}
       <div className={styles.clubCover}>
         {club.coverImage ? (
           <img src={club.coverImage} alt="" className={styles.clubCoverImg} />
         ) : (
-          <div className={styles.clubCoverGradient}>
+          <div className={styles.clubCoverGradient} style={{ background: gradients[gradientIndex] }}>
             <span className={styles.clubCoverInitials}>{initials}</span>
           </div>
         )}
+        <div className={styles.clubCoverOverlay} />
         {isJoined && (
           <div className={styles.joinedBadge}>
             <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -207,6 +284,11 @@ function ClubCard({
             </svg>
             Inscrit
           </div>
+        )}
+        {club.settings.membershipFee > 0 ? (
+          <div className={styles.feeBadge}>{club.settings.membershipFee} TND</div>
+        ) : (
+          <div className={`${styles.feeBadge} ${styles["feeBadge--free"]}`}>Gratuit</div>
         )}
       </div>
 
@@ -217,13 +299,19 @@ function ClubCard({
             {club.logo ? (
               <img src={club.logo} alt="" className={styles.clubLogo} />
             ) : (
-              <div className={styles.clubLogoPlaceholder}>{initials}</div>
+              <div className={styles.clubLogoPlaceholder} style={{ background: gradients[gradientIndex] }}>
+                {initials}
+              </div>
             )}
           </div>
           <div className={styles.clubInfo}>
             <h3 className={styles.clubName}>{club.name}</h3>
             {club.leader && (
               <span className={styles.clubLeader}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
                 {club.leader.firstName} {club.leader.lastName}
               </span>
             )}
@@ -232,20 +320,8 @@ function ClubCard({
 
         <p className={styles.clubDesc}>{club.description}</p>
 
-        <div className={styles.clubMeta}>
-          {club.settings.membershipFee > 0 && (
-            <span className={styles.clubFee}>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.2" />
-                <path d="M7 4v6M5 5.5h3.5a1 1 0 010 2H5.5a1 1 0 010 2H8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-              </svg>
-              {club.settings.membershipFee} TND / an
-            </span>
-          )}
-        </div>
-
         {/* Actions */}
-        <div className={styles.clubActions}>
+        <div className={styles.clubActions} onClick={(e) => e.stopPropagation()}>
           {isJoined ? (
             <div className={styles.statusRow}>
               <span
@@ -260,7 +336,7 @@ function ClubCard({
                 {membershipStatus === "active"
                   ? "Membre actif"
                   : membershipStatus === "pending_payment"
-                  ? "En attente de paiement"
+                  ? "En attente"
                   : membershipStatus === "expired"
                   ? "Expiré"
                   : "Inscrit"}
@@ -269,7 +345,7 @@ function ClubCard({
           ) : confirmOpen ? (
             <div className={styles.confirmRow}>
               <p className={styles.confirmText}>
-                Rejoindre {club.name} pour {academicYear} ?
+                Rejoindre {club.name} ?
               </p>
               <div className={styles.confirmBtns}>
                 <button
@@ -289,17 +365,25 @@ function ClubCard({
               </div>
             </div>
           ) : (
-            <button
-              className={styles.joinBtn}
-              onClick={onJoin}
-              disabled={isOwner}
-              title={isOwner ? "Vous êtes le leader de ce club" : "Rejoindre ce club"}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              {isOwner ? "Votre club" : "Rejoindre"}
-            </button>
+            <div className={styles.cardActions}>
+              <button className={styles.detailsBtn} onClick={onClick}>
+                Voir détails
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+              <button
+                className={styles.joinBtn}
+                onClick={onJoin}
+                disabled={isOwner}
+                title={isOwner ? "Vous êtes le leader de ce club" : "Rejoindre ce club"}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                {isOwner ? "Votre club" : "Rejoindre"}
+              </button>
+            </div>
           )}
         </div>
       </div>

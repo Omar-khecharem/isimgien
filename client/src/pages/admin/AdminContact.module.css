@@ -36,7 +36,7 @@
 }
 
 .statusDotOnline {
-  background: #10b981;
+  background: #499A13;
 }
 
 .statusText {
@@ -116,7 +116,7 @@
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #499A13, #499A13);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +140,7 @@
 }
 
 .contactStatusOnline {
-  background: #10b981;
+  background: #499A13;
 }
 
 .contactStatusOffline {
@@ -173,7 +173,7 @@
 }
 
 .typingText {
-  color: #059669;
+  color: #499A13;
   font-style: italic;
 }
 
@@ -184,7 +184,7 @@
   min-width: 20px;
   height: 20px;
   border-radius: 10px;
-  background: #059669;
+  background: #499A13;
   color: white;
   font-size: 11px;
   font-weight: 700;
@@ -255,7 +255,7 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #499A13, #499A13);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -327,7 +327,7 @@
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #499A13, #499A13);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,7 +346,7 @@
 }
 
 .messageMine .messageBubble {
-  background: #059669;
+  background: #499A13;
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -409,7 +409,7 @@
 }
 
 .inputWrap:focus-within {
-  border-color: #059669;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
@@ -435,7 +435,7 @@
   height: 36px;
   border-radius: 10px;
   border: none;
-  background: #059669;
+  background: #499A13;
   color: white;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -443,7 +443,7 @@
 }
 
 .sendBtn:hover:not(:disabled) {
-  background: #047857;
+  background: #276F27;
   transform: scale(1.05);
 }
 

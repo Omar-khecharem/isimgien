@@ -61,10 +61,10 @@
   opacity: 0.14;
 }
 
-.statCard--total .statCardBg { background: #2563EB; }
-.statCard--active .statCardBg { background: #059669; }
-.statCard--inactive .statCardBg { background: #EF4444; }
-.statCard--ongoing .statCardBg { background: #D97706; }
+.statCard--total { background: linear-gradient(135deg, #276F27, #499A13); color: #fff; border: none; }
+.statCard--active { background: linear-gradient(135deg, #499A13, #8ECA3C); color: #fff; border: none; }
+.statCard--inactive { background: linear-gradient(135deg, #8ECA3C, #BBDC12); color: #111827; border: none; }
+.statCard--ongoing { background: linear-gradient(135deg, #1e5620, #276F27); color: #fff; border: none; }
 
 .statCardInner {
   position: relative;
@@ -90,7 +90,7 @@
 
 .statCard--active .statCardIcon {
   background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
-  color: #059669;
+  color: #499A13;
 }
 
 .statCard--inactive .statCardIcon {
@@ -112,7 +112,7 @@
 .statCardValue {
   font-size: 28px;
   font-weight: 700;
-  color: #0F1419;
+  color: inherit;
   letter-spacing: -0.5px;
   line-height: 1;
 }
@@ -120,7 +120,8 @@
 .statCardLabel {
   font-size: 13px;
   font-weight: 500;
-  color: #6B7280;
+  color: inherit;
+  opacity: 0.85;
 }
 
 /* ─── Filters ─── */
@@ -161,7 +162,7 @@
 }
 
 .searchInput:focus {
-  border-color: #059669;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
@@ -201,7 +202,7 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #059669;
+  color: #499A13;
   pointer-events: none;
 }
 
@@ -227,7 +228,7 @@
 }
 
 .clubFilter:focus {
-  border-color: #059669;
+  border-color: #499A13;
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
@@ -260,7 +261,7 @@
 
 .filterTab--active {
   background: #fff;
-  color: #059669;
+  color: #499A13;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -433,8 +434,8 @@
   white-space: nowrap;
 }
 
-.status--green { background: #ECFDF5; color: #047857; }
-.status--emerald { background: #ECFDF5; color: #047857; }
+.status--green { background: #ECFDF5; color: #276F27; }
+.status--emerald { background: #ECFDF5; color: #276F27; }
 .status--gray { background: #F3F4F6; color: #6B7280; }
 .status--red { background: #FEF2F2; color: #B91C1C; }
 .status--amber { background: #FFFBEB; color: #B45309; }
@@ -498,8 +499,8 @@
 
 .pageBtn:hover:not(:disabled),
 .pageNum:hover {
-  border-color: #059669;
-  color: #059669;
+  border-color: #499A13;
+  color: #499A13;
 }
 
 .pageBtn:disabled {
@@ -508,14 +509,14 @@
 }
 
 .pageNum--active {
-  background: #059669;
-  border-color: #059669;
+  background: #499A13;
+  border-color: #499A13;
   color: #fff;
 }
 
 .pageNum--active:hover {
-  background: #047857;
-  border-color: #047857;
+  background: #276F27;
+  border-color: #276F27;
   color: #fff;
 }
 
@@ -568,7 +569,7 @@
   width: 32px;
   height: 32px;
   border: 3px solid #E5E7EB;
-  border-top-color: #059669;
+  border-top-color: #499A13;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

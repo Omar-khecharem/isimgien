@@ -1,7 +1,9 @@
 export { StudentDashboard } from "./StudentDashboard";
 export { StudentSettingsPage } from "./StudentSettingsPage";
 export { StudentClubsPage } from "./StudentClubsPage";
+export { StudentClubDetailPage } from "./StudentClubDetailPage";
 export { StudentEventsPage } from "./StudentEventsPage";
 export { StudentAttendancePage } from "./StudentAttendancePage";
 export { StudentPastEventsPage } from "./StudentPastEventsPage";
 export { StudentContactPage } from "./StudentContactPage";
+export { StudentNotificationsPage } from "./StudentNotificationsPage";

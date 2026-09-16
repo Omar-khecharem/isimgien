@@ -2,10 +2,11 @@ import { useState, useRef } from "react";
 import { useAuth } from "../../features/auth";
 import { authService } from "../../features/auth/authService";
 import { useLogo } from "../../features/logo";
+import { useHomepage } from "../../features/homepage/HomepageContext";
 import { Avatar } from "../../components/ui";
 import styles from "./AdminSettings.module.css";
 
-type Tab = "profile" | "general" | "notifications" | "security";
+type Tab = "profile" | "general" | "homepage" | "notifications" | "security";
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   {
@@ -25,6 +26,16 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
       <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
         <circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="1.5" />
         <path d="M11 2v3M11 17v3M2 11h3M17 11h3M4.9 4.9l2.1 2.1M14.9 14.9l2.1 2.1M4.9 17.1l2.1-2.1M14.9 7.1l2.1-2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    id: "homepage",
+    label: "Page d'accueil",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <path d="M3 9.5L11 3l8 6.5V19a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M8 20V12h6v8" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -66,11 +77,13 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 export function AdminSettings() {
   const { user, updateUser } = useAuth();
   const { logo, setLogo, saveLogo, saving: logoSaving, saved: logoSaved } = useLogo();
+  const { config, update, save, saving: homepageSaving, saved: homepageSaved } = useHomepage();
   const [activeTab, setActiveTab] = useState<Tab>("profile");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const heroImageInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const [profile, setProfile] = useState({
@@ -117,6 +130,18 @@ export function AdminSettings() {
     reader.readAsDataURL(file);
   };
 
+  const handleHeroImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Le fichier ne doit pas dépasser 5 Mo");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => update({ heroImage: ev.target?.result as string });
+    reader.readAsDataURL(file);
+  };
+
   const [notifs, setNotifs] = useState({
     email: true,
     push: true,
@@ -134,6 +159,9 @@ export function AdminSettings() {
     try {
       if (activeTab === "general") {
         await saveLogo();
+      }
+      if (activeTab === "homepage") {
+        await save();
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       setSaved(true);
@@ -154,8 +182,8 @@ export function AdminSettings() {
         {saved && (
           <div className={styles.savedBadge}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="7" stroke="#0A5F3A" strokeWidth="1.5" />
-              <path d="M5 8l2 2 4-4" stroke="#0A5F3A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="8" cy="8" r="7" stroke="#499A13" strokeWidth="1.5" />
+              <path d="M5 8l2 2 4-4" stroke="#499A13" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Enregistré
           </div>
@@ -309,8 +337,8 @@ export function AdminSettings() {
                     ) : (
                       <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
                         <rect width="28" height="28" rx="8" fill="#ECFDF5" />
-                        <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="#0A5F3A" strokeWidth="1.5" strokeLinejoin="round" />
-                        <path d="M11.5 21v-5h5v5" stroke="#0A5F3A" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="#499A13" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M11.5 21v-5h5v5" stroke="#499A13" strokeWidth="1.5" strokeLinejoin="round" />
                       </svg>
                     )}
                   </div>
@@ -383,6 +411,243 @@ export function AdminSettings() {
                   onClick={handleSave}
                   disabled={saving}
                 >
+                  {saving ? (
+                    <span className={styles.saveBtnInner}>
+                      <span className={styles.spinner} />
+                      Enregistrement...
+                    </span>
+                  ) : saved ? (
+                    <span className={styles.saveBtnInner}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Enregistré
+                    </span>
+                  ) : (
+                    "Enregistrer"
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ─── Homepage Config ────────────────────────────────── */}
+          {activeTab === "homepage" && (
+            <div className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Page d'accueil</h2>
+                <p className={styles.sectionDesc}>Configurez le contenu de la page d'accueil</p>
+              </div>
+
+              {/* Hero Section */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Section Hero</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre principal</label>
+                    <input
+                      className={styles.input}
+                      value={config.heroTitle}
+                      onChange={(e) => update({ heroTitle: e.target.value })}
+                      placeholder="Lessons and insights from 8 years"
+                    />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Sous-titre</label>
+                    <textarea
+                      className={styles.textarea}
+                      rows={2}
+                      value={config.heroSubtitle}
+                      onChange={(e) => update({ heroSubtitle: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className={styles.logoUploadRow} style={{ marginTop: 8 }}>
+                  <div
+                    className={styles.logoPreview}
+                    style={{ width: 160, height: 110, borderRadius: 10 }}
+                    onClick={() => heroImageInputRef.current?.click()}
+                  >
+                    {config.heroImage ? (
+                      <img src={config.heroImage} alt="Hero" className={styles.logoImg} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                    ) : (
+                      <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="8" fill="#ECFDF5" />
+                        <path d="M8 10l6-3.5 6 3.5v8a1 1 0 01-1 1H9a1 1 0 01-1-1v-8z" stroke="#499A13" strokeWidth="1.5" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className={styles.logoUploadActions}>
+                    <button className={styles.uploadBtn} onClick={() => heroImageInputRef.current?.click()}>
+                      {config.heroImage ? "Changer l'image" : "Uploader une image"}
+                    </button>
+                    {config.heroImage && (
+                      <button className={styles.removeBtn} onClick={() => update({ heroImage: null })}>
+                        Supprimer
+                      </button>
+                    )}
+                  </div>
+                  <input ref={heroImageInputRef} type="file" accept="image/*" onChange={handleHeroImageUpload} className={styles.hiddenInput} />
+                </div>
+              </div>
+
+              {/* Collaborators Section */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Section Collaborateurs</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.collaboratorsTitle} onChange={(e) => update({ collaboratorsTitle: e.target.value })} />
+                  </div>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Sous-titre</label>
+                    <input className={styles.input} value={config.collaboratorsSubtitle} onChange={(e) => update({ collaboratorsSubtitle: e.target.value })} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Community Section */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Section Communauté</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.communityTitle} onChange={(e) => update({ communityTitle: e.target.value })} />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Sous-titre</label>
+                    <input className={styles.input} value={config.communitySubtitle} onChange={(e) => update({ communitySubtitle: e.target.value })} />
+                  </div>
+                </div>
+                {config.communityCards.map((card, i) => (
+                  <div key={i} className={styles.formGrid} style={{ marginTop: 8, padding: "8px 0", borderTop: "1px solid #f0f0f0" }}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Carte {i + 1} — Titre</label>
+                      <input className={styles.input} value={card.title} onChange={(e) => {
+                        const cards = [...config.communityCards];
+                        cards[i] = { ...cards[i], title: e.target.value };
+                        update({ communityCards: cards });
+                      }} />
+                    </div>
+                    <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                      <label className={styles.label}>Carte {i + 1} — Description</label>
+                      <textarea className={styles.textarea} rows={2} value={card.description} onChange={(e) => {
+                        const cards = [...config.communityCards];
+                        cards[i] = { ...cards[i], description: e.target.value };
+                        update({ communityCards: cards });
+                      }} />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Carte {i + 1} — Couleur</label>
+                      <input type="color" className={styles.input} value={card.iconColor} onChange={(e) => {
+                        const cards = [...config.communityCards];
+                        cards[i] = { ...cards[i], iconColor: e.target.value };
+                        update({ communityCards: cards });
+                      }} style={{ height: 36, padding: 4 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Feature 1 */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Feature 1</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.feature1.title} onChange={(e) => update({ feature1: { ...config.feature1, title: e.target.value } })} />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Description</label>
+                    <textarea className={styles.textarea} rows={3} value={config.feature1.description} onChange={(e) => update({ feature1: { ...config.feature1, description: e.target.value } })} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Statistiques</label>
+                {config.stats.map((stat, i) => (
+                  <div key={i} className={styles.formGrid} style={{ marginTop: 8, padding: "8px 0", borderTop: i > 0 ? "1px solid #f0f0f0" : "none" }}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Valeur</label>
+                      <input className={styles.input} value={stat.value} onChange={(e) => {
+                        const stats = [...config.stats];
+                        stats[i] = { ...stats[i], value: e.target.value };
+                        update({ stats });
+                      }} />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Label</label>
+                      <input className={styles.input} value={stat.label} onChange={(e) => {
+                        const stats = [...config.stats];
+                        stats[i] = { ...stats[i], label: e.target.value };
+                        update({ stats });
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Blog Section */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Section Blog</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.blogTitle} onChange={(e) => update({ blogTitle: e.target.value })} />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Sous-titre</label>
+                    <textarea className={styles.textarea} rows={2} value={config.blogSubtitle} onChange={(e) => update({ blogSubtitle: e.target.value })} />
+                  </div>
+                </div>
+                {config.blogPosts.map((post, i) => (
+                  <div key={i} className={styles.formGrid} style={{ marginTop: 8, padding: "8px 0", borderTop: "1px solid #f0f0f0" }}>
+                    <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                      <label className={styles.label}>Article {i + 1}</label>
+                      <input className={styles.input} value={post.title} onChange={(e) => {
+                        const posts = [...config.blogPosts];
+                        posts[i] = { ...posts[i], title: e.target.value };
+                        update({ blogPosts: posts });
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Bannière CTA</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.ctaTitle} onChange={(e) => update({ ctaTitle: e.target.value })} />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Sous-titre</label>
+                    <textarea className={styles.textarea} rows={2} value={config.ctaSubtitle} onChange={(e) => update({ ctaSubtitle: e.target.value })} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className={styles.logoUploadSection}>
+                <label className={styles.label}>Feature 2</label>
+                <div className={styles.formGrid} style={{ marginTop: 8 }}>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Titre</label>
+                    <input className={styles.input} value={config.feature2.title} onChange={(e) => update({ feature2: { ...config.feature2, title: e.target.value } })} />
+                  </div>
+                  <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                    <label className={styles.label}>Description</label>
+                    <textarea className={styles.textarea} rows={3} value={config.feature2.description} onChange={(e) => update({ feature2: { ...config.feature2, description: e.target.value } })} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.actions}>
+                <button className={styles.saveBtn} onClick={handleSave} disabled={saving}>
                   {saving ? (
                     <span className={styles.saveBtnInner}>
                       <span className={styles.spinner} />
