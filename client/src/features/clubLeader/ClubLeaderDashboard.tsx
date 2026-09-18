@@ -3,6 +3,9 @@ import { useAuth } from "../../features/auth";
 import { useClubLeaderDashboard } from "./useClubLeaderDashboard";
 import { clubsService } from "../clubs/clubsService";
 import { useQuery } from "@tanstack/react-query";
+import { attendanceService } from "../attendance/attendanceService";
+import { eventsService } from "../events/eventsService";
+import { PremiumCalendar } from "../../components/common/PremiumCalendar";
 import styles from "./ClubLeaderDashboard.module.css";
 import type { AnalyticsDay, FinanceSummary, UpcomingTraining, MemberRecord } from "./clubLeaderService";
 
@@ -383,6 +386,22 @@ export function ClubLeaderDashboard() {
 
   const { data, isLoading: dashboardLoading, error: dashboardError } = useClubLeaderDashboard(clubId);
 
+  const { data: clubAttendanceRecords } = useQuery({
+    queryKey: ["leader", "attendance-records", clubId],
+    queryFn: async () => { const res = await attendanceService.getGlobalAttendance({ clubId, limit: 200 }); return res.data; },
+    enabled: !!clubId,
+  });
+
+  const { data: clubEventsData } = useQuery({
+    queryKey: ["leader", "events", clubId],
+    queryFn: async () => { const res = await eventsService.listByClub(clubId!, { limit: 100, sort: "date" }); return res.data; },
+    enabled: !!clubId,
+  });
+
+  const calendarAttendance = clubAttendanceRecords?.data ?? [];
+  const calendarTrainings = data?.upcoming ?? [];
+  const calendarEvents = clubEventsData?.data ?? [];
+
   if (clubsLoading || dashboardLoading) {
     return (
       <div className={styles.page}>
@@ -441,7 +460,7 @@ export function ClubLeaderDashboard() {
         {/* Formations */}
         <div className={styles.statCard} data-accent="emerald">
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--emerald"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 19V5a2 2 0 012-2h9.5a1 1 0 01.8.4l3.1 4a1 1 0 01.1.6V19a2 2 0 01-2 2H6a2 2 0 01-2-2z" stroke="currentColor" strokeWidth="1.5" /><path d="M9 12h4M9 16h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -455,14 +474,14 @@ export function ClubLeaderDashboard() {
             <div className={styles.statSecondary}>{formationsTerminees} terminées · {data.kpis.formationsEnCours} en cours</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={FORMATIONS_SPARKLINE} color="#059669" />
+            <Sparkline data={FORMATIONS_SPARKLINE} color="#fff" />
           </div>
         </div>
 
         {/* Membres */}
         <div className={styles.statCard} data-accent="blue">
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--blue"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" /><path d="M4 19c0-3 2.5-5.5 5-5.5s5 2.5 5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="15.5" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.5" /><path d="M15.5 11.5c2 0 3.5 1.5 3.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -476,14 +495,14 @@ export function ClubLeaderDashboard() {
             <div className={styles.statSecondary}>{data.members.pendingRequests} en attente</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={MEMBERS_SPARKLINE} color="#3B82F6" />
+            <Sparkline data={MEMBERS_SPARKLINE} color="#fff" />
           </div>
         </div>
 
         {/* Présences */}
         <div className={styles.statCard} data-accent="violet">
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${styles["statIcon--violet"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${styles["statTrend--up"]}`}>
@@ -497,14 +516,14 @@ export function ClubLeaderDashboard() {
             <div className={styles.statSecondary}>{data.kpis.inscriptionsEnAttente} inscriptions en attente</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={PRESENCES_SPARKLINE} color="#7C3AED" />
+            <Sparkline data={PRESENCES_SPARKLINE} color="#276F27" />
           </div>
         </div>
 
         {/* Caisse */}
         <div className={styles.statCard} data-accent={data.finance.balance >= 0 ? "emerald" : "rose"}>
           <div className={styles.statTop}>
-            <div className={`${styles.statIcon} ${data.finance.balance >= 0 ? styles["statIcon--emerald"] : styles["statIcon--rose"]}`}>
+            <div className={styles.statIcon}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M3 9h16" stroke="currentColor" strokeWidth="1.5" /><path d="M7 13h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
             </div>
             <span className={`${styles.statTrend} ${data.finance.balance >= 0 ? styles["statTrend--up"] : styles["statTrend--down"]}`}>
@@ -522,7 +541,7 @@ export function ClubLeaderDashboard() {
             <div className={styles.statSecondary}>TND · {data.finance.totalIncome.toLocaleString("fr-FR")} revenus</div>
           </div>
           <div className={styles.statFooter}>
-            <Sparkline data={CAISSE_SPARKLINE} color={data.finance.balance >= 0 ? "#059669" : "#DC2626"} />
+            <Sparkline data={CAISSE_SPARKLINE} color={data.finance.balance >= 0 ? "#fff" : "#fff"} />
           </div>
         </div>
 
@@ -550,50 +569,57 @@ export function ClubLeaderDashboard() {
         </div>
       </div>
 
-      {/* ═══ Row 2: Chart + Finance + Activity ═══ */}
+      {/* ═══ Row 2: Chart + Finance + Calendar ═══ */}
       <div className={styles.row2}>
         <PresenceChart data={data.analytics} />
         <FinanceCard finance={data.finance} />
-        <ActivityCard />
+        <div className={styles.card}>
+          <div className={styles.cardHead}>
+            <div>
+              <h3 className={styles.cardTitle}>Calendrier</h3>
+              <p className={styles.cardSubtitle}>Présences & formations</p>
+            </div>
+          </div>
+          <PremiumCalendar
+            attendanceData={calendarAttendance}
+            upcomingTrainings={calendarTrainings}
+            upcomingEvents={calendarEvents}
+            compact
+          />
+        </div>
       </div>
 
       {/* ═══ Row 3: Quick Actions ═══ */}
       <div className={styles.row3}>
-        <a href="#events" className={styles.actionCard} data-action="emerald">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--emerald"]}`}>
+        <a href="#events" className={styles.actionCard}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M3 8h14" stroke="currentColor" strokeWidth="1.5" /><path d="M7 2.5v3M13 2.5v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="10" cy="12" r="1.5" fill="currentColor" /></svg>
           </div>
           <span className={styles.actionLabel}>Formations</span>
         </a>
-        <a href="#members" className={styles.actionCard} data-action="blue">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--blue"]}`}>
+        <a href="#members" className={styles.actionCard}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" /><path d="M3 17c0-3 2.5-5 5-5s5 2 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Membres</span>
         </a>
-        <a href="#forms" className={styles.actionCard} data-action="violet">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--violet"]}`}>
+        <a href="#forms" className={styles.actionCard}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M7 7h6M7 10h6M7 13h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Formulaires</span>
         </a>
-        <a href="#finance" className={styles.actionCard} data-action="amber">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--amber"]}`}>
+        <a href="#finance" className={styles.actionCard}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5" /><path d="M3 9h14" stroke="currentColor" strokeWidth="1.5" /></svg>
           </div>
           <span className={styles.actionLabel}>Caisse</span>
         </a>
-        <a href="#reports" className={styles.actionCard} data-action="rose">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--rose"]}`}>
+        <a href="#reports" className={styles.actionCard}>
+          <div className={styles.actionIcon}>
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V7l4-4 4 4 6-6v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 17h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
           </div>
           <span className={styles.actionLabel}>Rapports</span>
-        </a>
-        <a href="#notifications" className={styles.actionCard} data-action="cyan">
-          <div className={`${styles.actionIcon} ${styles["actionIcon--cyan"]}`}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M15 7a5 5 0 10-10 0c0 5-2.5 6.5-2.5 6.5h15S15 12 15 7z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M11.5 17a2 2 0 01-3 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-          </div>
-          <span className={styles.actionLabel}>Notifications</span>
         </a>
       </div>
 

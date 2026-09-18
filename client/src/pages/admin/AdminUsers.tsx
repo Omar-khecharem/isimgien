@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { usersService, type User } from "../../features/users/usersService";
+import { clubsService, type Club } from "../../features/clubs/clubsService";
 import { Role } from "../../types";
 import styles from "./AdminUsers.module.css";
 
@@ -51,6 +52,12 @@ export function AdminUsers() {
   const [page, setPage] = useState(1);
   const limit = 10;
 
+  const [leaderModal, setLeaderModal] = useState<{
+    open: boolean;
+    user: User | null;
+  }>({ open: false, user: null });
+  const [selectedClubId, setSelectedClubId] = useState<string>("");
+
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "users", { page, search, roleFilter }],
     queryFn: async () => {
@@ -61,11 +68,28 @@ export function AdminUsers() {
     },
   });
 
+  const { data: clubsData } = useQuery({
+    queryKey: ["admin", "clubs-list"],
+    queryFn: async () => {
+      const res = await clubsService.list({ limit: 100 });
+      return res.data;
+    },
+  });
+
   const roleMutation = useMutation({
     mutationFn: ({ userId, role }: { userId: string; role: Role }) =>
       usersService.updateRole(userId, role),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+  });
+
+  const assignLeaderMutation = useMutation({
+    mutationFn: ({ clubId, userId }: { clubId: string; userId: string }) =>
+      clubsService.assignLeader(clubId, userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "clubs-list"] });
     },
   });
 
@@ -88,6 +112,37 @@ export function AdminUsers() {
 
   const activeCount = members.filter((u: User) => u.isActive).length;
   const inactiveCount = members.length - activeCount;
+
+  const clubs: Club[] = clubsData?.data || [];
+  const clubsWithoutLeader = clubs.filter((c) => !c.leader);
+
+  const handleRoleChange = (user: User, newRole: string) => {
+    if (newRole === Role.CLUB_LEADER) {
+      setSelectedClubId("");
+      setLeaderModal({ open: true, user });
+    } else {
+      roleMutation.mutate({ userId: user._id, role: newRole as Role });
+    }
+  };
+
+  const handleAssignLeader = async () => {
+    if (!leaderModal.user || !selectedClubId) return;
+    await roleMutation.mutateAsync({
+      userId: leaderModal.user._id,
+      role: Role.CLUB_LEADER,
+    });
+    await assignLeaderMutation.mutateAsync({
+      clubId: selectedClubId,
+      userId: leaderModal.user._id,
+    });
+    setLeaderModal({ open: false, user: null });
+    setSelectedClubId("");
+  };
+
+  const closeModal = () => {
+    setLeaderModal({ open: false, user: null });
+    setSelectedClubId("");
+  };
 
   return (
     <div className={styles.page}>
@@ -271,8 +326,8 @@ export function AdminUsers() {
                           <select
                             className={`${styles.roleSelect} ${styles[`role--${ROLE_COLORS[user.role]}`]}`}
                             value={user.role}
-                            onChange={(e) => roleMutation.mutate({ userId: user._id, role: e.target.value as Role })}
-                            disabled={roleMutation.isPending}
+                            onChange={(e) => handleRoleChange(user, e.target.value)}
+                            disabled={roleMutation.isPending || assignLeaderMutation.isPending}
                           >
                             <option value={Role.STUDENT}>Étudiant</option>
                             <option value={Role.CLUB_LEADER}>Leader</option>
@@ -353,6 +408,67 @@ export function AdminUsers() {
           </>
         )}
       </div>
+
+      {/* ═══ Leader Assignment Modal ═══ */}
+      {leaderModal.open && leaderModal.user && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <div className={styles.modalIcon}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L5 5.5v5c0 5 3 8.5 7 10 4-1.5 7-5 7-10v-5L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                  <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div>
+                <h2 className={styles.modalTitle}>Assigner un club</h2>
+                <p className={styles.modalDesc}>
+                  Sélectionnez le club pour <strong>{leaderModal.user.firstName} {leaderModal.user.lastName}</strong>
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.modalBody}>
+              <label className={styles.modalLabel}>Club</label>
+              <select
+                className={styles.modalSelect}
+                value={selectedClubId}
+                onChange={(e) => setSelectedClubId(e.target.value)}
+              >
+                <option value="">— Choisir un club —</option>
+                {clubs.map((club) => (
+                  <option key={club._id} value={club._id} disabled={!!club.leader}>
+                    {club.name}{club.leader ? " (déjà assigné)" : ""}
+                  </option>
+                ))}
+              </select>
+              {clubsWithoutLeader.length === 0 && (
+                <p className={styles.modalHint}>Tous les clubs ont déjà un leader assigné.</p>
+              )}
+            </div>
+
+            <div className={styles.modalFooter}>
+              <button className={styles.modalCancel} onClick={closeModal}>
+                Annuler
+              </button>
+              <button
+                className={styles.modalConfirm}
+                disabled={!selectedClubId || assignLeaderMutation.isPending}
+                onClick={handleAssignLeader}
+              >
+                {assignLeaderMutation.isPending ? (
+                  <span className={styles.modalBtnInner}>
+                    <span className={styles.spinnerSmall} />
+                    Attribution...
+                  </span>
+                ) : (
+                  "Confirmer"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

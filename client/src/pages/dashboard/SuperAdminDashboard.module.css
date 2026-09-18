@@ -107,20 +107,20 @@
 }
 
 .statCard:nth-child(1) {
-  background: linear-gradient(135deg, #276F27 0%, #499A13 100%);
+  background: linear-gradient(135deg, #1a5c1a 0%, #3a8a10 100%);
 }
 
 .statCard:nth-child(2) {
-  background: linear-gradient(135deg, #499A13 0%, #8ECA3C 100%);
+  background: linear-gradient(135deg, #3a8a10 0%, #6ab520 100%);
 }
 
 .statCard:nth-child(3) {
-  background: linear-gradient(135deg, #8ECA3C 0%, #BBDC12 100%);
-  color: var(--color-text);
+  background: linear-gradient(135deg, #6ab520 0%, #a0d420 100%);
+  color: #0a2e0a;
 }
 
 .statCard:nth-child(4) {
-  background: linear-gradient(135deg, #1e5620 0%, #276F27 100%);
+  background: linear-gradient(135deg, #144214 0%, #1a5c1a 100%);
 }
 
 .statCard:hover {
@@ -160,28 +160,33 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .statCard:nth-child(3) .statTrend {
-  background: rgba(39, 111, 39, 0.1);
-  color: #276F27;
+  background: rgba(26, 92, 26, 0.12);
+  color: #1a5c1a;
+  text-shadow: none;
 }
 
 .statTrend--up {
   color: #fff;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .statCard:nth-child(3) .statTrend--up {
-  background: rgba(39, 111, 39, 0.1);
-  color: #276F27;
+  background: rgba(26, 92, 26, 0.12);
+  color: #1a5c1a;
+  text-shadow: none;
 }
 
 .statTrend--down {
-  color: #DC2626;
-  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .statBody {
@@ -193,11 +198,13 @@
 .statLabel {
   font-size: 13px;
   font-weight: 500;
-  opacity: 0.85;
+  opacity: 0.9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .statCard:nth-child(3) .statLabel {
-  color: var(--color-text-muted);
+  color: #1a5c1a;
+  text-shadow: none;
 }
 
 .statValue {
@@ -206,16 +213,24 @@
   letter-spacing: -0.03em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.statCard:nth-child(3) .statValue {
+  color: #0a2e0a;
+  text-shadow: none;
 }
 
 .statSecondary {
   font-size: 12px;
-  opacity: 0.7;
+  opacity: 0.85;
   margin-top: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .statCard:nth-child(3) .statSecondary {
-  color: var(--color-text-muted);
+  color: #276F27;
+  text-shadow: none;
 }
 
 .statFooter {

@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { clubsService } from "../../features/clubs/clubsService";
 import { attendanceService } from "../../features/attendance/attendanceService";
 import { membershipsService } from "../../features/memberships/membershipsService";
-import { notificationsService } from "../../features/notifications/notificationsService";
 import { eventsService } from "../../features/events/eventsService";
+import { trainingsService } from "../../features/trainings/trainingsService";
+import { PremiumCalendar } from "../../components/common/PremiumCalendar";
 import styles from "./SuperAdminDashboard.module.css";
 
 function useTimer() {
@@ -171,23 +172,32 @@ export function SuperAdminDashboard() {
     enabled: !!user,
   });
 
-  const { data: notificationsData } = useQuery({
-    queryKey: ["super-admin", "notifications"],
-    queryFn: async () => { const res = await notificationsService.getGlobalSummary(); return res.data; },
-    enabled: !!user,
-  });
-
   const { data: eventsData } = useQuery({
     queryKey: ["super-admin", "events"],
     queryFn: async () => { const res = await eventsService.listPublic({ limit: 100 }); return res.data; },
     enabled: !!user,
   });
 
+  const { data: trainingsData } = useQuery({
+    queryKey: ["super-admin", "trainings"],
+    queryFn: async () => { const res = await trainingsService.listPublic({ limit: 100, sort: "date" }); return res.data; },
+    enabled: !!user,
+  });
+
+  const { data: attendanceRecords } = useQuery({
+    queryKey: ["super-admin", "attendance-records"],
+    queryFn: async () => { const res = await attendanceService.getGlobalAttendance({ limit: 200 }); return res.data; },
+    enabled: !!user,
+  });
+
+  const calendarAttendance = attendanceRecords?.data ?? [];
+  const calendarTrainings = trainingsData?.data ?? [];
+  const calendarEvents = eventsData?.data ?? [];
+
   const totalClubs = clubsData?.length || 0;
   const totalMembers = membershipsData?.totalMembers || 0;
   const totalAttendance = attendanceData?.totalAttendance || 0;
   const totalEvents = eventsData?.total || eventsData?.data?.length || 0;
-  const notifications = notificationsData?.recent || [];
   const chartData = chartView === "week" ? WEEKLY_CHART : MONTHLY_CHART;
   const maxChart = Math.max(...chartData.map((d) => d.value));
 
@@ -347,35 +357,20 @@ export function SuperAdminDashboard() {
           <DonutChart />
         </div>
 
-        {/* Notifications */}
+        {/* Calendar */}
         <div className={styles.card}>
           <div className={styles.cardHead}>
             <div>
-              <h3 className={styles.cardTitle}>Notifications</h3>
-              <p className={styles.cardSubtitle}>Dernières alertes</p>
+              <h3 className={styles.cardTitle}>Calendrier</h3>
+              <p className={styles.cardSubtitle}>Présences & formations</p>
             </div>
-            {notifications.length > 0 && <span className={styles.cardBadge}>{notifications.length}</span>}
           </div>
-          <div className={styles.cardBody}>
-            {notifications.length === 0 ? (
-              <div className={styles.emptyState}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-                <p>Aucune notification</p>
-              </div>
-            ) : (
-              <div className={styles.notifList}>
-                {notifications.slice(0, 5).map((n: { _id: string; title: string; message: string; createdAt: string }) => (
-                  <div key={n._id} className={styles.notifItem}>
-                    <div className={styles.notifDot} />
-                    <div className={styles.notifInfo}>
-                      <div className={styles.notifTitle}>{n.title}</div>
-                      <div className={styles.notifMsg}>{n.message}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <PremiumCalendar
+            attendanceData={calendarAttendance}
+            upcomingTrainings={calendarTrainings}
+            upcomingEvents={calendarEvents}
+            compact
+          />
         </div>
       </div>
 

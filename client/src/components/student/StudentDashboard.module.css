@@ -169,7 +169,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Stats Grid — Colorful Cards
+   Stats Grid — Green Gradient Cards (SuperAdmin Pattern)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .statsGrid {
@@ -182,26 +182,38 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-5);
-  background: white;
-  border: 1.5px solid var(--color-gray-100);
-  border-radius: 18px;
+  padding: 22px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xl);
   text-decoration: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  color: #fff;
 }
 
 .stat::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 18px 18px 0 0;
+  inset: 0;
+  border-radius: inherit;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.stat::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
 }
 
 .stat:hover::before {
@@ -209,15 +221,27 @@
 }
 
 .stat:hover {
-  box-shadow: 0 12px 32px -6px rgba(73, 154, 19, 0.15);
-  border-color: transparent;
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px rgba(73, 154, 19, 0.35);
 }
 
-.stat--emerald::before { background: linear-gradient(90deg, #499A13, #8ECA3C); }
-.stat--blue::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
-.stat--violet::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
-.stat--amber::before { background: linear-gradient(90deg, #BBDC12, #499A13); }
+.stat--emerald {
+  background: linear-gradient(135deg, #1a5c1a 0%, #3a8a10 100%);
+}
+
+.stat--blue {
+  background: linear-gradient(135deg, #3a8a10 0%, #6ab520 100%);
+  color: #0a2e0a;
+}
+
+.stat--violet {
+  background: linear-gradient(135deg, #6ab520 0%, #a0d420 100%);
+  color: #0a2e0a;
+}
+
+.stat--amber {
+  background: linear-gradient(135deg, #144214 0%, #1a5c1a 100%);
+}
 
 .statHeader {
   display: flex;
@@ -231,29 +255,43 @@
   justify-content: center;
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  color: #fff;
   transition: transform 0.2s ease;
 }
 
 .stat:hover .statIcon {
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.stat--blue .statIcon,
+.stat--violet .statIcon {
+  background: rgba(26, 92, 26, 0.15);
+  color: #1a5c1a;
 }
 
 .statArrow {
-  color: var(--color-gray-300);
+  color: rgba(255, 255, 255, 0.7);
   transition: color 0.15s ease, transform 0.2s ease;
 }
 
+.stat--blue .statArrow,
+.stat--violet .statArrow {
+  color: rgba(26, 92, 26, 0.6);
+}
+
 .stat:hover .statArrow {
-  color: var(--color-gray-500);
+  color: #fff;
   transform: translateX(3px);
 }
 
-.stat--emerald .statIcon { background: linear-gradient(135deg, #f4fbe8, #e8f7d0); color: #499A13; }
-.stat--blue .statIcon { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #2563eb; }
-.stat--violet .statIcon { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; }
-.stat--amber .statIcon { background: linear-gradient(135deg, #f4fbe8, #BBDC12); color: #276F27; }
+.stat--blue:hover .statArrow,
+.stat--violet:hover .statArrow {
+  color: #1a5c1a;
+}
 
 .statBody {
   display: flex;
@@ -263,27 +301,48 @@
 
 .statValue {
   font-size: 30px;
-  font-weight: 800;
-  color: var(--color-gray-900);
+  font-weight: 700;
+  color: #fff;
   line-height: 1;
   letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.stat--blue .statValue,
+.stat--violet .statValue {
+  color: #0a2e0a;
+  text-shadow: none;
 }
 
 .statLabel {
   font-size: 13px;
-  color: var(--color-gray-600);
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.stat--blue .statLabel,
+.stat--violet .statLabel {
+  color: #1a5c1a;
+  text-shadow: none;
 }
 
 .statSubtitle {
   font-size: 12px;
-  color: var(--color-gray-400);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 400;
   margin-top: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.stat--blue .statSubtitle,
+.stat--violet .statSubtitle {
+  color: #276F27;
+  text-shadow: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Quick Actions — Pill Style
+   Quick Actions — Green Unified Style (SuperAdmin Pattern)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .actionsRow {
@@ -296,44 +355,42 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  background: white;
-  border: 1.5px solid var(--color-gray-100);
-  border-radius: 14px;
+  padding: 16px 18px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .actionCard:hover {
-  border-color: var(--color-primary-200);
-  box-shadow: 0 8px 20px -4px rgba(73, 154, 19, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px -6px rgba(73, 154, 19, 0.2);
   transform: translateY(-2px);
+  text-decoration: none;
 }
 
 .actionIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-lg);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
+  background: var(--color-primary-50);
+  color: var(--color-primary);
 }
 
 .actionCard:hover .actionIcon {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
-
-.actionIcon--emerald { background: linear-gradient(135deg, #f4fbe8, #e8f7d0); color: #499A13; }
-.actionIcon--blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #2563eb; }
-.actionIcon--violet { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #7c3aed; }
-.actionIcon--amber { background: linear-gradient(135deg, #f4fbe8, #BBDC12); color: #276F27; }
 
 .actionLabel {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--color-gray-700);
+  font-weight: 500;
+  color: var(--color-text-secondary);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -348,13 +405,13 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Card
+   Card — Design Token Based
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .card {
-  background: white;
-  border: 1.5px solid var(--color-gray-100);
-  border-radius: 18px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   transition: box-shadow 0.2s ease;
   display: flex;
@@ -370,21 +427,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-4) var(--space-5);
-  border-bottom: 1.5px solid var(--color-gray-100);
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--color-border);
   background: linear-gradient(180deg, rgba(244, 251, 232, 0.3) 0%, transparent 100%);
 }
 
 .cardTitle {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--color-gray-900);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
   margin: 0;
 }
 
 .cardSubtitle {
   font-size: 12px;
-  color: var(--color-gray-400);
+  color: var(--color-text-secondary);
   margin: 2px 0 0;
 }
 

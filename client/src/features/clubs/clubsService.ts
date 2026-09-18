@@ -16,7 +16,7 @@ export interface Club {
   description: string;
   logo?: string | null;
   coverImage?: string | null;
-  leader?: { _id: string; firstName: string; lastName: string; email: string } | null;
+  leader?: { _id: string; firstName: string; lastName: string; email: string; avatar?: string | null } | null;
   establishedDate?: string | null;
   isActive: boolean;
   contactEmail?: string | null;
@@ -84,5 +84,9 @@ export const clubsService = {
 
   async join(id: string, academicYear: string) {
     return apiClient.post<ApiResponse<Membership>>(`/clubs/${id}/join`, { academicYear });
+  },
+
+  async assignLeader(clubId: string, userId: string) {
+    return apiClient.patch<ApiResponse<Club>>(`/clubs/${clubId}/leader`, { userId });
   },
 };

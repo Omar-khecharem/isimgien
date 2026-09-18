@@ -43,6 +43,13 @@ function getLeaderInitials(leader: Club["leader"]): string {
   return "?";
 }
 
+function getLeaderAvatar(leader: Club["leader"]): string | null {
+  if (typeof leader === "object" && leader !== null && "avatar" in leader) {
+    return (leader as any).avatar || null;
+  }
+  return null;
+}
+
 export function AdminClubs() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
@@ -243,6 +250,7 @@ export function AdminClubs() {
                 const leaderEmail = getLeaderEmail(club.leader);
                 const leaderInitials = getLeaderInitials(club.leader);
                 const leaderColor = getClubColor(leaderName);
+                const leaderAvatar = getLeaderAvatar(club.leader);
 
                 return (
                   <div key={club._id} className={styles.clubCard}>
@@ -296,7 +304,11 @@ export function AdminClubs() {
                       {/* Leader */}
                       <div className={styles.leaderRow}>
                         <div className={styles.leaderAvatar}>
-                          {leaderInitials}
+                          {leaderAvatar ? (
+                            <img src={leaderAvatar} alt={leaderName} className={styles.leaderAvatarImg} />
+                          ) : (
+                            leaderInitials
+                          )}
                         </div>
                         <div className={styles.leaderInfo}>
                           <span className={styles.leaderName}>{leaderName}</span>
